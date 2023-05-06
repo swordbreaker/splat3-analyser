@@ -10,6 +10,12 @@ const router = createRouter({
       component: HomeView
     },
     {
+      path: '/swimmSpeed/:weapon?',
+      name: 'swimmSpeed',
+      component: HomeView,
+      props: true,
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting

@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import WeaponListVue from '@/components/WeaponList.vue';
+import SwimmSpeed from '@/components/SwimmSpeed.vue';
+
+const props = defineProps({
+    weapon: String,
+});
 </script>
 
 <template>
   <main>
-    <WeaponListVue></WeaponListVue>
+    <SwimmSpeed :weapon="$props.weapon"></SwimmSpeed>
   </main>
 </template>

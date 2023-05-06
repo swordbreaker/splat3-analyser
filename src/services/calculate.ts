@@ -1,7 +1,6 @@
-function loadJson(path: string) {
-    return fetch(path)
-        .then((response) => response.json());
-}
+import { da } from "element-plus/es/locale/index.js"
+import { loadJson } from "./util"
+import { Splat3Weapon } from "./weapons"
 
 const useable_ap = [
     0, 3, 6, 9, 10, 12, 13, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34,
@@ -54,6 +53,7 @@ async function calculate_WallJumpChargeFrame(){
     console.log(a);
 }
 
+
 // MoveVel_Human
 // MoveVel_Human_Fast
 // MoveVel_Human_Slow
@@ -62,9 +62,46 @@ async function calculate_WallJumpChargeFrame(){
 // MoveVel_Stealth_Fast
 // MoveVel_Stealth_Slow
 
-// GameParameters.MainWeaponSetting.WeaponSpeedType: Fast | null | Slow
-export async function main(){
-    const data = await loadJson("./splat3/data/parameter/310/misc/params.json");
-    const a = get_effect(data.MoveVel_Stealth, 3);
-    console.log(a);
+function getPostfix(category: 'Fast' | 'Normal' | 'Slow'){
+    switch(category){
+        case 'Fast':
+            return "_Fast";
+        case 'Slow':
+            return "_Slow";
+        default:
+            return "";
+    }
 }
+
+export class SwimmSpeedData{
+    aps: number[]
+    effect: number[]
+    percantage: number[]
+    abilityVals: number[]
+
+    constructor(abilityVals: number[]){
+        this.abilityVals = abilityVals;
+        const stats = useable_ap.map(ap => get_effect(abilityVals, ap));
+        this.aps = useable_ap;
+        this.effect = stats.map(x => x[0]);
+        this.percantage = stats.map(x => x[1]);
+    }
+
+    getEffect(ap: number){
+        return get_effect(this.abilityVals, ap);
+    }
+}
+
+export async function getSwimmSpeedData(weapon: Splat3Weapon){
+    const data = await loadJson<{[key: string]: any}>("/splat3/data/parameter/310/misc/params.json");
+    const postfix = getPostfix(weapon.WeaponSpeedType);
+
+    return new SwimmSpeedData(data[`MoveVel_Stealth${postfix}`]);
+}
+
+// GameParameters.MainWeaponSetting.WeaponSpeedType: Fast | null | Slow
+// export async function main(){
+//     const data = await loadJson("./splat3/data/parameter/310/misc/params.json");
+//     const a = get_effect(data.MoveVel_Stealth, 3);
+//     console.log(a);
+// }

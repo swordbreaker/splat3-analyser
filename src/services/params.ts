@@ -45,5 +45,5 @@ export type Splat3Params = {
 }
 
 export async function loadParams(version: string = "310"){
-    return await loadJson<Splat3Params>(`./splat3/data/parameter/${version}/misc/params.json`);
+    return await loadJson<Splat3Params>(`/splat3/data/parameter/${version}/misc/params.json`);
 }
