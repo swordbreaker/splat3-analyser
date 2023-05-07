@@ -16,6 +16,12 @@ const router = createRouter({
       props: true,
     },
     {
+      path: '/inkSaverMain/:weapon?',
+      name: 'inkSaverMain',
+      component: () => import('../views/InkSaverMain.vue'),
+      props: true,
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting

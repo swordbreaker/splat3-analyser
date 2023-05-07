@@ -3,7 +3,7 @@ import { defineProps, ref } from "vue";
 import WeaponList from "@/components/WeaponList.vue";
 import EffectCard from "./EffectCard.vue";
 import router from "@/router";
-import { getSwimmSpeedData, EffectData } from "@/services/calculate";
+import { EffectData, getInksaverMainData } from "@/services/calculate";
 import { Splat3Weapon, getWeapon } from "@/services/weapons";
 
 const props = defineProps({
@@ -11,16 +11,16 @@ const props = defineProps({
 });
 
 const selectedWeapon = ref<Splat3Weapon | null>(null);
-const swimmSpeedData = ref<EffectData>();
+const effectData = ref<EffectData>();
 
 if (props.weapon != null) {
     getWeapon(props.weapon).then((w) => onWeaponChanged(w));
 }
 
 async function onWeaponChanged(weapon: Splat3Weapon) {
-    router.push({ name: "swimmSpeed", params: { weapon: weapon.mainInfo.__RowId } });
-    const data = await getSwimmSpeedData(weapon);
-    swimmSpeedData.value = data;
+    router.push({ name: "inkSaverMain", params: { weapon: weapon.mainInfo.__RowId } });
+    const data = await getInksaverMainData();
+    effectData.value = data;
     selectedWeapon.value = weapon;
 }
 </script>
@@ -31,8 +31,8 @@ async function onWeaponChanged(weapon: Splat3Weapon) {
 
         <EffectCard
             v-if="selectedWeapon != null"
-            :effect-data="swimmSpeedData"
-            effect-name="Swimm Velocity"
-            effect-img="/splat3/images/skill/SquidMove_Up.png"></EffectCard>
+            :effect-data="effectData"
+            effect-name="Consumption Rate Main"
+            effect-img="/splat3/images/skill/MainInk_Save.png"></EffectCard>
     </section>
 </template>

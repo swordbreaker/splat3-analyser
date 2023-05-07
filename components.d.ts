@@ -9,14 +9,20 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AbilitySelecter: typeof import('./src/components/AbilitySelecter.vue')['default']
+    EffectCard: typeof import('./src/components/EffectCard.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElHeader: typeof import('element-plus/es')['ElHeader']
+    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElImage: typeof import('element-plus/es')['ElImage']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElRow: typeof import('element-plus/es')['ElRow']
+    ElStatistic: typeof import('element-plus/es')['ElStatistic']
+    ElTag: typeof import('element-plus/es')['ElTag']
+    InkSaverMain: typeof import('./src/components/InkSaverMain.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SwimmSpeed: typeof import('./src/components/SwimmSpeed.vue')['default']

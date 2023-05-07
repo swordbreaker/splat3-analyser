@@ -73,7 +73,7 @@ function getPostfix(category: 'Fast' | 'Normal' | 'Slow'){
     }
 }
 
-export class SwimmSpeedData{
+export class EffectData{
     aps: number[]
     effect: number[]
     percantage: number[]
@@ -93,15 +93,21 @@ export class SwimmSpeedData{
 }
 
 export async function getSwimmSpeedData(weapon: Splat3Weapon){
-    const data = await loadJson<{[key: string]: any}>("/splat3/data/parameter/310/misc/params.json");
-    const postfix = getPostfix(weapon.WeaponSpeedType);
-
-    return new SwimmSpeedData(data[`MoveVel_Stealth${postfix}`]);
+    return new EffectData(await getAbilityValsWithPostfix(weapon, "MoveVel_Stealth"));
 }
 
-// GameParameters.MainWeaponSetting.WeaponSpeedType: Fast | null | Slow
-// export async function main(){
-//     const data = await loadJson("./splat3/data/parameter/310/misc/params.json");
-//     const a = get_effect(data.MoveVel_Stealth, 3);
-//     console.log(a);
-// }
+export async function getInksaverMainData(){
+    return new EffectData(await getAbilityVals("ConsumeRt_Main"));
+}
+
+export async function getAbilityValsWithPostfix(weapon: Splat3Weapon, name: string)
+{
+    const postfix = getPostfix(weapon.WeaponSpeedType);
+    return getAbilityVals(`${name}${postfix}`);
+}
+
+export async function getAbilityVals(name: string)
+{
+    const data = await loadJson<{[key: string]: any}>("/splat3/data/parameter/310/misc/params.json");
+    return data[`${name}`];
+}
