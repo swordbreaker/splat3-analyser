@@ -7,18 +7,32 @@ export type WeaponInfoMain = {
     IsCoopRare: boolean,
     __RowId: string,
     SpecActor: string,
+    // "SpecialWeapon": "Work/Gyml/SpBlower.spl__WeaponInfoSpecial.gyml",
+    SpecialWeapon: string,
+    // "SubWeapon": "Work/Gyml/PoisonMist.spl__WeaponInfoSub.gyml",
+    SubWeapon: string,
+}
+
+export type WeaponParam = {
+    InkConsume: number,
 }
 
 export class Splat3Weapon{
     mainInfo: WeaponInfoMain;
+    mainParams: WeaponParams;
     imgPath: string;
     mainWeaponName: string;
+    SubWeaponId: string;
     WeaponSpeedType: 'Fast' | 'Normal' | 'Slow';
+    subImgPath: string;
 
     constructor(info: WeaponInfoMain, params: WeaponParams, localization: Localizator){
         this.mainInfo = info;
+        this.mainParams = params;
         this.WeaponSpeedType = params.GameParameters.MainWeaponSetting?.WeaponSpeedType ?? 'Normal';
-        this.imgPath = `/splat3/images/weapon/Wst_${this.mainInfo.__RowId}.png`;
+        this.SubWeaponId = info.SubWeapon.replace('Work/Gyml/', '').replace('.spl__WeaponInfoSub.gyml', '');
+        this.imgPath = `/splat3/images/weapon_flat/Path_Wst_${this.mainInfo.__RowId}.png`;
+        this.subImgPath = `/splat3/images/subspe/Wsb_${this.SubWeaponId}00.png`;
         this.mainWeaponName = localization.localize('CommonMsg/Weapon/WeaponName_Main', this.mainInfo.__RowId);
     }
 }
@@ -31,6 +45,7 @@ export type MainWeaponSetting = {
 
 export type WeaponParamsGameParameters = {
     MainWeaponSetting: MainWeaponSetting,
+    WeaponParam?: WeaponParam,
 }
 
 export type WeaponParams = {

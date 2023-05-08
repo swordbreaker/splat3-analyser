@@ -56,8 +56,9 @@ onMounted(() => {
                 </template>
             </el-autocomplete>
         </div>
-        <div>
-            <el-image :src="selectedWeapon?.imgPath" fit="fill" />
+        <div class="col">
+            <el-image :src="selectedWeapon?.imgPath" fit="contain" />
+            <el-image class="sub" :src="selectedWeapon?.subImgPath" fit="contain" />
             <span>{{ selectedWeapon?.WeaponSpeedType }}</span>
         </div>
     </div>
@@ -68,5 +69,16 @@ onMounted(() => {
     display: flex;
     justify-content: center;
     flex-direction: column;
+}
+
+.col {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.sub{
+    filter: invert(1);
+
 }
 </style>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, ref } from "vue";
+import { computed, defineProps, effect, ref } from "vue";
 import WeaponList from "@/components/WeaponList.vue";
 import EffectCard from "./EffectCard.vue";
 import router from "@/router";
@@ -12,6 +12,14 @@ const props = defineProps({
 
 const selectedWeapon = ref<Splat3Weapon | null>(null);
 const effectData = ref<EffectData>();
+const effect = ref(1);
+
+const shotsWithFullTank = computed(() => {
+    console.log(selectedWeapon.value?.mainParams.GameParameters.WeaponParam);
+    if(selectedWeapon.value?.mainParams.GameParameters.WeaponParam == null){
+        return null;
+    }
+    return 1 / (selectedWeapon.value?.mainParams.GameParameters.WeaponParam.InkConsume * effect.value)});
 
 if (props.weapon != null) {
     getWeapon(props.weapon).then((w) => onWeaponChanged(w));
@@ -23,6 +31,10 @@ async function onWeaponChanged(weapon: Splat3Weapon) {
     effectData.value = data;
     selectedWeapon.value = weapon;
 }
+
+function onEffectChanged(newEffect: number){
+    effect.value = newEffect;
+}
 </script>
 
 <template>
@@ -31,8 +43,13 @@ async function onWeaponChanged(weapon: Splat3Weapon) {
 
         <EffectCard
             v-if="selectedWeapon != null"
+            @changed="onEffectChanged"
             :effect-data="effectData"
             effect-name="Consumption Rate Main"
             effect-img="/splat3/images/skill/MainInk_Save.png"></EffectCard>
+
+            <div>
+                {{ shotsWithFullTank }}
+            </div>
     </section>
 </template>
