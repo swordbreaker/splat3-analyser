@@ -18,8 +18,10 @@ declare module '@vue/runtime-core' {
     ElRow: typeof import('element-plus/es')['ElRow']
     ElStatistic: typeof import('element-plus/es')['ElStatistic']
     InkSaverMain: typeof import('./src/components/InkSaverMain.vue')['default']
+    PlotCard: typeof import('./src/components/PlotCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    StatsCard: typeof import('./src/components/StatsCard.vue')['default']
     SwimmSpeed: typeof import('./src/components/SwimmSpeed.vue')['default']
     WeaponList: typeof import('./src/components/WeaponList.vue')['default']
   }

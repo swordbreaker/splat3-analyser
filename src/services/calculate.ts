@@ -1,4 +1,4 @@
-import { da } from "element-plus/es/locale/index.js"
+import { th } from "element-plus/es/locale/index.js"
 import { loadJson } from "./util"
 import { Splat3Weapon } from "./weapons"
 
@@ -73,7 +73,19 @@ function getPostfix(category: 'Fast' | 'Normal' | 'Slow'){
     }
 }
 
-export class EffectData{
+export interface PlotData{
+    aps: number[]
+    effect: number[]
+
+    /**
+     * Gets the value of the effect.
+     * @param ap the abillity points
+     * @returns Array where the first value is the effect value and the second is the percentage representation.
+     */
+    getEffect: (ap: number) => number[];
+}
+
+export class EffectData implements PlotData{
     aps: number[]
     effect: number[]
     percantage: number[]
@@ -89,6 +101,30 @@ export class EffectData{
 
     getEffect(ap: number){
         return get_effect(this.abilityVals, ap);
+    }
+}
+
+export class MaxShotWithFullTankData implements PlotData{
+    aps: number[]
+    effect: number[]
+    inkSaviourData: PlotData;
+    selectedWeapon: Splat3Weapon;
+
+    constructor(inkSaviourData: PlotData, selectedWeapon: Splat3Weapon){
+        this.inkSaviourData = inkSaviourData;
+        this.selectedWeapon = selectedWeapon;
+        this.aps = inkSaviourData.aps;
+        this.effect = this.aps.map(a => this.getEffect(a)[0]);
+    }
+
+    getEffect(ap: number){
+        const effect = this.inkSaviourData.getEffect(ap);
+        const weaponParam = this.selectedWeapon.mainParams.GameParameters.WeaponParam;
+        if(weaponParam == null){
+            return [0, effect[1]];
+        }
+
+        return [1 / (weaponParam.InkConsume * effect[0]), effect[1]];
     }
 }
 

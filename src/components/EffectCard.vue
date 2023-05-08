@@ -1,25 +1,24 @@
 <script setup lang="ts">
-import { computed, defineProps, defineEmits, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import AbilitySelecter from "./AbilitySelecter.vue";
 import { EffectData } from "@/services/calculate";
 import Plotly from "plotly.js-dist-min";
+import StatsCard from "./StatsCard.vue";
 
 const props = defineProps({
     effectData: EffectData,
     effectName: String,
     effectImg: String,
+    biggerIsBetter: Boolean,
 });
 
 const emit = defineEmits<{
-    (e: "changed", effect: number): void
+    (e: "changed", effect: number, ap: number): void
 }>();
 
 const prevAp = ref(0);
 const ap = ref(0);
-const apChange = computed(() => ap.value - prevAp.value);
 const effect = ref(0);
-const prevEffect = ref(0);
-const effectChange = computed(() => effect.value - prevEffect.value);
 const plotData = [] as Plotly.Data[];
 
 watch(() => props.effectData, async (_, newVal) =>{
@@ -94,13 +93,12 @@ function updatePlot() {
 
 function onApChanged(abilityPoint: number) {
     prevAp.value = ap.value;
-    prevEffect.value = effect.value;
     ap.value = abilityPoint;
 
     if(props.effectData != null){
         effect.value = props.effectData.getEffect(ap.value)[0];
         updatePlot();
-        emit("changed", effect.value);
+        emit("changed", effect.value, ap.value);
     }
 }
 </script>
@@ -110,34 +108,10 @@ function onApChanged(abilityPoint: number) {
         <div>
             <el-row>
                 <el-col :span="12">
-                    <div class="statistic-card">
-                        <el-statistic title="AP" :value="ap">
-                            <template #suffix>
-                                <span :class="{statsSufix: true, green: apChange > 0, red: apChange < 0}">
-                                    {{ apChange }}
-                                    <el-icon>
-                                        <CaretTop v-if="apChange > 0" />
-                                        <CaretBottom v-if="apChange < 0" />
-                                    </el-icon>
-                                </span>
-                            </template>
-                        </el-statistic>
-                    </div>
+                    <StatsCard title="AP" :value="ap" :bigger-is-better="true"></StatsCard>
                 </el-col>
                 <el-col :span="12">
-                    <div class="statistic-card">
-                        <el-statistic :title="props.effectName" :value="effect.toFixed(4)">
-                            <template #suffix>
-                                <span :class="{statsSufix: true, green: effectChange > 0, red: effectChange < 0}">
-                                    {{ effectChange.toFixed(4) }}
-                                    <el-icon>
-                                        <CaretTop v-if="effectChange > 0" />
-                                        <CaretBottom v-if="effectChange < 0" />
-                                    </el-icon>
-                                </span>
-                            </template>
-                        </el-statistic>
-                    </div>
+                    <StatsCard :title="props.effectName" :value="effect" :bigger-is-better="props.biggerIsBetter"></StatsCard>
                 </el-col>
             </el-row>
 
@@ -155,44 +129,5 @@ function onApChanged(abilityPoint: number) {
     align-items: center;
     justify-content: center;
     gap: 10px;
-}
-
-.statistic-card {
-    padding: 20px;
-    border-radius: 4px;
-    background-color: var(--el-bg-color-overlay);
-}
-
-.statistic-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    font-size: 12px;
-    color: var(--el-text-color-regular);
-    margin-top: 16px;
-}
-
-.statistic-footer .footer-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.statistic-footer .footer-item span:last-child {
-    display: inline-flex;
-    align-items: center;
-    margin-left: 4px;
-}
-
-.green {
-    color: var(--el-color-success);
-}
-.red {
-    color: var(--el-color-error);
-}
-
-.statsSufix{
-    font-size: 0.6em;
 }
 </style>

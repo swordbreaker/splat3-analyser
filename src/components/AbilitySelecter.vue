@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineEmits, defineProps } from "vue";
+import { ref } from "vue";
 
 const props = defineProps({
     image: String
@@ -10,7 +10,6 @@ const emit = defineEmits<{
 }>();
 
 const ap = ref(0);
-const effect = ref(0);
 
 function mainChanged(event: any) {
     const sign = event.target.checked ? 1 : -1;
