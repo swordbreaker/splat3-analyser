@@ -33,6 +33,7 @@ async function onWeaponChanged(weapon: Splat3Weapon) {
             v-if="selectedWeapon != null"
             :effect-data="swimmSpeedData"
             effect-name="Swimm Velocity"
-            effect-img="/splat3/images/skill/SquidMove_Up.png"></EffectCard>
+            effect-img="/splat3/images/skill/SquidMove_Up.png"
+            :bigger-is-better="true"></EffectCard>
     </section>
 </template>
