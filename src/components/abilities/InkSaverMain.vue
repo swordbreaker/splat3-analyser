@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { computed, defineProps, ref } from "vue";
-import WeaponList from "@/components/WeaponList.vue";
-import EffectCard from "./EffectCard.vue";
+import WeaponList from "@/components/WeaponSelector.vue";
 import router from "@/router";
 import { EffectData, MaxShotWithFullTankData, getInksaverMainData } from "@/services/calculate";
 import { Splat3Weapon, getWeapon } from "@/services/weapons";
-import StatsCard from "./StatsCard.vue";
-import PlotCard from "./PlotCard.vue";
+import StatsCard from "@/components/StatsCard.vue";
+import PlotCard from "@/components/PlotCard.vue";
+import StatsWithPlot from "../StatsWithPlot.vue";
 
 const props = defineProps({
     weapon: String,
 });
 
-const selectedWeapon = ref<Splat3Weapon | null>(null);
+const selectedWeapon = ref<Splat3Weapon | undefined>(undefined);
 const effectData = ref<EffectData>();
 const effect = ref(1);
 const ap = ref(0);
@@ -62,14 +62,13 @@ function onApChanged(newAp: number) {
 
         <el-row :gutter="20">
             <el-col :md="24" :lg="12" v-if="effectData != null">
-                <StatsCard title="Consumption Rate Main" :value="effect" :bigger-is-better="false"></StatsCard>
-                <PlotCard effect-name="Number of shot with full Tank" :ap="ap" :effect-data="effectData"></PlotCard>
+                <StatsWithPlot title="Consumption Rate Main" :effect="effect" :ap="ap" :effect-data="effectData">
+                </StatsWithPlot>
             </el-col>
             <el-col :md="24" :lg="12" v-if="shotsWithFullTankData != null && shotsWithFullTank != null">
-                <StatsCard :value="shotsWithFullTank" title="Number of shot with full Tank"
-                    :biggerIsBetter="true"></StatsCard>
-                <PlotCard effect-name="Number of shot with full Tank" :ap="ap" :effect-data="shotsWithFullTankData">
-                </PlotCard>
+                <StatsWithPlot title="Number of shot with full Tank" :effect="shotsWithFullTank" :ap="ap"
+                    :effect-data="shotsWithFullTankData">
+                </StatsWithPlot>
             </el-col>
         </el-row>
     </section>

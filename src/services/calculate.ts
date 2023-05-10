@@ -122,7 +122,7 @@ export class MaxShotWithFullTankData extends PlotData {
     }
 }
 
-export async function getSwimmSpeedData(weapon: Splat3Weapon) {
+export async function getSwimSpeedData(weapon: Splat3Weapon) {
     return new EffectData(await getAbilityValsWithPostfix(weapon, "MoveVel_Stealth"));
 }
 

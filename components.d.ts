@@ -9,6 +9,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AbilityHeader: typeof import('./src/components/abilities/AbilityHeader.vue')['default']
     AbilitySelector: typeof import('./src/components/AbilitySelector.vue')['default']
     EffectCard: typeof import('./src/components/EffectCard.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
@@ -25,13 +26,16 @@ declare module '@vue/runtime-core' {
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElStatistic: typeof import('element-plus/es')['ElStatistic']
-    InkSaverMain: typeof import('./src/components/InkSaverMain.vue')['default']
+    InkSaverMain: typeof import('./src/components/abilities/InkSaverMain.vue')['default']
     Menu: typeof import('./src/components/Menu.vue')['default']
     PlotCard: typeof import('./src/components/PlotCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     StatsCard: typeof import('./src/components/StatsCard.vue')['default']
+    StatsWithPlot: typeof import('./src/components/StatsWithPlot.vue')['default']
     SwimmSpeed: typeof import('./src/components/SwimmSpeed.vue')['default']
+    SwimSpeed: typeof import('./src/components/abilities/SwimSpeed.vue')['default']
     WeaponList: typeof import('./src/components/WeaponList.vue')['default']
+    WeaponSelector: typeof import('./src/components/WeaponSelector.vue')['default']
   }
 }

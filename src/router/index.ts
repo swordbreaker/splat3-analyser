@@ -10,8 +10,8 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/swimmSpeed/:weapon?',
-      name: 'swimmSpeed',
+      path: '/swimSpeed/:weapon?',
+      name: 'swimSpeed',
       component: HomeView,
       props: true,
     },

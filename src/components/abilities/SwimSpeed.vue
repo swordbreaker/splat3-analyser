@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { defineProps, ref } from "vue";
-import WeaponList from "@/components/WeaponList.vue";
-import EffectCard from "./EffectCard.vue";
+import WeaponList from "@/components/WeaponSelector.vue";
 import router from "@/router";
-import { getSwimmSpeedData, EffectData } from "@/services/calculate";
+import { getSwimSpeedData, EffectData } from "@/services/calculate";
 import { Splat3Weapon, getWeapon } from "@/services/weapons";
 
 const props = defineProps({
@@ -19,7 +18,7 @@ if (props.weapon != null) {
 
 async function onWeaponChanged(weapon: Splat3Weapon) {
     router.push({ name: "swimmSpeed", params: { weapon: weapon.mainInfo.__RowId } });
-    const data = await getSwimmSpeedData(weapon);
+    const data = await getSwimSpeedData(weapon);
     swimmSpeedData.value = data;
     selectedWeapon.value = weapon;
 }
