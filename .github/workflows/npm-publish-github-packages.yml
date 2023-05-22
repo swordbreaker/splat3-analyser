@@ -30,8 +30,9 @@ jobs:
     - run: git submodule update --recursive
     - run: cd ./public/splat3
     - run: git pull origin main
-    - run: git submodule deinit -f public/splat3
+    # - run: git submodule deinit -f public/splat3
     - run: cd ../..
+    - run: cp .gitmodules_ci dist/.gitmodules
     # - run: git submodule deinit -f public/splat3
     - run: ls ./public/splat3
     - run: yarn
