@@ -32,8 +32,8 @@ jobs:
     - run: yarn
     - run: yarn build
     - run: ls dist/
-    - run: git --work-tree dist add --all
-    - run: git --work-tree dist commit -m gh-pages
+    - run: git --work-tree ./dist/ add --all -v
+    - run: git --work-tree ./dist/ commit -m gh-pages
     - run: git push origin HEAD:gh-pages --force
 
     # - id: Build-Vue
