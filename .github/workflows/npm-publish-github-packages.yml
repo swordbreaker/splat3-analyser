@@ -37,6 +37,7 @@ jobs:
     - run: yarn
     - run: yarn build
     - run: cp .gitmodules_ci dist/.gitmodules
+    - run: cp dist/index.html dist/404.html
     - run: ls dist/
     - run: ls dist/splat3
     - run: git --work-tree ./dist/ add . --all -v
