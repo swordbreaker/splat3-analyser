@@ -21,8 +21,8 @@ jobs:
     - run: git config --global user.name "swordbreaker"
     - run: git checkout --orphan gh-pages
     - run: git submodule init
+    - run: git submodule update --recursive
     - run: git --work-tree public/splat3 pull
-    # - run: git submodule update --recursive
     - run: yarn
     - run: yarn build
     - run: git --work-tree dist add --all
