@@ -20,15 +20,16 @@ jobs:
     - run: git config --global user.email "tobias.bollinger@gmail.com"
     - run: git config --global user.name "swordbreaker"
     - run: git checkout --orphan gh-pages
-    - run: cd public
-    - run: git clone https://github.com/Leanny/splat3.git
-    - run: rm -r ./splat3/.git
-    - run: ls .
-    - run: ls ./splat3
-    - run: cd ..
-    # - run: git submodule init
-    # - run: git submodule update --recursive
-    # - run: git submodule deinit -f public/splat3
+    # - run: cd public
+    # - run: git clone https://github.com/Leanny/splat3.git
+    # - run: rm -r ./splat3/.git
+    # - run: ls .
+    # - run: ls ./splat3
+    # - run: cd ..
+    - run: git submodule init
+    - run: git submodule update --recursive
+    - run: git submodule deinit -f public/splat3
+    - run: ls ./public/splat3
     - run: yarn
     - run: yarn build
     - run: ls dist/
