@@ -24,6 +24,7 @@ jobs:
     - run: git clone https://github.com/Leanny/splat3.git
     - run: rm -r ./splat3/.git
     - run: ls .
+    - run: ls ./splat3
     - run: cd ..
     # - run: git submodule init
     # - run: git submodule update --recursive
