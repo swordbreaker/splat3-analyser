@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
-import AbilitySelecter from "./AbilitySelecter.vue";
+import { onMounted, ref, watch } from "vue";
+import AbilitySelector from "./AbilitySelector.vue";
 import { EffectData } from "@/services/calculate";
 import Plotly from "plotly.js-dist-min";
 import StatsCard from "./StatsCard.vue";
@@ -113,9 +113,9 @@ function onApChanged(abilityPoint: number) {
                 <el-col :span="12">
                     <StatsCard :title="props.effectName" :value="effect" :bigger-is-better="props.biggerIsBetter"></StatsCard>
                 </el-col>
-            </el-row>
+            </el-row> 
 
-            <AbilitySelecter :image="props.effectImg" @changed="onApChanged"></AbilitySelecter>
+            <AbilitySelector :image="props.effectImg" @changed="onApChanged"></AbilitySelector>
         </div>
         <div>
             <div id="gd"></div>

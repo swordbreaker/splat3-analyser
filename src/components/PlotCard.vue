@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
-import {EffectData, type PlotData } from "@/services/calculate";
+import { type PlotData } from "@/services/calculate";
 import Plotly from "plotly.js-dist-min";
 
 const props = defineProps<{
@@ -11,7 +11,8 @@ const props = defineProps<{
 
 const effect = ref(0);
 const plotData = [] as Plotly.Data[];
-const plotName = computed(() => "gd" + props.effectData);
+const guid = crypto.randomUUID();
+const plotName = computed(() => "gd" + guid);
 
 watch(
     () => props.effectData,

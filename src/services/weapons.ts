@@ -23,16 +23,20 @@ export class Splat3Weapon{
     imgPath: string;
     mainWeaponName: string;
     SubWeaponId: string;
+    SpecialWeaponId: string;
     WeaponSpeedType: 'Fast' | 'Normal' | 'Slow';
     subImgPath: string;
+    specialImgPath: string;
 
     constructor(info: WeaponInfoMain, params: WeaponParams, localization: Localizator){
         this.mainInfo = info;
         this.mainParams = params;
         this.WeaponSpeedType = params.GameParameters.MainWeaponSetting?.WeaponSpeedType ?? 'Normal';
         this.SubWeaponId = info.SubWeapon.replace('Work/Gyml/', '').replace('.spl__WeaponInfoSub.gyml', '');
+        this.SpecialWeaponId = info.SpecialWeapon.replace('Work/Gyml/', '').replace('.spl__WeaponInfoSpecial.gyml', '');
         this.imgPath = `/splat3/images/weapon_flat/Path_Wst_${this.mainInfo.__RowId}.png`;
         this.subImgPath = `/splat3/images/subspe/Wsb_${this.SubWeaponId}00.png`;
+        this.specialImgPath = `/splat3/images/subspe/Wsp_${this.SpecialWeaponId}00.png`;
         this.mainWeaponName = localization.localize('CommonMsg/Weapon/WeaponName_Main', this.mainInfo.__RowId);
     }
 }
