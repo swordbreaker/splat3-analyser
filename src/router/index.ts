@@ -12,7 +12,7 @@ const router = createRouter({
     {
       path: '/swimmSpeed/:weapon?',
       name: 'swimmSpeed',
-      component: HomeView,
+      component: () => import('../views/SwimmSpeed.vue'),
       props: true,
     },
     {

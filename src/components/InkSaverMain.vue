@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineProps, effect, ref } from "vue";
+import { computed,  ref } from "vue";
 import WeaponList from "@/components/WeaponList.vue";
 import EffectCard from "./EffectCard.vue";
 import router from "@/router";
@@ -54,7 +54,8 @@ function onEffectChanged(newEffect: number, newAp: number) {
             @changed="onEffectChanged"
             :effect-data="effectData"
             effect-name="Consumption Rate Main"
-            effect-img="/splat3/images/skill/MainInk_Save.png"></EffectCard>
+            effect-img="/splat3/images/skill/MainInk_Save.png">
+        </EffectCard>
 
         <div>
             <StatsCard
