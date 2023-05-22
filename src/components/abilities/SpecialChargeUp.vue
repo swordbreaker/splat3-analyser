@@ -22,7 +22,6 @@ async function onWeaponChanged(weapon: Splat3Weapon) {
 </script>
 <template>
     <BaseAbility
-        v-if="effectData != null"
         :weapon="props.weapon"
         :effect-data="effectData"
         :effect-default="1"

@@ -24,7 +24,7 @@ const subsWithFullTank = computed(() => {
     return subsWithFullTankData.value.getEffect(ap.value)[0];
 });
 
-if (props.weapon != null) {
+if (props.weapon != null && props.weapon != "") {
     getWeapon(props.weapon).then((w) => onWeaponChanged(w));
 }
 
@@ -43,7 +43,6 @@ function onApChanged(newAp: number, newEffectValue: number){
 
 <template>
     <BaseAbility
-        v-if="effectData != null"
         :weapon="props.weapon"
         :effect-data="effectData"
         effect-name="inkSaverSub"

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { baseUrl } from '@/services/util';
 import { ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
@@ -12,14 +13,12 @@ watch(() => route.params, (newVal, _) => {
 
 const isCollapse = ref(true);
 const abilities = [
-    { name: "Swimmspeed up", navigateTo: "swimmSpeed", img: "/splat3/images/skill/SquidMove_Up.png"},
-    { name: "Inksaver main", navigateTo: "inkSaverMain", img: "/splat3/images/skill/MainInk_Save.png"},
-    { name: "Inksaver sub", navigateTo: "inkSaverSub", img: "/splat3/images/skill/SubInk_Save.png"},
-    { name: "InkRecovery up", navigateTo: "inkRecoveryUp", img: "/splat3/images/skill/InkRecovery_Up.png"},
-    { name: "Runspeed up", navigateTo: "runSpeed", img: "/splat3/images/skill/HumanMove_Up.png"},
+    { name: "Swimmspeed up", navigateTo: "swimmSpeed", img: `${baseUrl}splat3/images/skill/SquidMove_Up.png`},
+    { name: "Inksaver main", navigateTo: "inkSaverMain", img: `${baseUrl}splat3/images/skill/MainInk_Save.png`},
+    { name: "Inksaver sub", navigateTo: "inkSaverSub", img: `${baseUrl}splat3/images/skill/SubInk_Save.png`},
+    { name: "InkRecovery up", navigateTo: "inkRecoveryUp", img: `${baseUrl}splat3/images/skill/InkRecovery_Up.png`},
+    { name: "Runspeed up", navigateTo: "runSpeed", img: `${baseUrl}splat3/images/skill/HumanMove_Up.png`},
 ]
-
-
 
 function navigate(name: string) {
     router.push({ name: name, params: route.params });

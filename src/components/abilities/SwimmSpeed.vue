@@ -10,7 +10,7 @@ const props = defineProps({
 const effectData = ref<EffectData>();
 const selectedWeapon = ref<Splat3Weapon | null>(null);
 
-if (props.weapon != null) {
+if (props.weapon != null && props.weapon != "") {
     getWeapon(props.weapon).then((w) => onWeaponChanged(w));
 }
 
@@ -22,7 +22,6 @@ async function onWeaponChanged(weapon: Splat3Weapon) {
 </script>
 <template>
     <BaseAbility
-        v-if="effectData != null"
         :weapon="props.weapon"
         :effect-data="effectData"
         :effect-default="1"
