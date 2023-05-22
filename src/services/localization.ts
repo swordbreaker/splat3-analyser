@@ -1,5 +1,5 @@
 
-import { loadJson } from "./util";
+import { loadJson, baseUrl } from "./util";
 
 export const languages = [
     {
@@ -110,7 +110,7 @@ export type categories =
     'CommonMsg/Weapon/WeaponTypeName'
 
 export async function loadLocalization(language: string = "EUen"){
-    const data = await loadJson<LocalizationData>(`/splat3/data/language/${language}.json`);
+    const data = await loadJson<LocalizationData>(`${baseUrl}splat3/data/language/${language}.json`);
     return new Localizator(data);
 }
 // CommonMsg/Weapon/WeaponName_Main

@@ -1,4 +1,4 @@
-import { loadJson } from "./util";
+import { loadJson, baseUrl } from "./util";
 import { loadLocalization, type Localizator } from "./localization";
 import { loadSubWeaponInfo } from "./subs";
 
@@ -65,11 +65,11 @@ export type WeaponParams = {
 }
 
 function loadWeaponParams(weaponName: string, version: string) {
-    return loadJson<WeaponParams>(`/splat3/data/parameter/${version}/weapon/${weaponName}.game__GameParameterTable.json`);
+    return loadJson<WeaponParams>(`${baseUrl}splat3/data/parameter/${version}/weapon/${weaponName}.game__GameParameterTable.json`);
 }
 
 function getWeaponMainInfos(version: string) {
-    return loadJson<WeaponInfoMain[]>(`/splat3/data/mush/${version}/WeaponInfoMain.json`);
+    return loadJson<WeaponInfoMain[]>(`${baseUrl}splat3/data/mush/${version}/WeaponInfoMain.json`);
 }
 
 async function getWeaponParams(info: WeaponInfoMain, version: string) {

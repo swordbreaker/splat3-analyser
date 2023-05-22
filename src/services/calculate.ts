@@ -1,5 +1,5 @@
 import type { SubInfo } from "./subs"
-import { loadJson } from "./util"
+import { loadJson, baseUrl } from "./util"
 import { Splat3Weapon, type WeaponParam } from "./weapons"
 
 const useable_ap = [
@@ -47,7 +47,7 @@ function get_effect(abilityVals: number[], ap: number) {
 }
 
 async function calculate_WallJumpChargeFrame() {
-    const data = await loadJson("./splat3/data/parameter/310/misc/SplPlayer.game__GameParameterTable.json");
+    const data = await loadJson(`${baseUrl}splat3/data/parameter/310/misc/SplPlayer.game__GameParameterTable.json`);
     const c = data.GameParameters.spl__PlayerGearSkillParam_ActionSpecUp_Squid;
     const a = get_effect([c.WallJumpChargeFrm_High, c.WallJumpChargeFrm_Mid, c.WallJumpChargeFrm_Low], 3);
     console.log(a);
@@ -173,6 +173,6 @@ export async function getInkRecoveryUpSwimming() {
 }
 
 export async function getAbilityVals(name: string) {
-    const data = await loadJson<{ [key: string]: any }>("/splat3/data/parameter/310/misc/params.json");
+    const data = await loadJson<{ [key: string]: any }>(`${baseUrl}splat3/data/parameter/310/misc/params.json`);
     return data[`${name}`];
 }

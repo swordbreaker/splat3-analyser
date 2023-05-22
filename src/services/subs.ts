@@ -1,4 +1,4 @@
-import { loadJson } from "./util"
+import { loadJson, baseUrl } from "./util"
 
 type SubParams = {
     GameParameters: GameParameters,
@@ -31,7 +31,7 @@ export class SubInfo{
 }
 
 async function loadSubParams(version: string, subName: string) {
-    return loadJson<SubParams>(`/splat3/data/parameter/${version}/weapon/Weapon${subName}.game__GameParameterTable.json`);
+    return loadJson<SubParams>(`${baseUrl}splat3/data/parameter/${version}/weapon/Weapon${subName}.game__GameParameterTable.json`);
 }
 
 export async function loadSubWeaponInfo(subName: string, version: string = "310") {
