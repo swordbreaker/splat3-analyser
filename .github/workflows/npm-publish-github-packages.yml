@@ -28,7 +28,10 @@ jobs:
     # - run: cd ..
     - run: git submodule init
     - run: git submodule update --recursive
-    - run: git submodule deinit -f public/splat3
+    - run: cd ./public/splat3
+    - run: git pull
+    - run: cd ../..
+    # - run: git submodule deinit -f public/splat3
     - run: ls ./public/splat3
     - run: yarn
     - run: yarn build
