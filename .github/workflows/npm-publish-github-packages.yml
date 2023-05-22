@@ -32,11 +32,11 @@ jobs:
     - run: git pull origin main
     # - run: git submodule deinit -f public/splat3
     - run: cd ../..
-    - run: cp .gitmodules_ci dist/.gitmodules
     # - run: git submodule deinit -f public/splat3
     - run: ls ./public/splat3
     - run: yarn
     - run: yarn build
+    - run: cp .gitmodules_ci dist/.gitmodules
     - run: ls dist/
     - run: ls dist/splat3
     - run: git --work-tree ./dist/ add . --all -v
