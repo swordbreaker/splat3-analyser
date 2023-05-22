@@ -87,11 +87,15 @@ function updatePlot() {
 }
 
 watch(() => props.ap, (newValue, _) => {
-    console.log(newValue);
     if (props.effectData != null && newValue != null) {
         effect.value = props.effectData.getEffect(newValue)[0];
         updatePlot();
     }
+});
+
+watch(() => props.effectData, (newData, _) => {
+    effect.value = newData.getEffect(props.ap)[0];
+    updatePlot();
 });
 </script>
 

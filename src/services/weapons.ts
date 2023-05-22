@@ -1,5 +1,6 @@
 import { loadJson } from "./util";
 import { loadLocalization, type Localizator } from "./localization";
+import { loadSubWeaponInfo } from "./subs";
 
 export type WeaponInfoMain = {
     Type: "Versus" | "Coop" | "Mission" | "Rival",
@@ -11,6 +12,7 @@ export type WeaponInfoMain = {
     SpecialWeapon: string,
     // "SubWeapon": "Work/Gyml/PoisonMist.spl__WeaponInfoSub.gyml",
     SubWeapon: string,
+    SpecialPoint: number,
 }
 
 export type WeaponParam = {
@@ -27,10 +29,12 @@ export class Splat3Weapon{
     WeaponSpeedType: 'Fast' | 'Normal' | 'Slow';
     subImgPath: string;
     specialImgPath: string;
+    specialPoints: number;
 
     constructor(info: WeaponInfoMain, params: WeaponParams, localization: Localizator){
         this.mainInfo = info;
         this.mainParams = params;
+        this.specialPoints = info.SpecialPoint;
         this.WeaponSpeedType = params.GameParameters.MainWeaponSetting?.WeaponSpeedType ?? 'Normal';
         this.SubWeaponId = info.SubWeapon.replace('Work/Gyml/', '').replace('.spl__WeaponInfoSub.gyml', '');
         this.SpecialWeaponId = info.SpecialWeapon.replace('Work/Gyml/', '').replace('.spl__WeaponInfoSpecial.gyml', '');
@@ -38,6 +42,10 @@ export class Splat3Weapon{
         this.subImgPath = `/splat3/images/subspe/Wsb_${this.SubWeaponId}00.png`;
         this.specialImgPath = `/splat3/images/subspe/Wsp_${this.SpecialWeaponId}00.png`;
         this.mainWeaponName = localization.localize('CommonMsg/Weapon/WeaponName_Main', this.mainInfo.__RowId);
+    }
+
+    getSubWeaponInfo() {
+        return loadSubWeaponInfo(this.SubWeaponId);
     }
 }
 

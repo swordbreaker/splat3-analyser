@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SwimmSpeed from '@/components/abilities/SwimmSpeed.vue';
+import InkRecoveryUp from '@/components/abilities/InkRecoveryUp.vue';
 
 const props = defineProps({
     weapon: String,
@@ -8,6 +8,6 @@ const props = defineProps({
 
 <template>
   <main>
-    <SwimmSpeed :weapon="props.weapon"></SwimmSpeed>
+    <InkRecoveryUp></InkRecoveryUp>
   </main>
 </template>

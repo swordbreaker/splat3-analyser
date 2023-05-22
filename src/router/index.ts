@@ -10,9 +10,9 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/swimSpeed/:weapon?',
-      name: 'swimSpeed',
-      component: HomeView,
+      path: '/swimmSpeed/:weapon?',
+      name: 'swimmSpeed',
+      component: () => import('../views/SwimmSpeed.vue'),
       props: true,
     },
     {
@@ -22,12 +22,22 @@ const router = createRouter({
       props: true,
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
+      path: '/inkSaverSub/:weapon?',
+      name: 'inkSaverSub',
+      component: () => import('../views/InkSaverSub.vue'),
+      props: true,
+    },
+    {
+      path: '/inkRecoveryUp/:weapon?',
+      name: 'inkRecoveryUp',
+      component: () => import('../views/InkRecoveryUp.vue'),
+      props: true,
+    },
+    {
+      path: '/runSpeed/:weapon?',
+      name: 'runSpeed',
+      component: () => import('../views/RunSpeed.vue'),
+      props: true,
     }
   ]
 })

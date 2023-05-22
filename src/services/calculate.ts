@@ -1,3 +1,4 @@
+import type { SubInfo } from "./subs"
 import { loadJson } from "./util"
 import { Splat3Weapon, type WeaponParam } from "./weapons"
 
@@ -122,17 +123,53 @@ export class MaxShotWithFullTankData extends PlotData {
     }
 }
 
+export class MaxSubsWithFullTankData extends PlotData {
+    constructor(inkSaviourData: PlotData, subInfo: SubInfo) {
+        super(ap =>
+            MaxSubsWithFullTankData._getEffect(
+                ap,
+                inkSaviourData,
+                subInfo));
+    }
+
+    private static _getEffect(ap: number, inkSaviourData: PlotData, subInfo: SubInfo | undefined) {
+        const effect = inkSaviourData.getEffect(ap);
+        if (subInfo == undefined) {
+            return [0, effect[1]];
+        }
+
+        return [1 / (subInfo.InkConsume * effect[0]), effect[1]];
+    }
+}
+
 export async function getSwimSpeedData(weapon: Splat3Weapon) {
     return new EffectData(await getAbilityValsWithPostfix(weapon, "MoveVel_Stealth"));
+}
+
+export async function getRunSpeedData(weapon: Splat3Weapon) {
+    return new EffectData(await getAbilityValsWithPostfix(weapon, "MoveVel_Human"));
 }
 
 export async function getInksaverMainData() {
     return new EffectData(await getAbilityVals("ConsumeRt_Main"));
 }
 
+export async function getInksaverSubData(weapon: Splat3Weapon) {
+    const subInfo = await weapon.getSubWeaponInfo();
+    return new EffectData(await getAbilityVals(`ConsumeRt_Sub_Lv${subInfo.SubInkSaveLv}`));
+}
+
 export async function getAbilityValsWithPostfix(weapon: Splat3Weapon, name: string) {
     const postfix = getPostfix(weapon.WeaponSpeedType);
     return getAbilityVals(`${name}${postfix}`);
+}
+
+export async function getInkRecoveryUpStanding() {
+    return new EffectData(await getAbilityVals("InkRecoverFrm_Std"));
+}
+
+export async function getInkRecoveryUpSwimming() {
+    return new EffectData(await getAbilityVals("InkRecoverFrm_Stealth"));
 }
 
 export async function getAbilityVals(name: string) {

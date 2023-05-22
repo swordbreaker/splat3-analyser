@@ -1,11 +1,5 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import {
-    Document,
-    Menu as IconMenu,
-    Location,
-    Setting,
-} from '@element-plus/icons-vue'
 import { useRouter, useRoute } from 'vue-router'
 
 const route = useRoute();
@@ -13,11 +7,19 @@ const router = useRouter();
 const params = ref<any>();
 
 watch(() => route.params, (newVal, _) => {
-    console.log(route.params);
     params.value = route.params;
 });
 
 const isCollapse = ref(true);
+const abilities = [
+    { name: "Swimmspeed up", navigateTo: "swimmSpeed", img: "/splat3/images/skill/SquidMove_Up.png"},
+    { name: "Inksaver main", navigateTo: "inkSaverMain", img: "/splat3/images/skill/MainInk_Save.png"},
+    { name: "Inksaver sub", navigateTo: "inkSaverSub", img: "/splat3/images/skill/SubInk_Save.png"},
+    { name: "InkRecovery up", navigateTo: "inkRecoveryUp", img: "/splat3/images/skill/InkRecovery_Up.png"},
+    { name: "Runspeed up", navigateTo: "runSpeed", img: "/splat3/images/skill/HumanMove_Up.png"},
+]
+
+
 
 function navigate(name: string) {
     router.push({ name: name, params: route.params });
@@ -42,20 +44,14 @@ function navigate(name: string) {
 </style>
 
 <template>
-    <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">
+    <!-- <el-radio-group v-model="isCollapse" style="margin-bottom: 20px">
         <el-radio-button :label="false">expand</el-radio-button>
         <el-radio-button :label="true">collapse</el-radio-button>
-    </el-radio-group>
+    </el-radio-group> -->
     <el-menu default-active="1" class="el-menu-vertical-demo" :collapse="isCollapse">
-        <el-menu-item index="1" @click="navigate('swimmSpeed')">
-            <el-icon><img src="/splat3/images/skill/SquidMove_Up.png" alt="Swimmspeed up" /></el-icon>
-            <template #title>Swimmspeed up</template>
-        </el-menu-item>
-        <el-menu-item index="2" @click="navigate('inkSaverMain')">
-            <el-icon>
-                <img src="/splat3/images/skill/MainInk_Save.png" alt="Inksaver Main">
-            </el-icon>
-            <template #title>Inksaver Main</template>
+        <el-menu-item v-for="(ability, i) in abilities" :index="i.toString()" @click="navigate(ability.navigateTo)">
+            <el-icon><img :src="ability.img" :alt="ability.name" /></el-icon>
+            <template #title>{{ ability.name }}</template>
         </el-menu-item>
     </el-menu>
 </template>

@@ -6,9 +6,9 @@ const emit = defineEmits<{
     (e: "change", weapon: Splat3Weapon): void;
 }>();
 
-const props = defineProps({
-    selectedWeapon: Splat3Weapon,
-});
+const props = defineProps<{
+    selectedWeapon: Splat3Weapon | undefined,
+}>();
 
 watch(
     () => props.selectedWeapon,

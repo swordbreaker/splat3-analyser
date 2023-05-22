@@ -8,6 +8,6 @@ const props = defineProps({
 
 <template>
   <main>
-    <InkSaverMain :weapon="$props.weapon"></InkSaverMain>
+    <InkSaverMain :weapon="props.weapon"></InkSaverMain>
   </main>
 </template>
