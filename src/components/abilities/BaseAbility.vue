@@ -6,6 +6,7 @@ import { EffectData } from "@/services/calculate";
 import { Splat3Weapon, getWeapon } from "@/services/weapons";
 import StatsCard from "@/components/StatsCard.vue";
 import StatsWithPlot from "../StatsWithPlot.vue";
+import { baseUrl } from "@/services/util";
 
 const props = defineProps<{
     effectName: string,
@@ -59,7 +60,7 @@ function onApChanged(newAp: number) {
                 <StatsCard title="AP" :value="ap" :bigger-is-better="true"></StatsCard>
                 <div class="ability-selector">
                     <AbilitySelector
-                        :image="`/splat3/images/skill/${props.abilityImg}`"
+                        :image="`${baseUrl}splat3/images/skill/${props.abilityImg}`"
                         @changed="onApChanged"></AbilitySelector>
                 </div>
             </el-col>

@@ -2,6 +2,7 @@
 import { onMounted, ref } from "vue";
 import { EffectData, getInkRecoveryUpSwimming, getInkRecoveryUpStanding } from "@/services/calculate";
 import StatsWithPlot from "../StatsWithPlot.vue";
+import { baseUrl } from "@/services/util";
 
 const swimmingData = ref<EffectData>();
 const standingData = ref<EffectData>();
@@ -42,7 +43,7 @@ function onApChanged(newAp: number) {
                 <StatsCard title="AP" :value="ap" :bigger-is-better="true"></StatsCard>
                 <div class="ability-selector">
                     <AbilitySelector
-                        :image="`/splat3/images/skill/${abilityImg}`"
+                        :image="`${baseUrl}splat3/images/skill/${abilityImg}`"
                         @changed="onApChanged"></AbilitySelector>
                 </div>
             </el-col>
