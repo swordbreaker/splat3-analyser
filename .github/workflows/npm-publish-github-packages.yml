@@ -32,7 +32,8 @@ jobs:
     - run: yarn
     - run: yarn build
     - run: ls dist/
-    - run: git --work-tree ./dist/ add --all -v
+    - run: ls dist/splat3
+    - run: git --work-tree ./dist/ add . --all -v
     - run: git --work-tree ./dist/ commit -m gh-pages
     - run: git push origin HEAD:gh-pages --force
 
