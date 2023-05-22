@@ -1,0 +1,37 @@
+# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
+# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
+
+name: Build Vue
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+  release:
+    types: [created]
+
+jobs:
+  build_vue:
+    runs-on: ubuntu-latest
+    name: Build Vue
+    steps:
+    - uses: actions/checkout@v2
+    - run: git config --global user.email "tobias.bollinger@gmail.com"
+    - run: git config --global user.name "swordbreaker"
+    - run: git checkout --orphan gh-pages
+    - run: yarn
+    - run: yarn run build
+    - run: git --work-tree dist add --all
+    - run: git --work-tree dist commit -m gh-pages
+    - run: git push origin HEAD:gh-pages --force
+
+    # - id: Build-Vue
+    #   uses: xRealNeon/VuePagesAction@1.0.1
+    #   with:
+    #     username: 'swordbreaker'
+    #     reponame: 'witchable-web'
+    #     token: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged
