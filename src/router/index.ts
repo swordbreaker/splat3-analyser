@@ -52,9 +52,9 @@ const router = createRouter({
             props: true,
         },
         {
-            path: "/specialIncreaseUp/:weapon?",
-            name: "specialIncreaseUp",
-            component: () => import("../views/SpecialIncreaseUp.vue"),
+            path: "/specialSpecUp/:weapon?",
+            name: "specialSpecUp",
+            component: () => import("../views/SpecialSpecUp.vue"),
             props: true,
         },
     ],

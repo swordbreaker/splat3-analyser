@@ -1,11 +1,15 @@
 <script lang="ts" setup>
 import { baseUrl } from '@/services/util';
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 const route = useRoute();
 const router = useRouter();
 const params = ref<any>();
+
+const currentIndex = computed(() => {
+    return abilities.findIndex(x => x.navigateTo == route.name);
+});
 
 watch(() => route.params, (newVal, _) => {
     params.value = route.params;
@@ -20,7 +24,7 @@ const abilities = [
     { name: "Runspeed up", navigateTo: "runSpeed", img: `${baseUrl}splat3/images/skill/HumanMove_Up.png`},
     { name: "Special Charge Up", navigateTo: "specialIncreaseUp", img: `${baseUrl}splat3/images/skill/SpecialIncrease_Up.png`},
     { name: "Special Saver", navigateTo: "specialSave", img: `${baseUrl}splat3/images/skill/RespawnSpecialGauge_Save.png`},
-    { name: "Special Power Up", navigateTo: "specialIncreaseUp", img: `${baseUrl}splat3/images/skill/SpecialIncrease_Up.png`},
+    { name: "Special Power Up", navigateTo: "specialSpecUp", img: `${baseUrl}splat3/images/skill/SpecialSpec_Up.png`},
 ]
 
 function navigate(name: string) {
@@ -50,7 +54,7 @@ function navigate(name: string) {
         <el-radio-button :label="false">expand</el-radio-button>
         <el-radio-button :label="true">collapse</el-radio-button>
     </el-radio-group> -->
-    <el-menu default-active="1" class="el-menu-vertical-demo" :collapse="isCollapse">
+    <el-menu :default-active="currentIndex" :collapse="isCollapse">
         <el-menu-item v-for="(ability, i) in abilities" :index="i.toString()" @click="navigate(ability.navigateTo)">
             <el-icon><img :src="ability.img" :alt="ability.name" /></el-icon>
             <template #title>{{ ability.name }}</template>

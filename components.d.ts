@@ -38,6 +38,7 @@ declare module '@vue/runtime-core' {
     SpecialChargeUp: typeof import('./src/components/abilities/SpecialChargeUp.vue')['default']
     SpecialIncreaseUp: typeof import('./src/components/abilities/SpecialIncreaseUp.vue')['default']
     SpecialSave: typeof import('./src/components/abilities/SpecialSave.vue')['default']
+    SpecialSpecUp: typeof import('./src/components/abilities/SpecialSpecUp.vue')['default']
     StatsCard: typeof import('./src/components/StatsCard.vue')['default']
     StatsWithPlot: typeof import('./src/components/StatsWithPlot.vue')['default']
     SwimmSpeed: typeof import('./src/components/abilities/SwimmSpeed.vue')['default']
