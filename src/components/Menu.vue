@@ -13,11 +13,14 @@ watch(() => route.params, (newVal, _) => {
 
 const isCollapse = ref(true);
 const abilities = [
-    { name: "Swimmspeed up", navigateTo: "swimmSpeed", img: `${baseUrl}splat3/images/skill/SquidMove_Up.png`},
+    { name: "Swimspeed up", navigateTo: "swimSpeed", img: `${baseUrl}splat3/images/skill/SquidMove_Up.png`},
     { name: "Inksaver main", navigateTo: "inkSaverMain", img: `${baseUrl}splat3/images/skill/MainInk_Save.png`},
     { name: "Inksaver sub", navigateTo: "inkSaverSub", img: `${baseUrl}splat3/images/skill/SubInk_Save.png`},
     { name: "InkRecovery up", navigateTo: "inkRecoveryUp", img: `${baseUrl}splat3/images/skill/InkRecovery_Up.png`},
     { name: "Runspeed up", navigateTo: "runSpeed", img: `${baseUrl}splat3/images/skill/HumanMove_Up.png`},
+    { name: "Special Charge Up", navigateTo: "specialIncreaseUp", img: `${baseUrl}splat3/images/skill/SpecialIncrease_Up.png`},
+    { name: "Special Saver", navigateTo: "specialSave", img: `${baseUrl}splat3/images/skill/RespawnSpecialGauge_Save.png`},
+    { name: "Special Power Up", navigateTo: "specialIncreaseUp", img: `${baseUrl}splat3/images/skill/SpecialIncrease_Up.png`},
 ]
 
 function navigate(name: string) {

@@ -115,9 +115,11 @@ export class MaxShotWithFullTankData extends PlotData {
 
     private static _getEffect(ap: number, inkSaviourData: PlotData, weaponParam: WeaponParam | undefined) {
         const effect = inkSaviourData.getEffect(ap);
+
         if (weaponParam == undefined) {
             return [0, effect[1]];
         }
+
 
         return [1 / (weaponParam.InkConsume * effect[0]), effect[1]];
     }
@@ -170,6 +172,14 @@ export async function getInkRecoveryUpStanding() {
 
 export async function getInkRecoveryUpSwimming() {
     return new EffectData(await getAbilityVals("InkRecoverFrm_Stealth"));
+}
+
+export async function getSpecialChargeUpData() {
+    return new EffectData(await getAbilityVals("IncreaseRt_Special"));
+}
+
+export async function getSpecialSaveData() {
+    return new EffectData(await getAbilityVals("SpecialGaugeRt_Restart"));
 }
 
 export async function getAbilityVals(name: string) {

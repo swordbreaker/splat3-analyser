@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, defineProps, ref } from "vue";
+import { defineProps, ref } from "vue";
 import { EffectData, MaxSubsWithFullTankData, getInksaverSubData } from "@/services/calculate";
 import { Splat3Weapon, getWeapon } from "@/services/weapons";
-import StatsWithPlot from "../StatsWithPlot.vue";
+import EffectCard from "../EffectCard.vue";
 import BaseAbility from "./BaseAbility.vue";
 import { SubInfo } from "@/services/subs";
 
@@ -12,17 +12,9 @@ const props = defineProps({
 
 const effectData = ref<EffectData>();
 const subInfo = ref<SubInfo>();
-const effect = ref(1);
 const ap = ref(0);
 const subsWithFullTankData = ref<MaxSubsWithFullTankData>();
 const selectedWeapon = ref<Splat3Weapon>();
-
-const subsWithFullTank = computed(() => {
-    if(subsWithFullTankData.value == null){
-        return null;
-    }
-    return subsWithFullTankData.value.getEffect(ap.value)[0];
-});
 
 if (props.weapon != null && props.weapon != "") {
     getWeapon(props.weapon).then((w) => onWeaponChanged(w));
@@ -35,8 +27,7 @@ async function onWeaponChanged(weapon: Splat3Weapon) {
     selectedWeapon.value = weapon;
 }
 
-function onApChanged(newAp: number, newEffectValue: number){
-    effect.value = newEffectValue;
+function onApChanged(newAp: number, _newEffectValue: number){
     ap.value = newAp;
 }
 </script>
@@ -50,13 +41,12 @@ function onApChanged(newAp: number, newEffectValue: number){
         ability-img="SubInk_Save.png"
         @weapon-changed="onWeaponChanged"
         @ap-changed="onApChanged">
-        <el-col :md="24" :lg="12" v-if="subsWithFullTankData != null && subsWithFullTank != null">
-            <StatsWithPlot
+        <el-col :md="24" :lg="12" v-if="subsWithFullTankData != null">
+            <EffectCard
                 title="Number of subs with full Tank"
-                :effect="subsWithFullTank"
                 :ap="ap"
                 :effect-data="subsWithFullTankData">
-            </StatsWithPlot>
+            </EffectCard>
         </el-col>
     </BaseAbility>
 </template>

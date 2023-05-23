@@ -23,15 +23,21 @@ export class SubInfo{
     InkConsume: number;
     InkRecoverStop: number
 
-    constructor(params: SubParams){
+    constructor(params: SubParams) {
         this.SubInkSaveLv = params.GameParameters.SubWeaponSetting.SubInkSaveLv;
+        if(params.GameParameters.SubWeaponSetting.SubInkSaveLv == null){
+            this.SubInkSaveLv = 2;
+        }
         this.InkConsume = params.GameParameters.WeaponParam.InkConsume;
+        if(this.InkConsume == null){
+            this.InkConsume = 0.7;
+        }
         this.InkRecoverStop = params.GameParameters.WeaponParam.InkRecoverStop;
     }
 }
 
 async function loadSubParams(version: string, subName: string) {
-    return loadJson<SubParams>(`${baseUrl}splat3/data/parameter/${version}/weapon/Weapon${subName}.game__GameParameterTable.json`);
+    return loadJson<SubParams>(`${baseUrl}splat3/data/parameter/${version}/weapon/Weapon${subName.replace("_", "")}.game__GameParameterTable.json`);
 }
 
 export async function loadSubWeaponInfo(subName: string, version: string = "310") {

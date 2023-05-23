@@ -109,7 +109,7 @@ export type categories =
     'CommonMsg/Weapon/WeaponParamName' |
     'CommonMsg/Weapon/WeaponTypeName'
 
-export async function loadLocalization(language: string = "EUen"){
+export async function loadLocalization(language: string = "EUen") {
     const data = await loadJson<LocalizationData>(`${baseUrl}splat3/data/language/${language}.json`);
     return new Localizator(data);
 }

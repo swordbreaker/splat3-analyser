@@ -2,28 +2,13 @@ import { loadJson, baseUrl } from "./util";
 import { loadLocalization, type Localizator } from "./localization";
 import { loadSubWeaponInfo } from "./subs";
 
-export type WeaponInfoMain = {
-    Type: "Versus" | "Coop" | "Mission" | "Rival";
-    Id: number;
-    IsCoopRare: boolean;
-    __RowId: string;
-    SpecActor: string;
-    // "SpecialWeapon": "Work/Gyml/SpBlower.spl__WeaponInfoSpecial.gyml",
-    SpecialWeapon: string;
-    // "SubWeapon": "Work/Gyml/PoisonMist.spl__WeaponInfoSub.gyml",
-    SubWeapon: string;
-    SpecialPoint: number;
-};
-
-export type WeaponParam = {
-    InkConsume: number;
-};
-
 export class Splat3Weapon {
     mainInfo: WeaponInfoMain;
     mainParams: WeaponParams;
     imgPath: string;
     mainWeaponName: string;
+    subWeaponName: string;
+    specialWeaponName: string;
     SubWeaponId: string;
     SpecialWeaponId: string;
     WeaponSpeedType: "Fast" | "Normal" | "Slow";
@@ -41,13 +26,53 @@ export class Splat3Weapon {
         this.imgPath = `${baseUrl}splat3/images/weapon_flat/Path_Wst_${this.mainInfo.__RowId}.png`;
         this.subImgPath = `${baseUrl}splat3/images/subspe/Wsb_${this.SubWeaponId}00.png`;
         this.specialImgPath = `${baseUrl}splat3/images/subspe/Wsp_${this.SpecialWeaponId}00.png`;
-        this.mainWeaponName = localization.localize("CommonMsg/Weapon/WeaponName_Main", this.mainInfo.__RowId);
+        try{
+            this.mainWeaponName = localization.localize("CommonMsg/Weapon/WeaponName_Main", this.mainInfo.__RowId);
+            this.subWeaponName = localization.localize("CommonMsg/Weapon/WeaponName_Sub", this.SubWeaponId);
+            this.specialWeaponName = localization.localize("CommonMsg/Weapon/WeaponName_Special", this.SpecialWeaponId);
+        }
+        catch(e: any){
+            console.error(e);
+            this.mainWeaponName = this.mainInfo.__RowId;
+            this.subWeaponName = this.SubWeaponId;
+            this.specialWeaponName = this.SpecialWeaponId;
+        }
     }
 
     getSubWeaponInfo() {
         return loadSubWeaponInfo(this.SubWeaponId);
     }
+
+    getSpecialWeaponInfo() {
+        return loadSpecialWeaponInfo(this.SpecialWeaponId);
+    }
 }
+
+export type WeaponInfoMain = {
+    Type: "Versus" | "Coop" | "Mission" | "Rival";
+    Id: number;
+    IsCoopRare: boolean;
+    __RowId: string;
+    SpecActor: string;
+    // "SpecialWeapon": "Work/Gyml/SpBlower.spl__WeaponInfoSpecial.gyml",
+    SpecialWeapon: string;
+    // "SubWeapon": "Work/Gyml/PoisonMist.spl__WeaponInfoSub.gyml",
+    SubWeapon: string;
+    SpecialPoint: number;
+};
+
+export type WeaponParam = {
+    InkConsume: number;
+
+    // WeaponSpJetpack
+    SpecialTotalFrame: SkillParams;
+    // BooyahBombChargeRateAutoPerFrame
+    ChargeRateAutoPerFrame: SkillParams;
+
+    // WeaponSpSuperHook
+    InkConsume_Hook: SkillParams;
+    InkConsume_PerSec: SkillParams;
+};
 
 export type WeaponSpeedType = "Fast" | null | "Slow";
 
@@ -58,11 +83,128 @@ export type MainWeaponSetting = {
 export type WeaponParamsGameParameters = {
     MainWeaponSetting: MainWeaponSetting;
     WeaponParam?: WeaponParam;
+
+    // WeaponSpBlower
+    InhaleParam?: InhaleParam;
+
+    // WeaponSpChariot
+    WeaponSpChariotParam?: WeaponSpChariotParam;
+
+    // WeaponSpEnergyStand
+    FridgeParam?: FridgeParam;
+
+    // BigBubblerMaxHP
+    spl__BulletSpGreatBarrierMoveParam?: spl__BulletSpGreatBarrierMoveParam;
+
+    // WeaponSpInkStorm
+    CloudParam?: CloudParam;
+
+    // WeaponSpInkStorm & WeaponSpTripleTornado
+    MoveParam?: MoveParam;
+
+    // WeaponSpJetpack & WeaponSpUltraShot
+    BlastParam?: BlastParam;
+
+    // WeaponSpMicroLaser
+    spl__BulletSpMicroLaserBitParam?: spl__BulletSpMicroLaserBitParam;
+
+    // WeaponSpMultiMissile
+    spl__WeaponSpMultiMissileLockOnParam?: spl__WeaponSpMultiMissileLockOnParam;
+
+    // WeaponSpShockSonar
+    spl__BulletSpShockSonarParam? : spl__BulletSpShockSonarParam;
+
+    // WeaponSpSkewer
+    BulletBlastParam?: BulletBlastParam;
+
+    spl__BulletBlastParam?: BulletBlastParam;
+
+    // WeaponSpUltraShot
+    spl__WeaponSpUltraShotParam?: spl__WeaponSpUltraShotParam;
+
+    // WeaponSpUltraStamp
+    spl__WeaponSpUltraStampParam?: spl__WeaponSpUltraStampParam;
+
+    IceParam?: { BlastParam: BlastParam;};
 };
 
 export type WeaponParams = {
     GameParameters: WeaponParamsGameParameters;
 };
+
+type InhaleParam = {
+    RadiusMax: SkillParams
+    RadiusMin: SkillParams
+}
+
+type WeaponSpChariotParam = {
+    SpecialTotalFrame: SkillParams
+}
+
+type FridgeParam = {
+    PowerUpFrame: SkillParams
+}
+
+type spl__BulletSpGreatBarrierMoveParam = {
+    BarrierParam: {
+        MaxFieldHP: SkillParams,
+        MaxHP: SkillParams,
+    };
+}
+
+type CloudParam = {
+    RainyFrame: SkillParams;
+}
+
+type MoveParam = {
+    SpawnSpeedZSpecUp: SkillParams;
+}
+
+export type SkillParams = { High: number, Low: number, Mid: number}
+
+type BlastParam = {
+    // length: 5
+    // 0: InkjetBurstPaintRadius
+    // 1: InkjetDistanceDamageDistanceRate
+    // 2: InkjetSplashAroundVelocityMin
+    // 3: InkjetSplashAroundVelocityMax
+    // 4: InkjetSplashAroundPaintRadius
+    SubSpecialSpecUpList: { Value: SkillParams; }[]
+}
+
+type spl__BulletSpMicroLaserBitParam = {
+    LaserParam: { LaserFrame : SkillParams; };
+}
+
+type spl__WeaponSpMultiMissileLockOnParam = {
+    TargetInCircleRadius: SkillParams;
+    // 0: TentaMissilesBurstPaintRadius
+    SubSpecialSpecUpList: { Value: SkillParams }[];
+}
+
+type spl__BulletSpShockSonarParam = {
+    WaveParam: {
+        MaxFrame: SkillParams;
+        MaxRadius: SkillParams;
+    }
+}
+
+type BulletBlastParam = {
+    // 0: ReefsliderDistanceDamageDistanceRate
+    // 1: ReefsliderPaintRadius
+    // 2: ReefsliderSplashAroundVelocityMin
+    // 3: ReefsliderSplashAroundVelocityMax
+    // 4: ReefsliderSplashAroundPaintRadius
+    SubSpecialSpecUpList: {Value: SkillParams;}[];
+}
+
+type spl__WeaponSpUltraShotParam = {
+    SpecialDurationFrame: SkillParams;
+}
+
+type spl__WeaponSpUltraStampParam = {
+    SpecialTotalFrame: SkillParams;
+}
 
 function loadWeaponParams(weaponName: string, version: string) {
     return loadJson<WeaponParams>(
@@ -101,4 +243,12 @@ export async function getWeapon(rowId: string, version: string = "310") {
     }
     const params = await getWeaponParams(info, version);
     return new Splat3Weapon(info, params, localization);
+}
+
+async function loadSpecialParams(version: string, subName: string) {
+    return loadJson<WeaponParams>(`${baseUrl}splat3/data/parameter/${version}/weapon/Weapon${subName.replace("_", "")}.game__GameParameterTable.json`);
+}
+
+export function loadSpecialWeaponInfo(specialName: string, version: string = "310") {
+    return loadSpecialParams(version, specialName);
 }

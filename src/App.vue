@@ -10,7 +10,7 @@ import Menu from '@/components/Menu.vue'
 
       </el-header>
       <el-container class="main-container">
-        <el-aside width="200px">
+        <el-aside width="70px">
           <Menu></Menu>
         </el-aside>
         <el-main>

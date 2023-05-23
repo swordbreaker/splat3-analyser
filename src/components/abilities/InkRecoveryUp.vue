@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { EffectData, getInkRecoveryUpSwimming, getInkRecoveryUpStanding } from "@/services/calculate";
-import StatsWithPlot from "../StatsWithPlot.vue";
+import EffectCard from "../EffectCard.vue";
 import { baseUrl } from "@/services/util";
 
 const swimmingData = ref<EffectData>();
@@ -51,12 +51,10 @@ function onApChanged(newAp: number) {
 
         <el-row :gutter="20">
             <el-col :md="24" :lg="12" v-if="swimmingData != null">
-                <StatsWithPlot title="Ink Recovery Frames - Swimming" :effect="swimmEffect" :ap="ap" :effect-data="swimmingData">
-                </StatsWithPlot>
+                <EffectCard title="Ink Recovery Frames - Swimming" :ap="ap" :effect-data="swimmingData"></EffectCard>
             </el-col>
             <el-col :md="24" :lg="12" v-if="standingData != null">
-                <StatsWithPlot title="Ink Recovery Frames - Standing" :effect="standEffect" :ap="ap" :effect-data="standingData">
-                </StatsWithPlot>
+                <EffectCard title="Ink Recovery Frames - Standing" :ap="ap" :effect-data="standingData"></EffectCard>
             </el-col>
             <slot />
         </el-row>

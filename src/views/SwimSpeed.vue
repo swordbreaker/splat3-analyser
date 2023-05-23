@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SwimmSpeed from '@/components/abilities/SwimmSpeed.vue';
+import SwimmSpeed from '@/components/abilities/SwimSpeed.vue';
 
 const props = defineProps({
     weapon: String,

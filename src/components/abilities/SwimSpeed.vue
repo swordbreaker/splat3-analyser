@@ -18,14 +18,14 @@ async function onWeaponChanged(weapon: Splat3Weapon) {
     effectData.value = await getSwimSpeedData(weapon);
     selectedWeapon.value = weapon;
 }
-
 </script>
+
 <template>
     <BaseAbility
         :weapon="props.weapon"
         :effect-data="effectData"
         :effect-default="1"
-        effect-name="swimmSpeed"
+        effect-name="swimSpeed"
         effect-display-name="Swimm Velocity"
         ability-img="SquidMove_Up.png"
         @weapon-changed="onWeaponChanged">

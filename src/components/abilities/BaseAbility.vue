@@ -12,7 +12,7 @@ const props = defineProps<{
     effectName: string,
     effectDisplayName: string,
     weapon: string | undefined;
-    effectData: EffectData | null,
+    effectData: EffectData | undefined,
     abilityImg: string
 }>();
 

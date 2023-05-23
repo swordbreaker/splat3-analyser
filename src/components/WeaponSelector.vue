@@ -1,21 +1,25 @@
 <script setup lang="ts">
+import { SubInfo } from "@/services/subs";
 import { Splat3Weapon, loadWeapons } from "@/services/weapons";
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 
 const emit = defineEmits<{
     (e: "change", weapon: Splat3Weapon): void;
 }>();
 
 const props = defineProps<{
-    selectedWeapon: Splat3Weapon | undefined,
+    selectedWeapon: Splat3Weapon | undefined;
 }>();
+
+const subInfo = ref<SubInfo>();
 
 watch(
     () => props.selectedWeapon,
-    (newVal, oldVal) => {
+    async (newVal, oldVal) => {
         if (newVal != null) {
             selectedWeaponName.value = newVal.mainWeaponName;
             selectedWeapon.value = newVal;
+            subInfo.value = await selectedWeapon.value.getSubWeaponInfo();
         }
     },
 );
@@ -56,16 +60,47 @@ onMounted(() => {
                 </template>
             </el-autocomplete>
         </div>
-        <div class="col">
-            <el-image class="main" :src="selectedWeapon?.imgPath" fit="contain" />
-            <el-image class="sub" :src="selectedWeapon?.subImgPath" fit="contain" />
-            <el-image class="sub" :src="selectedWeapon?.specialImgPath" fit="contain" />
-            <span>{{ selectedWeapon?.WeaponSpeedType }}</span>
+        <div v-if="selectedWeapon != null" class="col">
+            <el-descriptions class="weapon-description" title="" direction="vertical" :column="5" border>
+                <el-descriptions-item align="center" label="Main">
+                    <el-tooltip
+                        class="box-item"
+                        effect="dark"
+                        :content="selectedWeapon.mainWeaponName"
+                        placement="bottom">
+                        <el-image class="main" :src="selectedWeapon?.imgPath" fit="contain"> </el-image>
+                    </el-tooltip>
+                </el-descriptions-item>
+                <el-descriptions-item align="center" label="Sub">
+                    <el-tooltip
+                        class="box-item"
+                        effect="dark"
+                        :content="selectedWeapon.subWeaponName"
+                        placement="bottom">
+                        <el-image class="sub" :src="selectedWeapon.subImgPath" fit="contain"> </el-image>
+                    </el-tooltip>
+                </el-descriptions-item>
+                <el-descriptions-item align="center" label="Special">
+                    <el-tooltip
+                        class="box-item"
+                        effect="dark"
+                        :content="selectedWeapon.specialWeaponName"
+                        placement="bottom">
+                        <el-image class="sub" :src="selectedWeapon?.specialImgPath" fit="contain"> </el-image>
+                    </el-tooltip>
+                </el-descriptions-item>
+                <el-descriptions-item align="center" label="Weapon speed type">
+                    <span>{{ selectedWeapon?.WeaponSpeedType }}</span>
+                </el-descriptions-item>
+                <el-descriptions-item align="center" label="Sub Ink Save Lvl">
+                    <span>{{ subInfo?.SubInkSaveLv }}</span>
+                </el-descriptions-item>
+            </el-descriptions>
         </div>
     </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .row {
     display: flex;
     justify-content: center;
@@ -78,15 +113,22 @@ onMounted(() => {
     flex-direction: row;
 }
 
-.main{
+.main {
     height: 100px;
     margin: 5px;
     max-width: 150px;
 }
 
-.sub{
+.weapon-description {
+    margin-top: 20px;
+}
+
+.el-descriptions__cell {
+    text-align: center;
+}
+
+.sub {
     /* filter: invert(1); */
     height: 50px;
-
 }
 </style>

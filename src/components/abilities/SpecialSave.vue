@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineProps, ref } from "vue";
-import { getSwimSpeedData, EffectData } from "@/services/calculate";
+import { getSpecialSaveData, EffectData } from "@/services/calculate";
 import { Splat3Weapon, getWeapon } from "@/services/weapons";
 
 const props = defineProps({
@@ -15,7 +15,7 @@ if (props.weapon != null) {
 }
 
 async function onWeaponChanged(weapon: Splat3Weapon) {
-    effectData.value = await getSwimSpeedData(weapon);
+    effectData.value = await getSpecialSaveData();
     selectedWeapon.value = weapon;
 }
 
@@ -25,9 +25,9 @@ async function onWeaponChanged(weapon: Splat3Weapon) {
         :weapon="props.weapon"
         :effect-data="effectData"
         :effect-default="1"
-        effect-name="swimmSpeed"
-        effect-display-name="Swimm Velocity"
-        ability-img="SquidMove_Up.png"
+        effect-name="specialSave"
+        effect-display-name="Special Gauge Rate After Respawn"
+        ability-img="RespawnSpecialGauge_Save.png"
         @weapon-changed="onWeaponChanged">
     </BaseAbility>
 </template>
