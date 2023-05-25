@@ -22,7 +22,7 @@ const emit = defineEmits<{
 }>();
 
 const selectedWeapon = ref<Splat3Weapon | undefined>(undefined);
-const effect = ref(props.effectData?.getEffect(0)[0]);
+const effect = ref(props.effectData?.getEffect(0));
 const ap = ref(0);
 
 if (props.weapon != undefined && props.weapon != "") {
@@ -35,16 +35,16 @@ async function onWeaponChanged(weapon: Splat3Weapon) {
     emit("WeaponChanged", weapon);
 }
 
-watch(() => props.effectData, (newData: EffectData | null, _) => {
+watch(() => props.effectData, (newData: EffectData | undefined, _) => {
     if(newData != null){
-        effect.value = newData.getEffect(ap.value)[0];
+        effect.value = newData.getEffect(ap.value);
     }
 });
 
 function onApChanged(newAp: number) {
     ap.value = newAp;
     if(props.effectData != null){
-        effect.value = props.effectData.getEffect(ap.value)[0];
+        effect.value = props.effectData.getEffect(ap.value);
         emit("ApChanged", newAp, effect.value);
     }
 }

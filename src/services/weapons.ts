@@ -132,7 +132,7 @@ export type WeaponParams = {
     GameParameters: WeaponParamsGameParameters;
 };
 
-type InhaleParam = {
+export type InhaleParam = {
     RadiusMax: SkillParams
     RadiusMin: SkillParams
 }
@@ -156,13 +156,19 @@ type CloudParam = {
     RainyFrame: SkillParams;
 }
 
-type MoveParam = {
+export type MoveParam = {
     SpawnSpeedZSpecUp: SkillParams;
+    MarkingFrame: SkillParams;
+    MarkingFrameSubSpec: SkillParams;
+    MaxHP: SkillParams;
+    PeriodFirst: SkillParams;
+    PeriodSecond: SkillParams;
+    SensorRadius: SkillParams;
 }
 
 export type SkillParams = { High: number, Low: number, Mid: number}
 
-type BlastParam = {
+export type BlastParam = {
     // length: 5
     // 0: InkjetBurstPaintRadius
     // 1: InkjetDistanceDamageDistanceRate

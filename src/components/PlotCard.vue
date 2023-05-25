@@ -23,7 +23,7 @@ watch(
 );
 
 onMounted(() => {
-    effect.value = props.effectData.getEffect(props.ap)[0];
+    effect.value = props.effectData.getEffect(props.ap);
 
     plotData.push({
         x: props.effectData.aps,
@@ -53,6 +53,7 @@ onMounted(() => {
     const layout: Plotly.Layout = {
         xaxis: { title: "AP" },
         yaxis: { title: props.effectName },
+        showlegend: false,
     };
     Plotly.newPlot(plotName.value, plotData, layout, { responsive: true });
 });
@@ -88,13 +89,13 @@ function updatePlot() {
 
 watch(() => props.ap, (newValue, _) => {
     if (props.effectData != null && newValue != null) {
-        effect.value = props.effectData.getEffect(newValue)[0];
+        effect.value = props.effectData.getEffect(newValue);
         updatePlot();
     }
 });
 
 watch(() => props.effectData, (newData, _) => {
-    effect.value = newData.getEffect(props.ap)[0];
+    effect.value = newData.getEffect(props.ap);
     updatePlot();
 });
 </script>

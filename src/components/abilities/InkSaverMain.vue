@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { EffectData, MaxShotWithFullTankData, getInksaverMainData } from "@/services/calculate";
+import { EffectData } from "@/services/calculate";
 import { Splat3Weapon, getWeapon } from "@/services/weapons";
 import BaseAbility from "./BaseAbility.vue";
 import EffectCard from "../EffectCard.vue";
+import { MaxShotWithFullTankData, getInksaverMainData } from "@/services/abilities/inkSaverMain";
 
 const props = defineProps<{
     weapon: string | undefined;
@@ -27,7 +28,7 @@ async function onWeaponChanged(weapon: Splat3Weapon) {
     selectedWeapon.value = weapon;
 }
 
-function onApChanged(newAp: number, newEffectValue: number) {
+function onApChanged(newAp: number, _newEffectValue: number) {
     ap.value = newAp;
 }
 </script>

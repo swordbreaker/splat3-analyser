@@ -50,7 +50,9 @@ function subChanged(event: any) {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     gap: 10px;
+    margin: 5px;
 }
 
 .main [type="checkbox"] + img {

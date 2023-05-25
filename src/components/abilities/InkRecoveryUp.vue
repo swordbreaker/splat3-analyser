@@ -21,17 +21,17 @@ async function loadData() {
     swimmingData.value = await getInkRecoveryUpSwimming();
     standingData.value = await getInkRecoveryUpStanding();
 
-    swimmEffect.value = swimmingData.value.getEffect(0)[0];
-    standEffect.value = standingData.value.getEffect(0)[0];
+    swimmEffect.value = swimmingData.value.getEffect(0);
+    standEffect.value = standingData.value.getEffect(0);
 }
 
 function onApChanged(newAp: number) {
     ap.value = newAp;
     if (swimmingData.value != null) {
-        swimmEffect.value = swimmingData.value.getEffect(newAp)[0];
+        swimmEffect.value = swimmingData.value.getEffect(newAp);
     }
     if (standingData.value != null) {
-        standEffect.value = standingData.value.getEffect(newAp)[0];
+        standEffect.value = standingData.value.getEffect(newAp);
     }
 }
 </script>
@@ -56,7 +56,6 @@ function onApChanged(newAp: number) {
             <el-col :md="24" :lg="12" v-if="standingData != null">
                 <EffectCard title="Ink Recovery Frames - Standing" :ap="ap" :effect-data="standingData"></EffectCard>
             </el-col>
-            <slot />
         </el-row>
     </section>
 </template>

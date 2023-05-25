@@ -2,7 +2,7 @@
 import { defineProps, ref } from "vue";
 import { EffectData } from "@/services/calculate";
 import { Splat3Weapon, getWeapon } from "@/services/weapons";
-import { getSpecialUpData, type StatsData } from "@/services/abilities/specialUp";
+import { getSubPowerUpData, type StatsData } from "@/services/abilities/subPowerUp";
 import EffectCard from "../EffectCard.vue";
 
 const props = defineProps({
@@ -20,7 +20,7 @@ if (props.weapon != null) {
 }
 
 async function onWeaponChanged(weapon: Splat3Weapon) {
-    const statsData = await getSpecialUpData(weapon);
+    const statsData = await getSubPowerUpData(weapon);
     effectData.value = statsData[0].effectData;
     title.value = statsData[0].title;
     selectedWeapon.value = weapon;
@@ -36,9 +36,9 @@ function onApChanged(newAp: number, _newEffectValue: number) {
         :weapon="props.weapon"
         :effect-data="effectData"
         :effect-default="1"
-        effect-name="specialSpecUp"
+        effect-name="subPowerUp"
         :effect-display-name="title"
-        ability-img="SpecialSpec_Up.png"
+        ability-img="SubSpec_Up.png"
         @weapon-changed="onWeaponChanged"
         @ap-changed="onApChanged">
         <el-col :md="24" :lg="12" v-for="data in additionalStatsData">

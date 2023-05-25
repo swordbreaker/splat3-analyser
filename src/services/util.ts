@@ -3,4 +3,8 @@ export async function loadJson<T>(path: string) {
         .then((response) => response.json() as T);
 }
 
+export function framesToSeconds(frames: number) {
+    return frames / 60;
+}
+
 export const baseUrl = process.env.NODE_ENV == 'production' ? '/splat3-analyser/' : '/';

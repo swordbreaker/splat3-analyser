@@ -25,7 +25,12 @@ const abilities = [
     { name: "Special Charge Up", navigateTo: "specialIncreaseUp", img: `${baseUrl}splat3/images/skill/SpecialIncrease_Up.png`},
     { name: "Special Saver", navigateTo: "specialSave", img: `${baseUrl}splat3/images/skill/RespawnSpecialGauge_Save.png`},
     { name: "Special Power Up", navigateTo: "specialSpecUp", img: `${baseUrl}splat3/images/skill/SpecialSpec_Up.png`},
+    { name: "Quick Respawn", navigateTo: "quickRespawn", img: `${baseUrl}splat3/images/skill/RespawnTime_Save.png`},
+    { name: "Quick Super Jump", navigateTo: "quickSuperJump", img: `${baseUrl}splat3/images/skill/JumpTime_Save.png`},
+    { name: "Sub Power Up", navigateTo: "subPowerUp", img: `${baseUrl}splat3/images/skill/SubSpec_Up.png`},
 ]
+
+
 
 function navigate(name: string) {
     router.push({ name: name, params: route.params });

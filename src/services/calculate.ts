@@ -43,23 +43,9 @@ function get_effect(abilityVals: number[], ap: number) {
     const percentage = tmp / 100.0
     const result = low + (high - low) * lerpN(slope, percentage)
 
-    return [result, lerpN(slope, percentage)]
+    return result;
+    // return [result, lerpN(slope, percentage)]
 }
-
-async function calculate_WallJumpChargeFrame() {
-    const data = await loadJson(`${baseUrl}splat3/data/parameter/310/misc/SplPlayer.game__GameParameterTable.json`);
-    const c = data.GameParameters.spl__PlayerGearSkillParam_ActionSpecUp_Squid;
-    const a = get_effect([c.WallJumpChargeFrm_High, c.WallJumpChargeFrm_Mid, c.WallJumpChargeFrm_Low], 3);
-    console.log(a);
-}
-
-// MoveVel_Human
-// MoveVel_Human_Fast
-// MoveVel_Human_Slow
-
-// MoveVel_Stealth
-// MoveVel_Stealth_Fast
-// MoveVel_Stealth_Slow
 
 function getPostfix(category: 'Fast' | 'Normal' | 'Slow') {
     switch (category) {
@@ -72,16 +58,16 @@ function getPostfix(category: 'Fast' | 'Normal' | 'Slow') {
     }
 }
 
-export abstract class PlotData {
+export class PlotData {
     aps: number[]
     effect: number[]
-    private _effectFunc: (ap: number) => number[];
+    private _effectFunc: (ap: number) => number;
 
-    constructor(getEffectFunc: (ap: number) => number[]) {
+    constructor(getEffectFunc: (ap: number) => number) {
         this.aps = this.getUseableAps();
         this._effectFunc = getEffectFunc;
         this.effect = this.aps
-            .map(x => getEffectFunc(x)[0]);
+            .map(x => getEffectFunc(x));
     }
 
     getUseableAps() {
@@ -96,51 +82,21 @@ export abstract class PlotData {
     getEffect(ap: number) {
         return this._effectFunc(ap);
     }
+
+    map(mapFunc: (ap: number, oldEffects: number) => number) {
+        return new MappedPlotData(this._effectFunc, mapFunc);
+    }
+}
+
+export class MappedPlotData extends PlotData {
+    constructor(oldEffectFunc: (ap: number) => number, mapFunc: (ap: number, oldEffects: number) => number) {
+        super(ap => mapFunc(ap, oldEffectFunc(ap)))
+    }
 }
 
 export class EffectData extends PlotData {
     constructor(abilityVals: number[]) {
         super(ap => get_effect(abilityVals, ap));
-    }
-}
-
-export class MaxShotWithFullTankData extends PlotData {
-    constructor(inkSaviourData: PlotData, selectedWeapon: Splat3Weapon) {
-        super(ap =>
-            MaxShotWithFullTankData._getEffect(
-                ap,
-                inkSaviourData,
-                selectedWeapon.mainParams.GameParameters.WeaponParam));
-    }
-
-    private static _getEffect(ap: number, inkSaviourData: PlotData, weaponParam: WeaponParam | undefined) {
-        const effect = inkSaviourData.getEffect(ap);
-
-        if (weaponParam == undefined) {
-            return [0, effect[1]];
-        }
-
-
-        return [1 / (weaponParam.InkConsume * effect[0]), effect[1]];
-    }
-}
-
-export class MaxSubsWithFullTankData extends PlotData {
-    constructor(inkSaviourData: PlotData, subInfo: SubInfo) {
-        super(ap =>
-            MaxSubsWithFullTankData._getEffect(
-                ap,
-                inkSaviourData,
-                subInfo));
-    }
-
-    private static _getEffect(ap: number, inkSaviourData: PlotData, subInfo: SubInfo | undefined) {
-        const effect = inkSaviourData.getEffect(ap);
-        if (subInfo == undefined) {
-            return [0, effect[1]];
-        }
-
-        return [1 / (subInfo.InkConsume * effect[0]), effect[1]];
     }
 }
 
@@ -150,15 +106,6 @@ export async function getSwimSpeedData(weapon: Splat3Weapon) {
 
 export async function getRunSpeedData(weapon: Splat3Weapon) {
     return new EffectData(await getAbilityValsWithPostfix(weapon, "MoveVel_Human"));
-}
-
-export async function getInksaverMainData() {
-    return new EffectData(await getAbilityVals("ConsumeRt_Main"));
-}
-
-export async function getInksaverSubData(weapon: Splat3Weapon) {
-    const subInfo = await weapon.getSubWeaponInfo();
-    return new EffectData(await getAbilityVals(`ConsumeRt_Sub_Lv${subInfo.SubInkSaveLv}`));
 }
 
 export async function getAbilityValsWithPostfix(weapon: Splat3Weapon, name: string) {
@@ -180,6 +127,14 @@ export async function getSpecialChargeUpData() {
 
 export async function getSpecialSaveData() {
     return new EffectData(await getAbilityVals("SpecialGaugeRt_Restart"));
+}
+
+export async function getQuickRespawnKillCameraData() {
+    return new EffectData(await getAbilityVals("Dying_ChaseFrm"));
+}
+
+export async function getQuickRespawnYourCameraData() {
+    return new EffectData(await getAbilityVals("Dying_AroundFrm"));
 }
 
 export async function getAbilityVals(name: string) {

@@ -1,12 +1,17 @@
 import { loadJson, baseUrl } from "./util"
+import type { BlastParam, MoveParam, SkillParams } from "./weapons"
 
-type SubParams = {
+export type SubParams = {
     GameParameters: GameParameters,
 }
 
 type GameParameters ={
     SubWeaponSetting : SubWeaponSetting,
     WeaponParam: WeaponParam,
+    MoveParam?: MoveParam,
+    AreaParam?: AreaParam,
+    BlastParam? : BlastParam
+    spl__PlayerBeaconSubSpecUpParam?: spl__PlayerBeaconSubSpecUpParam;
 }
 
 type SubWeaponSetting = {
@@ -18,21 +23,33 @@ type WeaponParam = {
     InkRecoverStop: number
 }
 
+type AreaParam = {
+    Distance: SkillParams,
+    MarkingFrameSubSpec: SkillParams,
+    SensorRadius: SkillParams
+}
+
+type spl__PlayerBeaconSubSpecUpParam = {
+    SubSpecUpParam: SkillParams;
+}
+
 export class SubInfo{
-    SubInkSaveLv: number;
-    InkConsume: number;
-    InkRecoverStop: number
+    subInkSaveLv: number;
+    inkConsume: number;
+    inkRecoverStop: number;
+    params: SubParams;
 
     constructor(params: SubParams) {
-        this.SubInkSaveLv = params.GameParameters.SubWeaponSetting.SubInkSaveLv;
+        this.subInkSaveLv = params.GameParameters.SubWeaponSetting.SubInkSaveLv;
         if(params.GameParameters.SubWeaponSetting.SubInkSaveLv == null){
-            this.SubInkSaveLv = 2;
+            this.subInkSaveLv = 2;
         }
-        this.InkConsume = params.GameParameters.WeaponParam.InkConsume;
-        if(this.InkConsume == null){
-            this.InkConsume = 0.7;
+        this.inkConsume = params.GameParameters.WeaponParam.InkConsume;
+        if(this.inkConsume == null){
+            this.inkConsume = 0.7;
         }
-        this.InkRecoverStop = params.GameParameters.WeaponParam.InkRecoverStop;
+        this.inkRecoverStop = params.GameParameters.WeaponParam.InkRecoverStop;
+        this.params = params;
     }
 }
 

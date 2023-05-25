@@ -93,7 +93,7 @@ onMounted(() => {
                     <span>{{ selectedWeapon?.WeaponSpeedType }}</span>
                 </el-descriptions-item>
                 <el-descriptions-item align="center" label="Sub Ink Save Lvl">
-                    <span>{{ subInfo?.SubInkSaveLv }}</span>
+                    <span>{{ subInfo?.subInkSaveLv }}</span>
                 </el-descriptions-item>
             </el-descriptions>
         </div>

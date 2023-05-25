@@ -8,7 +8,7 @@ const props = defineProps<{
     effectData: PlotData}>();
 
 const effect = 
-    computed(() => props.effectData.getEffect(props.ap)[0]);
+    computed(() => props.effectData.getEffect(props.ap));
 
 </script>
 

@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { defineProps, ref } from "vue";
-import { EffectData, MaxSubsWithFullTankData, getInksaverSubData } from "@/services/calculate";
+import { EffectData } from "@/services/calculate";
 import { Splat3Weapon, getWeapon } from "@/services/weapons";
 import EffectCard from "../EffectCard.vue";
 import BaseAbility from "./BaseAbility.vue";
 import { SubInfo } from "@/services/subs";
+import { MaxSubsWithFullTankData, getInksaverSubData } from "@/services/abilities/inkSaverSub";
 
 const props = defineProps({
     weapon: String,

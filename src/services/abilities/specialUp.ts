@@ -1,5 +1,5 @@
-import type { SkillParams, Splat3Weapon, WeaponParams } from "./weapons";
-import { EffectData, type PlotData } from "./calculate";
+import type { SkillParams, Splat3Weapon, WeaponParams } from "../weapons";
+import { EffectData, type PlotData } from "../calculate";
 
 export type StatsData = {
     title: string;

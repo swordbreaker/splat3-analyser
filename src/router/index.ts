@@ -57,6 +57,24 @@ const router = createRouter({
             component: () => import("../views/SpecialSpecUp.vue"),
             props: true,
         },
+        {
+            path: "/quickRespawn/:weapon?",
+            name: "quickRespawn",
+            component: () => import("../views/QuickRespawn.vue"),
+            props: true,
+        },
+        {
+            path: "/quickSuperJump/:weapon?",
+            name: "quickSuperJump",
+            component: () => import("../views/QuickSuperJump.vue"),
+            props: true,
+        },
+        {
+            path: "/subPowerUp/:weapon?",
+            name: "subPowerUp",
+            component: () => import("../views/SubPowerUp.vue"),
+            props: true,
+        },
     ],
 });
 
