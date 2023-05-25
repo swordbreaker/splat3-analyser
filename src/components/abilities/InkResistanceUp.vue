@@ -3,13 +3,18 @@ import { defineProps, onMounted, ref } from "vue";
 import AbilitySelector from "../AbilitySelector.vue";
 import { baseUrl } from "@/services/util";
 import StatsGrid from "../StatsGrid.vue";
-import {
-    SuperJumpTotalTimeData,
-    getSuperJumpChargeFramesData,
-    getSuperJumpAirFramesData,
-} from "@/services/abilities/superJump";
 import type { EffectAndTitleData } from "@/models/baseAbilities";
-const abilityImg = "JumpTime_Save.png";
+import {
+    getArmorHpData,
+    getDamageLimitData,
+    getDamagePerFrameData,
+    getJumpVelocityData,
+    getMoveVelocityData,
+    getMoveVelocityShootingData,
+    getMoveVelocityShootingKData,
+} from "@/services/abilities/inkResistanceUp";
+
+const abilityImg = "OpInkEffect_Reduction.png";
 
 const props = defineProps({
     weapon: String,
@@ -19,10 +24,19 @@ const ap = ref(0);
 const effectData = ref<EffectAndTitleData[]>([]);
 
 onMounted(() => {
-    Promise.all([getSuperJumpChargeFramesData(), getSuperJumpAirFramesData()]).then((x) => {
-        effectData.value.push({
-            title: "total super jump time",
-            data: new SuperJumpTotalTimeData(x[0], x[1]),
+    const stats = [
+        getArmorHpData(),
+        getDamageLimitData(),
+        getDamagePerFrameData(),
+        getJumpVelocityData(),
+        getMoveVelocityData(),
+        getMoveVelocityShootingData(),
+        getMoveVelocityShootingKData(),
+    ];
+
+    Promise.all(stats).then((x) => {
+        x.forEach(x => {
+            effectData.value.push(x);
         });
     });
 });
@@ -43,6 +57,6 @@ function onApChanged(newAp: number) {
             </el-col>
         </el-row>
 
-        <StatsGrid :stats="effectData" :ap="ap"></StatsGrid>
+        <StatsGrid :stats="effectData" :ap="ap"> </StatsGrid>
     </section>
 </template>

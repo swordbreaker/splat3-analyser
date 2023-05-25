@@ -28,6 +28,7 @@ declare module '@vue/runtime-core' {
     ElStatistic: typeof import('element-plus/es')['ElStatistic']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     InkRecoveryUp: typeof import('./src/components/abilities/InkRecoveryUp.vue')['default']
+    InkResistanceUp: typeof import('./src/components/abilities/InkResistanceUp.vue')['default']
     InkSaverMain: typeof import('./src/components/abilities/InkSaverMain.vue')['default']
     InkSaverSub: typeof import('./src/components/abilities/InkSaverSub.vue')['default']
     Menu: typeof import('./src/components/Menu.vue')['default']

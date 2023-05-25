@@ -1,4 +1,3 @@
-import type { SubInfo } from "./subs"
 import { loadJson, baseUrl } from "./util"
 import { Splat3Weapon, type WeaponParam } from "./weapons"
 

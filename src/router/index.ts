@@ -75,6 +75,12 @@ const router = createRouter({
             component: () => import("../views/SubPowerUp.vue"),
             props: true,
         },
+        {
+            path: "/inkResistanceUp/:weapon?",
+            name: "inkResistanceUp",
+            component: () => import("../views/InkResistanceUp.vue"),
+            props: true,
+        },
     ],
 });
 

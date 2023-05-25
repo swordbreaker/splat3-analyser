@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { EffectData } from '@/services/calculate';
+import type { EffectAndTitleData } from '@/models/baseAbilities';
 
 const props = defineProps<{
-    stats: {title: string, data: EffectData}[],
+    stats: EffectAndTitleData[],
     ap: number,
 }>();
 
