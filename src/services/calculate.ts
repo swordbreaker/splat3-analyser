@@ -85,6 +85,10 @@ export class PlotData {
     map(mapFunc: (ap: number, oldEffects: number) => number) {
         return new MappedPlotData(this._effectFunc, mapFunc);
     }
+
+    mapSimple(mapFunc: (effect: number) => number) {
+        return new MappedPlotData(this._effectFunc, (_, oldEffect: number) => mapFunc(oldEffect));
+    }
 }
 
 export class MappedPlotData extends PlotData {

@@ -32,6 +32,7 @@ declare module '@vue/runtime-core' {
     InkResistanceUp: typeof import('./src/components/abilities/InkResistanceUp.vue')['default']
     InkSaverMain: typeof import('./src/components/abilities/InkSaverMain.vue')['default']
     InkSaverSub: typeof import('./src/components/abilities/InkSaverSub.vue')['default']
+    IntensifyAction: typeof import('./src/components/abilities/IntensifyAction.vue')['default']
     Menu: typeof import('./src/components/Menu.vue')['default']
     PlotCard: typeof import('./src/components/PlotCard.vue')['default']
     QuickRespawn: typeof import('./src/components/abilities/QuickRespawn.vue')['default']

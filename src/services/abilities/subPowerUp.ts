@@ -1,17 +1,12 @@
 import type { SkillParams, Splat3Weapon } from "../weapons";
 import type { SubParams } from "../subs";
 import { EffectData, PlotData } from "../calculate";
-import { baseUrl, loadJson } from "../util";
+import { loadPlayerData } from "../player";
 
 export type StatsData = {
     title: string;
     effectData: PlotData;
 };
-
-async function loadPlayerData() : Promise<any> {
-    const data = await loadJson(`${baseUrl}splat3/data/parameter/310/misc/SplPlayer.game__GameParameterTable.json`);
-    return data;
-}
 
 function calculateAdditonalBeaconAp(skillParams: SkillParams, ap: number){
     const v7 =

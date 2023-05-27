@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { SubInfo } from "@/services/subs";
 import { Splat3Weapon, loadWeapons } from "@/services/weapons";
-import { computed, onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 const emit = defineEmits<{
     (e: "change", weapon: Splat3Weapon): void;
@@ -37,11 +37,14 @@ const querySearch = (queryString: string, cb: any) => {
 function handleSelect(item: Splat3Weapon) {
     selectedWeaponName.value = item.mainWeaponName;
     selectedWeapon.value = item;
+    selectedWeapon.value.getSpecialWeaponInfo().then(x => console.log(x));
     emit("change", item);
 }
 
 onMounted(() => {
-    loadWeapons().then((ws) => (weapons.value = ws.filter((x) => x.mainInfo.Type == "Versus")));
+    loadWeapons().then((ws) => {
+        weapons.value = ws.filter((x) => x.mainInfo.Type == "Versus");
+    });
 });
 </script>
 <template>
