@@ -15,7 +15,6 @@ const ap = ref(0);
 const shotsWithFullTankData = ref<MaxShotWithFullTankData>();
 const selectedWeapon = ref<Splat3Weapon>();
 
-
 if (props.weapon != null && props.weapon != "") {
     getWeapon(props.weapon).then((w) => onWeaponChanged(w));
 }

@@ -10,6 +10,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AbilitySelector: typeof import('./src/components/AbilitySelector.vue')['default']
+    AbilityWithWeaponSelection: typeof import('./src/components/abilities/AbilityWithWeaponSelection.vue')['default']
     BaseAbility: typeof import('./src/components/abilities/BaseAbility.vue')['default']
     EffectCard: typeof import('./src/components/EffectCard.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']

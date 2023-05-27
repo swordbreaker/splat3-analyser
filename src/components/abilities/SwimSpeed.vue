@@ -11,7 +11,9 @@ const effectData = ref<EffectData>();
 const selectedWeapon = ref<Splat3Weapon | null>(null);
 
 if (props.weapon != null && props.weapon != "") {
-    getWeapon(props.weapon).then((w) => onWeaponChanged(w));
+    getWeapon(props.weapon)
+        .then(getSwimSpeedData)
+        .then(data => {effectData.value = data; });
 }
 
 async function onWeaponChanged(weapon: Splat3Weapon) {
