@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { defineProps, onMounted, ref } from "vue";
-import { EffectData, getQuickRespawnKillCameraData, getQuickRespawnYourCameraData } from "@/services/calculate";
-import { QuickRespawnSecondsData } from "@/services/abilities/quickRespawn";
+import { onMounted, ref } from "vue";
+import { EffectData,  } from "@/services/calculate";
+import { QuickRespawnSecondsData, getQuickRespawnKillCameraData, getQuickRespawnYourCameraData } from "@/services/abilities/quickRespawn";
 import StatsGrid from "../StatsGrid.vue";
 import AbilitySelection from "./headers/AbilitySelection.vue";
 

@@ -17,7 +17,6 @@ declare module '@vue/runtime-core' {
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElButtonGroup: typeof import('element-plus/es')['ElButtonGroup']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElDescriptions: typeof import('element-plus/es')['ElDescriptions']
@@ -56,7 +55,6 @@ declare module '@vue/runtime-core' {
     SubPowerUp: typeof import('./src/components/abilities/SubPowerUp.vue')['default']
     SubResistanceUp: typeof import('./src/components/abilities/SubResistanceUp.vue')['default']
     SwimSpeed: typeof import('./src/components/abilities/SwimSpeed.vue')['default']
-    Up: typeof import('./src/components/abilities/SubResistance Up.vue')['default']
     WeaponSelector: typeof import('./src/components/WeaponSelector.vue')['default']
   }
 }
