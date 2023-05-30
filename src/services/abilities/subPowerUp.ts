@@ -1,12 +1,9 @@
-import type { SkillParams, Splat3Weapon } from "../weapons";
+import type { SkillParams } from "@/models/weapon";
 import type { SubParams } from "../subs";
 import { EffectData, PlotData } from "../calculate";
 import { loadPlayerData } from "../player";
-
-export type StatsData = {
-    title: string;
-    effectData: PlotData;
-};
+import type { EffectAndTitleData } from "@/models/baseAbilities";
+import type { Splat3Weapon } from "../weapons";
 
 function calculateAdditonalBeaconAp(skillParams: SkillParams, ap: number){
     const v7 =
@@ -17,10 +14,10 @@ function calculateAdditonalBeaconAp(skillParams: SkillParams, ap: number){
     return v9;
 }
 
-export async function getSubPowerUpData(weapon: Splat3Weapon): Promise<StatsData[]> {
+export async function getSubPowerUpData(weapon: Splat3Weapon): Promise<EffectAndTitleData[]> {
     const subInfo = await weapon.getSubWeaponInfo();
     const params = subInfo.params;
-    switch (weapon.SubWeaponId) {
+    switch (weapon.SubWeaponId.replace("_", "")) {
         case "Beacon":
             return await getBeaconData(params);
         case "LineMarker":
@@ -52,7 +49,7 @@ export async function getSubPowerUpData(weapon: Splat3Weapon): Promise<StatsData
     }
 }
 
-async function getBeaconData(params: SubParams): Promise<StatsData[]> {
+async function getBeaconData(params: SubParams): Promise<EffectAndTitleData[]> {
     const playerData = await loadPlayerData();
     const subSpecParam = playerData.GameParameters.spl__PlayerBeaconSubSpecUpParam!.SubSpecUpParam;
     const vals = {
@@ -64,11 +61,11 @@ async function getBeaconData(params: SubParams): Promise<StatsData[]> {
     console.log(params.GameParameters.MoveParam!.SpawnSpeedZSpecUp);
     return [{
         title: "Additional Quick Superjump AP",
-        effectData: additionalApData
+        data: additionalApData
     }];
 }
 
-function getCurlingData(params: SubParams): StatsData[] {
+function getCurlingData(params: SubParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Throw Speed",
@@ -77,7 +74,7 @@ function getCurlingData(params: SubParams): StatsData[] {
     ]);
 }
 
-function getFizzyData(params: SubParams): StatsData[] {
+function getFizzyData(params: SubParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Throw Speed",
@@ -86,7 +83,7 @@ function getFizzyData(params: SubParams): StatsData[] {
     ]);
 }
 
-function getBurstData(params: SubParams): StatsData[] {
+function getBurstData(params: SubParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Throw Speed",
@@ -95,7 +92,7 @@ function getBurstData(params: SubParams): StatsData[] {
     ]);
 }
 
-function getAutoData(params: SubParams): StatsData[] {
+function getAutoData(params: SubParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Throw Speed",
@@ -104,7 +101,7 @@ function getAutoData(params: SubParams): StatsData[] {
     ]);
 }
 
-function getSplatData(params: SubParams): StatsData[] {
+function getSplatData(params: SubParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Throw Speed",
@@ -113,7 +110,7 @@ function getSplatData(params: SubParams): StatsData[] {
     ]);
 }
 
-function getSuctionData(params: SubParams): StatsData[] {
+function getSuctionData(params: SubParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Throw Speed",
@@ -122,7 +119,7 @@ function getSuctionData(params: SubParams): StatsData[] {
     ]);
 }
 
-function getTorpedoData(params: SubParams): StatsData[] {
+function getTorpedoData(params: SubParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Throw Speed",
@@ -131,7 +128,7 @@ function getTorpedoData(params: SubParams): StatsData[] {
     ]);
 }
 
-function getAngkleData(params: SubParams): StatsData[] {
+function getAngkleData(params: SubParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Marking Duration",
@@ -144,7 +141,7 @@ function getAngkleData(params: SubParams): StatsData[] {
     ]);
 }
 
-function getPointData(params: SubParams): StatsData[] {
+function getPointData(params: SubParams): EffectAndTitleData[] {
     console.log(params.GameParameters.MoveParam!.MarkingFrameSubSpec);
     return toEffectData([
         {
@@ -158,7 +155,7 @@ function getPointData(params: SubParams): StatsData[] {
     ]);
 }
 
-function getPoisonData(params: SubParams): StatsData[] {
+function getPoisonData(params: SubParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Throw Speed",
@@ -167,7 +164,7 @@ function getPoisonData(params: SubParams): StatsData[] {
     ]);
 }
 
-function getSchieldData(params: SubParams): StatsData[] {
+function getSchieldData(params: SubParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Maximum HP",
@@ -176,7 +173,7 @@ function getSchieldData(params: SubParams): StatsData[] {
     ]);
 }
 
-function getSprinklerData(params: SubParams): StatsData[] {
+function getSprinklerData(params: SubParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Duration First Phase",
@@ -189,7 +186,7 @@ function getSprinklerData(params: SubParams): StatsData[] {
     ]);
 }
 
-function getTrapData(params: SubParams): StatsData[] {
+function getTrapData(params: SubParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Detection Radius",
@@ -210,8 +207,8 @@ function getTrapData(params: SubParams): StatsData[] {
     ]);
 }
 
-function toEffectData(items: { title: string; params: SkillParams }[]): StatsData[] {
-    return items.map((x) => ({ title: x.title, effectData: new EffectData(toAbilityVals(x.params)) }));
+function toEffectData(items: { title: string; params: SkillParams }[]): EffectAndTitleData[] {
+    return items.map((x) => ({ title: x.title, data: new EffectData(toAbilityVals(x.params)) }));
 }
 
 function toAbilityVals(skillParams: SkillParams) {

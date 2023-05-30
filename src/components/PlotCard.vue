@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
 import { type PlotData } from "@/services/calculate";
-import Plotly from "plotly.js-dist-min";
+import Plotly, { type PlotlyHTMLElement } from "plotly.js-dist-min";
 
 const props = defineProps<{
     effectData: PlotData
@@ -10,9 +10,22 @@ const props = defineProps<{
 }>();
 
 const effect = ref(0);
+const useLog = ref(false);
+
 const plotData = [] as Plotly.Data[];
 const guid = crypto.randomUUID();
 const plotName = computed(() => "gd" + guid);
+const defaultLayout: Partial<Plotly.Layout> = {
+        xaxis: { title: "AP" },
+        yaxis: { title: props.effectName },
+        showlegend: false,
+    };
+
+watch(useLog,
+    (newVal, _) => {
+        updatePlot();
+    },
+);
 
 watch(
     () => props.effectData,
@@ -29,11 +42,14 @@ onMounted(() => {
         x: props.effectData.aps,
         y: props.effectData.effect,
         mode: "lines+markers",
+        hovertemplate: `AP: %{x}, Effect: %{y}`,
+        name: "",
     } as Plotly.ScatterData);
     plotData.push({
         x: [props.ap],
         y: [effect.value],
         mode: "markers",
+        hoverinfo: "none",
         marker: {
             size: 10,
             color: "red",
@@ -43,48 +59,24 @@ onMounted(() => {
             },
         },
     });
-    // plotData.push({
-    //     x: props.effectData?.aps,
-    //     y: props.effectData?.effect,
-    //     mode: "lines+markers",
-    // });
-
-    // @ts-ignore
-    const layout: Plotly.Layout = {
-        xaxis: { title: "AP" },
-        yaxis: { title: props.effectName },
-        showlegend: false,
-    };
-    Plotly.newPlot(plotName.value, plotData, layout, { responsive: true });
+    Plotly.newPlot(plotName.value, plotData, defaultLayout, { responsive: true, });
 });
 
 function updatePlot() {
-    // @ts-ignore
-    plotData[0]["x"] = props.effectData?.aps;
-    // @ts-ignore
-    plotData[0]["y"] = props.effectData?.effect;
+    const scatterData = plotData[0] as Plotly.ScatterData;
+    const markerData = plotData[1] as Plotly.PlotData;
 
-    // @ts-ignore
-    plotData[1]["x"] = [props.ap];
-    // @ts-ignore
-    plotData[1]["y"] = [effect.value];
+    scatterData["x"] = props.effectData?.aps;
+    scatterData["y"] = props.effectData?.effect;
 
-    // if (props.effectData != null) {
-    //     const a: number[] = [];
-    //     const aps = [];
-    //     const effect = props.effectData.effect;
-    //     for (let i = 1; i < effect.length - 1; i++) {
-    //         a[i - 1] = effect[i] - effect[i - 1];
-    //         aps[i] = props.effectData.aps[i];
-    //     }
+    markerData["x"] = [props.ap];
+    markerData["y"] = [effect.value];
 
-    //     // @ts-ignore
-    //     plotData[2]["x"] = aps;
-    //     // @ts-ignore
-    //     plotData[2]["y"] = a;
-    // }
+    let layout = defaultLayout;
+    layout['yaxis']!["type"] = useLog.value ? "log" : "linear";
 
     Plotly.redraw(plotName.value);
+    Plotly.relayout(plotName.value, layout);
 }
 
 watch(() => props.ap, (newValue, _) => {
@@ -102,4 +94,5 @@ watch(() => props.effectData, (newData, _) => {
 
 <template>
     <div :id="plotName"></div>
+    <el-switch v-model="useLog" active-text="Log" inactive-text="Linear"></el-switch>
 </template>

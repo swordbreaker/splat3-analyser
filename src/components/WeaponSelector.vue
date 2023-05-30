@@ -13,9 +13,16 @@ const props = defineProps<{
 
 const subInfo = ref<SubInfo>();
 
+// onMounted(() => {
+//     console.log(props.selectedWeapon);
+//     if(props.selectedWeapon != undefined){
+//         handleSelect(props.selectedWeapon);
+//     }
+// })
+
 watch(
     () => props.selectedWeapon,
-    async (newVal, oldVal) => {
+    async (newVal, _) => {
         if (newVal != null) {
             selectedWeaponName.value = newVal.mainWeaponName;
             selectedWeapon.value = newVal;
@@ -37,7 +44,6 @@ const querySearch = (queryString: string, cb: any) => {
 function handleSelect(item: Splat3Weapon) {
     selectedWeaponName.value = item.mainWeaponName;
     selectedWeapon.value = item;
-    selectedWeapon.value.getSpecialWeaponInfo().then(x => console.log(x));
     emit("change", item);
 }
 
@@ -59,7 +65,10 @@ onMounted(() => {
                 placeholder="Please Input"
                 @select="handleSelect">
                 <template #default="{ item }">
-                    <span class="value">{{ item.mainWeaponName }}</span>
+                    <div class="autocomplete-content">
+                        <el-image class="autocomplete-img" :src="item.imgPath" fit="contain"> </el-image>
+                        <span class="value">{{ item.mainWeaponName }}</span>
+                    </div>
                 </template>
             </el-autocomplete>
         </div>
@@ -131,7 +140,17 @@ onMounted(() => {
 }
 
 .sub {
-    /* filter: invert(1); */
     height: 50px;
+}
+
+.autocomplete-content{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+}
+
+.autocomplete-img {
+    width: 50px;
 }
 </style>

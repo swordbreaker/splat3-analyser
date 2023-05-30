@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { defineProps, onMounted, ref } from "vue";
 import { EffectData, getQuickRespawnKillCameraData, getQuickRespawnYourCameraData } from "@/services/calculate";
-import AbilitySelector from "../AbilitySelector.vue";
-import { baseUrl } from "@/services/util";
 import { QuickRespawnSecondsData } from "@/services/abilities/quickRespawn";
 import StatsGrid from "../StatsGrid.vue";
+import AbilitySelection from "./headers/AbilitySelection.vue";
+
 const abilityImg = "RespawnTime_Save.png";
 
 const props = defineProps({
@@ -44,15 +44,10 @@ function onApChanged(newAp: number) {
 
 <template>
     <section>
-        <el-row>
-            <el-col :md="24" :lg="24">
-                <StatsCard title="AP" :value="ap" :bigger-is-better="true"></StatsCard>
-                <AbilitySelector
-                    :image="`${baseUrl}splat3/images/skill/${abilityImg}`"
-                    @changed="onApChanged"></AbilitySelector>
-            </el-col>
-        </el-row>
-
+        <AbilitySelection
+            :ability-img="abilityImg"
+            @ap-changed="onApChanged">
+        </AbilitySelection>
         <StatsGrid :stats="effectData" :ap="ap"> </StatsGrid>
     </section>
 </template>

@@ -1,53 +1,34 @@
 <script setup lang="ts">
-import { defineProps, ref } from "vue";
-import { EffectData } from "@/services/calculate";
-import { Splat3Weapon, getWeapon } from "@/services/weapons";
-import EffectCard from "../EffectCard.vue";
-import BaseAbility from "./BaseAbility.vue";
-import { SubInfo } from "@/services/subs";
-import { MaxSubsWithFullTankData, getInksaverSubData } from "@/services/abilities/inkSaverSub";
+import { ref } from "vue";
+import type { EffectAndTitleData } from "@/models/baseAbilities";
+import type { Splat3Weapon } from "@/services/weapons";
+import { getAll } from "@/services/abilities/inkSaverSub";
+import AbilityWithWeaponSelection from "./headers/AbilityWithWeaponSelection.vue";
+import StatsGrid from "../StatsGrid.vue";
 
 const props = defineProps({
     weapon: String,
 });
 
-const effectData = ref<EffectData>();
-const subInfo = ref<SubInfo>();
+const effectData = ref<EffectAndTitleData[]>([]);
 const ap = ref(0);
-const subsWithFullTankData = ref<MaxSubsWithFullTankData>();
-const selectedWeapon = ref<Splat3Weapon>();
-
-if (props.weapon != null && props.weapon != "") {
-    getWeapon(props.weapon).then((w) => onWeaponChanged(w));
-}
 
 async function onWeaponChanged(weapon: Splat3Weapon) {
-    effectData.value = await getInksaverSubData(weapon);
-    subInfo.value = await weapon.getSubWeaponInfo();
-    subsWithFullTankData.value = new MaxSubsWithFullTankData(effectData.value, subInfo.value);
-    selectedWeapon.value = weapon;
+    getAll(weapon).then((x) => (effectData.value = x));
 }
 
-function onApChanged(newAp: number, _newEffectValue: number){
+function onApChanged(newAp: number) {
     ap.value = newAp;
 }
 </script>
 
 <template>
-    <BaseAbility
+    <AbilityWithWeaponSelection
         :weapon="props.weapon"
-        :effect-data="effectData"
         effect-name="inkSaverSub"
-        effect-display-name="Consumption Rate Sub"
         ability-img="SubInk_Save.png"
-        @weapon-changed="onWeaponChanged"
-        @ap-changed="onApChanged">
-        <el-col :md="24" :lg="12" v-if="subsWithFullTankData != null">
-            <EffectCard
-                title="Number of subs with full Tank"
-                :ap="ap"
-                :effect-data="subsWithFullTankData">
-            </EffectCard>
-        </el-col>
-    </BaseAbility>
+        @on-ap-changed="onApChanged"
+        @on-weapon-changed="onWeaponChanged">
+    </AbilityWithWeaponSelection>
+    <StatsGrid :ap="ap" :stats="effectData"></StatsGrid>
 </template>

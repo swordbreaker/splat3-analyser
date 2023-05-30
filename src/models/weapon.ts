@@ -1,5 +1,5 @@
 export type WeaponInfoMain = {
-    Type: "Versus" | "Coop" | "Mission" | "Rival";
+    Type: WeaponType;
     Id: number;
     IsCoopRare: boolean;
     __RowId: string;
@@ -12,8 +12,41 @@ export type WeaponInfoMain = {
     DefaultHitEffectorType: EffectorType;
 };
 
+export type WeaponInfoSub = {
+    DefaultDamageRateInfoRow: string;
+    DefaultHitEffectorType: string;
+    ExtraDamageRateInfoRowSet: ExtraDamageRateInfo[];
+    ExtraHitEffectorInfoSet: ExtraHitEffectorInfo[];
+    Id: number;
+    Label: string;
+    LockerGoodsSubWeaponInfo: string;
+    NpcActor: string;
+    SpecActor: string;
+    Type: WeaponType;
+    __RowId: string;
+};
+
+export type WeaponType = "Versus" | "Coop" | "Mission" | "Rival";
+
+type ExtraDamageRateInfo = {
+    DamageRateInfoRow: string;
+    ExtraInfo: string;
+};
+
+type ExtraHitEffectorInfo = {
+    ExtraInfo: string;
+    HitEffectorType: string;
+};
+
+// {
+//     "DamageRateInfoRow": "Bomb_CurlingBullet",
+//     "ExtraInfo": "Normal"
+//   },
+
 export type WeaponParam = {
-    InkConsume: number;
+    InkConsume?: number;
+    InkConsumeFullCharge?: number;
+    InkConsumeMinCharge?: number;
 
     // WeaponSpJetpack
     SpecialTotalFrame: SkillParams;
@@ -28,20 +61,20 @@ export type WeaponParam = {
 };
 
 export type EffectorType =
-    'Blaster' |
-    'Roller' |
-    'Charger_FullCharge' |
-    'Charger' |
-    'Maneuver' |
-    'Saber' |
-    'Shelter' |
-    'Shooter' |
-    'Default' |
-    'Slosher_Bathtub' |
-    'Slosher_BearLeader' |
-    'Slosher' |
-    'Slosher_LauncherLeader' |
-    'Spinner';
+    | "Blaster"
+    | "Roller"
+    | "Charger_FullCharge"
+    | "Charger"
+    | "Maneuver"
+    | "Saber"
+    | "Shelter"
+    | "Shooter"
+    | "Default"
+    | "Slosher_Bathtub"
+    | "Slosher_BearLeader"
+    | "Slosher"
+    | "Slosher_LauncherLeader"
+    | "Spinner";
 
 export type WeaponSpeedType = "Fast" | null | "Slow";
 
@@ -81,7 +114,7 @@ export type WeaponParamsGameParameters = {
     spl__WeaponSpMultiMissileLockOnParam?: spl__WeaponSpMultiMissileLockOnParam;
 
     // WeaponSpShockSonar
-    spl__BulletSpShockSonarParam? : spl__BulletSpShockSonarParam;
+    spl__BulletSpShockSonarParam?: spl__BulletSpShockSonarParam;
 
     // WeaponSpSkewer
     BulletBlastParam?: BulletBlastParam;
@@ -94,7 +127,13 @@ export type WeaponParamsGameParameters = {
     // WeaponSpUltraStamp
     spl__WeaponSpUltraStampParam?: spl__WeaponSpUltraStampParam;
 
-    IceParam?: { BlastParam: BlastParam;};
+    IceParam?: { BlastParam: BlastParam };
+
+    WeaponSwingParam?: WeaponSwingParam;
+    WeaponVerticalSwingParam?: WeaponVerticalSwingParam;
+    WeaponWideSwingParam?: WeaponWideSwingParam;
+    spl__WeaponShelterCanopyParam?: spl__WeaponShelterCanopyParam;
+    spl__WeaponShelterShotgunParam?: spl__WeaponShelterShotgunParam;
 };
 
 export type WeaponParams = {
@@ -102,28 +141,28 @@ export type WeaponParams = {
 };
 
 export type InhaleParam = {
-    RadiusMax: SkillParams
-    RadiusMin: SkillParams
-}
+    RadiusMax: SkillParams;
+    RadiusMin: SkillParams;
+};
 
 type WeaponSpChariotParam = {
-    SpecialTotalFrame: SkillParams
-}
+    SpecialTotalFrame: SkillParams;
+};
 
 type FridgeParam = {
-    PowerUpFrame: SkillParams
-}
+    PowerUpFrame: SkillParams;
+};
 
 type spl__BulletSpGreatBarrierMoveParam = {
     BarrierParam: {
-        MaxFieldHP: SkillParams,
-        MaxHP: SkillParams,
+        MaxFieldHP: SkillParams;
+        MaxHP: SkillParams;
     };
-}
+};
 
 type CloudParam = {
     RainyFrame: SkillParams;
-}
+};
 
 export type MoveParam = {
     SpawnSpeedZSpecUp: SkillParams;
@@ -133,9 +172,12 @@ export type MoveParam = {
     PeriodFirst: SkillParams;
     PeriodSecond: SkillParams;
     SensorRadius: SkillParams;
-}
+    BlastParamArray?: BlastParamArrayItem[],
+    DirectDamage?: number,
+    DamageSpanFrame?: number,
+};
 
-export type SkillParams = { High: number, Low: number, Mid: number}
+export type SkillParams = { High: number; Low: number; Mid: number };
 
 export type BlastParam = {
     // length: 5
@@ -144,25 +186,45 @@ export type BlastParam = {
     // 2: InkjetSplashAroundVelocityMin
     // 3: InkjetSplashAroundVelocityMax
     // 4: InkjetSplashAroundPaintRadius
-    SubSpecialSpecUpList: { Value: SkillParams; }[]
+    SubSpecialSpecUpList: { Value: SkillParams }[];
+    DistanceDamage?: DistanceDamage, 
+    SplashBlastParam?: {DistanceDamage: DistanceDamage},
+};
+
+type BlastParamArrayItem = {
+    CrossPaintRadius: number,
+    DistanceDamage: DistanceDamage,
+    KnockBackParam: { Accel: number, Bias: number, Distance: number},
+    PaintRadius: number,
+    SplashAroundParam: {
+        Num: number,
+        OffsetY: number,
+        PaintRadius: number,
+        PitchMax: number,
+        PitchMin: number,
+        VelocityMax: number,
+        VelocityMin: number,
+    }
 }
 
+export type DistanceDamage = { Damage: number, Distance: number }[];
+
 type spl__BulletSpMicroLaserBitParam = {
-    LaserParam: { LaserFrame : SkillParams; };
-}
+    LaserParam: { LaserFrame: SkillParams };
+};
 
 type spl__WeaponSpMultiMissileLockOnParam = {
     TargetInCircleRadius: SkillParams;
     // 0: TentaMissilesBurstPaintRadius
     SubSpecialSpecUpList: { Value: SkillParams }[];
-}
+};
 
 type spl__BulletSpShockSonarParam = {
     WaveParam: {
         MaxFrame: SkillParams;
         MaxRadius: SkillParams;
-    }
-}
+    };
+};
 
 type BulletBlastParam = {
     // 0: ReefsliderDistanceDamageDistanceRate
@@ -170,13 +232,75 @@ type BulletBlastParam = {
     // 2: ReefsliderSplashAroundVelocityMin
     // 3: ReefsliderSplashAroundVelocityMax
     // 4: ReefsliderSplashAroundPaintRadius
-    SubSpecialSpecUpList: {Value: SkillParams;}[];
-}
+    SubSpecialSpecUpList: { Value: SkillParams }[];
+};
 
 type spl__WeaponSpUltraShotParam = {
     SpecialDurationFrame: SkillParams;
-}
+};
 
 type spl__WeaponSpUltraStampParam = {
     SpecialTotalFrame: SkillParams;
-}
+};
+
+type WeaponSwingParam = WeaponVerticalSwingParam & {
+    GuideParam: { Frame: number; WidthScale: number };
+};
+
+type WeaponVerticalSwingParam = {
+    InkConsume: number;
+    InkRecoverStop: number;
+    SwingFrame: number;
+    SwingMoveSpeed: number;
+};
+
+type WeaponWideSwingParam = WeaponSwingParam;
+
+type WideSwingUnitGroupParam = {
+    DamageParam: any;
+    SplashNearestParam: any;
+    Unit: any;
+};
+
+type spl__WeaponShelterCanopyParam = {
+    CanopyChargeFrame: number;
+    CanopyDirXZ_RotDeg_H: number;
+    CanopyDirXZ_RotDeg_L: number;
+    CanopyNakedFrame: number;
+    CanopyOpenEndOffset: number;
+    anopyOpenFrame: number;
+    CanopyOpenStartOffset: number;
+    CanopyShotFrame: number;
+    InkConsumeUmbrella: number;
+};
+
+type spl__WeaponShelterShotgunParam = {
+    InkConsume: number;
+    InkRecoverStop: number;
+    InkRecoverStopCharge: number;
+    JumpGndCharge: number;
+    MoveSpeed: number;
+    MoveSpeedCharge: number;
+    PostDelayFrame_Main: number;
+    PostDelayFrame_MoveLmt: number;
+    PostNoShotReqFrame: number;
+    PreDelayFrame_HumanMain: number;
+    PreDelayFrame_SquidMain: number;
+    RepeatFrame: number;
+};
+
+export type SubName = 
+    "Beacon" |
+    "BombCurling" |
+    "BombFizzy" |
+    "BombQuick" |
+    "BombRobot" |
+    "BombSplash" |
+    "BombSuction" |
+    "BombTorpedo" |
+    "LineMarker" |
+    "PointSensor" |
+    "PoisonMist" |
+    "Shield" |
+    "Sprinkler" |
+    "Trap"

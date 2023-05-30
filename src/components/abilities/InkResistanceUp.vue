@@ -1,18 +1,9 @@
 <script setup lang="ts">
 import { defineProps, onMounted, ref } from "vue";
-import AbilitySelector from "../AbilitySelector.vue";
-import { baseUrl } from "@/services/util";
 import StatsGrid from "../StatsGrid.vue";
 import type { EffectAndTitleData } from "@/models/baseAbilities";
-import {
-    getArmorHpData,
-    getDamageLimitData,
-    getDamagePerFrameData,
-    getJumpVelocityData,
-    getMoveVelocityData,
-    getMoveVelocityShootingData,
-    getMoveVelocityShootingKData,
-} from "@/services/abilities/inkResistanceUp";
+import { getAll } from "@/services/abilities/inkResistanceUp";
+import AbilitySelection from "./headers/AbilitySelection.vue";
 
 const abilityImg = "OpInkEffect_Reduction.png";
 
@@ -24,21 +15,7 @@ const ap = ref(0);
 const effectData = ref<EffectAndTitleData[]>([]);
 
 onMounted(() => {
-    const stats = [
-        getArmorHpData(),
-        getDamageLimitData(),
-        getDamagePerFrameData(),
-        getJumpVelocityData(),
-        getMoveVelocityData(),
-        getMoveVelocityShootingData(),
-        getMoveVelocityShootingKData(),
-    ];
-
-    Promise.all(stats).then((x) => {
-        x.forEach(x => {
-            effectData.value.push(x);
-        });
-    });
+    getAll().then((x) => (effectData.value = x));
 });
 
 function onApChanged(newAp: number) {
@@ -48,15 +25,7 @@ function onApChanged(newAp: number) {
 
 <template>
     <section>
-        <el-row>
-            <el-col :md="24" :lg="24">
-                <StatsCard title="AP" :value="ap" :bigger-is-better="true"></StatsCard>
-                <AbilitySelector
-                    :image="`${baseUrl}splat3/images/skill/${abilityImg}`"
-                    @changed="onApChanged"></AbilitySelector>
-            </el-col>
-        </el-row>
-
-        <StatsGrid :stats="effectData" :ap="ap"> </StatsGrid>
+        <AbilitySelection :ability-img="abilityImg" @ap-changed="onApChanged"></AbilitySelection>
+        <StatsGrid :stats="effectData" :ap="ap"></StatsGrid>
     </section>
 </template>

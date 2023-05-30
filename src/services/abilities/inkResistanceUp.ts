@@ -1,6 +1,18 @@
 import type { EffectAndTitleData } from "@/models/baseAbilities";
 import { EffectData, getAbilityVals } from "../calculate";
 
+export async function getAll() {
+    return[
+        await getArmorHpData(),
+        await getDamageLimitData(),
+        await getDamagePerFrameData(),
+        await getJumpVelocityData(),
+        await getMoveVelocityData(),
+        await getMoveVelocityShootingData(),
+        await getMoveVelocityShootingKData()
+    ];
+}
+
 // Opponent Ink - Armor HP
 export async function getArmorHpData() : Promise<EffectAndTitleData> {
     return {
@@ -51,7 +63,8 @@ export async function getMoveVelocityShootingData() : Promise<EffectAndTitleData
 // Opponent Ink - Move Velocity ShootingK
 export async function getMoveVelocityShootingKData() : Promise<EffectAndTitleData>{
     return {
-        title: "Opponent Ink - Move Velocity ShootingK (I don't know what the K stands for)",
-        data: new EffectData(await getAbilityVals("OpInk_MoveVel_ShotK"))
+        title: "Opponent Ink - Move Velocity ShootingK",
+        data: new EffectData(await getAbilityVals("OpInk_MoveVel_ShotK")),
+        note: "I don't know what the K stands for, maybe when rolling or moving with the brush down.",
     };
 }

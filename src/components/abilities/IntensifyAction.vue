@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { defineProps, onMounted, ref } from "vue";
-import AbilitySelector from "../AbilitySelector.vue";
-import { baseUrl } from "@/services/util";
 import { getAll, getShotSpreadAir } from "@/services/abilities/intensifyAction";
 import StatsGrid from "../StatsGrid.vue";
 import type { EffectAndTitleData } from "@/models/baseAbilities";
-import WeaponSelector from "../WeaponSelector.vue";
 import type { Splat3Weapon } from "@/services/weapons";
-import { getSuperJumpAirFramesData } from "@/services/abilities/superJump";
+import AbilityWithWeaponSelection from "./headers/AbilityWithWeaponSelection.vue";
 
 const abilityImg = "Action_Up.png";
 
@@ -39,18 +36,12 @@ async function onWeaponChanges(weapon: Splat3Weapon) {
 
 <template>
     <section>
-        <el-row>
-            <el-col :md="24" :lg="12">
-                <WeaponSelector :selectedWeapon="props.weapon" @change="onWeaponChanges"></WeaponSelector>
-            </el-col>
-            <el-col :md="24" :lg="12">
-                <StatsCard title="AP" :value="ap" :bigger-is-better="true"></StatsCard>
-                <AbilitySelector
-                    :image="`${baseUrl}splat3/images/skill/${abilityImg}`"
-                    @changed="onApChanged"></AbilitySelector>
-            </el-col>
-        </el-row>
-
+        <AbilityWithWeaponSelection
+            :weapon="props.weapon"
+            :ability-img="abilityImg"
+            effect-name="intensifyAction"
+            @weapon-changed="onWeaponChanges"
+            @ap-changed="onApChanged"></AbilityWithWeaponSelection>
         <StatsGrid :stats="effectData" :ap="ap"></StatsGrid>
     </section>
 </template>

@@ -1,52 +1,36 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { EffectData } from "@/services/calculate";
 import { Splat3Weapon, getWeapon } from "@/services/weapons";
-import BaseAbility from "./BaseAbility.vue";
-import EffectCard from "../EffectCard.vue";
-import { MaxShotWithFullTankData, getInksaverMainData } from "@/services/abilities/inkSaverMain";
+import { getAll } from "@/services/abilities/inkSaverMain";
+import AbilityWithWeaponSelection from "./headers/AbilityWithWeaponSelection.vue";
+import type { EffectAndTitleData } from "@/models/baseAbilities";
+import StatsGrid from "../StatsGrid.vue";
 
 const props = defineProps<{
     weapon: string | undefined;
 }>();
 
-const effectData = ref<EffectData>();
+const effectData = ref<EffectAndTitleData[]>([]);
 const ap = ref(0);
-const shotsWithFullTankData = ref<MaxShotWithFullTankData>();
-const selectedWeapon = ref<Splat3Weapon>();
 
-if (props.weapon != null && props.weapon != "") {
-    getWeapon(props.weapon).then((w) => onWeaponChanged(w));
+function onWeaponChanged(weapon: Splat3Weapon) {
+    getAll(weapon)
+        .then(x => effectData.value = x);
 }
 
-async function onWeaponChanged(weapon: Splat3Weapon) {
-    if (effectData.value == null) {
-        effectData.value = await getInksaverMainData();
-    }
-    shotsWithFullTankData.value = new MaxShotWithFullTankData(effectData.value, weapon);
-    selectedWeapon.value = weapon;
-}
-
-function onApChanged(newAp: number, _newEffectValue: number) {
+function onApChanged(newAp: number) {
     ap.value = newAp;
 }
 </script>
 
 <template>
-    <BaseAbility
+    <AbilityWithWeaponSelection
         :weapon="props.weapon"
-        :effect-data="effectData"
-        effect-name="inkSaverMain"
-        effect-display-name="Consumption Rate Main"
         ability-img="MainInk_Save.png"
+        effect-name="inkSaverMain"
         @weapon-changed="onWeaponChanged"
         @ap-changed="onApChanged">
-        <el-col :md="24" :lg="12" v-if="shotsWithFullTankData != null">
-            <EffectCard
-                title="Number of shot with full Tank"
-                :ap="ap"
-                :effect-data="shotsWithFullTankData">
-            </EffectCard>
-        </el-col>
-    </BaseAbility>
+    </AbilityWithWeaponSelection>
+
+    <StatsGrid :ap="ap" :stats="effectData"></StatsGrid>
 </template>

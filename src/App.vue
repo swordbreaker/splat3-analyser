@@ -7,7 +7,7 @@ import Menu from '@/components/Menu.vue'
   <div class="main">
     <el-container>
       <el-header>
-
+        <h1>Splatoon 3 Ability Analyzer</h1>
       </el-header>
       <el-container class="main-container">
         <el-aside width="70px">

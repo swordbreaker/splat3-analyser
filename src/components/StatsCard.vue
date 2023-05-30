@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 
-const props = defineProps({
-    value: Number,
-    title: String,
-    biggerIsBetter: Boolean,
-});
+const props = defineProps<{
+    value: number;
+    note?: string;
+    title: string;
+    biggerIsBetter: boolean;
+}>();
 
 const prevValue = ref(props.value ?? 0);
 const diff = computed(() => (props.value ?? 0) - prevValue.value);
@@ -20,10 +21,9 @@ const isPositive = computed(() => {
 watch(
     () => props.value,
     (newVal, oldVal) => {
-        if(oldVal == null && newVal != null){
+        if (oldVal == null && newVal != null) {
             prevValue.value = newVal;
-        }
-        else if (oldVal != null) {
+        } else if (oldVal != null) {
             prevValue.value = oldVal;
         }
     },
@@ -32,7 +32,17 @@ watch(
 
 <template>
     <div class="statistic-card">
-        <el-statistic :title="title" :value="value" :precision="2">
+        <el-statistic :value="value" :precision="2">
+            <template #title>
+                <div class="statistic-title">
+                    {{ title }}
+                    <el-tooltip placement="bottom" v-if="note != null" :content="note">
+                        <el-icon style="margin-left: 4px" :size="12">
+                            <InfoFilled></InfoFilled>
+                        </el-icon>
+                    </el-tooltip>
+                </div>
+            </template>
             <template #suffix>
                 <span v-if="diff != 0" :class="{ statsSufix: true, green: isPositive, red: !isPositive }">
                     {{ diff.toFixed(2) }}
@@ -53,26 +63,10 @@ watch(
     background-color: var(--el-bg-color-overlay);
 }
 
-.statistic-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    font-size: 12px;
-    color: var(--el-text-color-regular);
-    margin-top: 16px;
-}
-
-.statistic-footer .footer-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.statistic-footer .footer-item span:last-child {
+.statistic-title{
     display: inline-flex;
     align-items: center;
-    margin-left: 4px;
+    font-size: 1.2rem;
 }
 
 .green {

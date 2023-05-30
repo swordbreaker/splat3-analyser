@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import { defineProps, onMounted, ref } from "vue";
-import AbilitySelector from "../AbilitySelector.vue";
-import { baseUrl } from "@/services/util";
+import { onMounted, ref } from "vue";
 import StatsGrid from "../StatsGrid.vue";
-import {
-    SuperJumpTotalTimeData,
-    getSuperJumpChargeFramesData,
-    getSuperJumpAirFramesData,
-} from "@/services/abilities/superJump";
+import { getAll } from "@/services/abilities/superJump";
 import type { EffectAndTitleData } from "@/models/baseAbilities";
+import AbilitySelection from "./headers/AbilitySelection.vue";
+
 const abilityImg = "JumpTime_Save.png";
 
 const props = defineProps({
@@ -19,12 +15,8 @@ const ap = ref(0);
 const effectData = ref<EffectAndTitleData[]>([]);
 
 onMounted(() => {
-    Promise.all([getSuperJumpChargeFramesData(), getSuperJumpAirFramesData()]).then((x) => {
-        effectData.value.push({
-            title: "total super jump time",
-            data: new SuperJumpTotalTimeData(x[0], x[1]),
-        });
-    });
+    getAll()
+        .then(x => effectData.value = x);
 });
 
 function onApChanged(newAp: number) {
@@ -34,15 +26,7 @@ function onApChanged(newAp: number) {
 
 <template>
     <section>
-        <el-row>
-            <el-col :md="24" :lg="24">
-                <StatsCard title="AP" :value="ap" :bigger-is-better="true"></StatsCard>
-                <AbilitySelector
-                    :image="`${baseUrl}splat3/images/skill/${abilityImg}`"
-                    @changed="onApChanged"></AbilitySelector>
-            </el-col>
-        </el-row>
-
+        <AbilitySelection :ability-img="abilityImg" @ap-changed="onApChanged"></AbilitySelection>
         <StatsGrid :stats="effectData" :ap="ap"></StatsGrid>
     </section>
 </template>

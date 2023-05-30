@@ -1,27 +1,23 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import WeaponList from "@/components/WeaponSelector.vue";
 import router from "@/router";
-import { EffectData } from "@/services/calculate";
 import { Splat3Weapon, getWeapon } from "@/services/weapons";
 import StatsCard from "@/components/StatsCard.vue";
 import { baseUrl } from "@/services/util";
 
 const props = defineProps<{
     effectName: string;
-    effectDisplayName: string;
     weapon: string | undefined;
-    effectData: EffectData | undefined;
     abilityImg: string;
 }>();
 
 const emit = defineEmits<{
-    (e: "WeaponChanged", weapon: Splat3Weapon): void;
-    (e: "ApChanged", ap: number, effect: number): void;
+    (e: "weapon-changed", weapon: Splat3Weapon): void;
+    (e: "ap-changed", ap: number): void;
 }>();
 
 const selectedWeapon = ref<Splat3Weapon | undefined>(undefined);
-const effect = ref(props.effectData?.getEffect(0));
 const ap = ref(0);
 
 if (props.weapon != undefined && props.weapon != "") {
@@ -31,24 +27,11 @@ if (props.weapon != undefined && props.weapon != "") {
 async function onWeaponChanged(weapon: Splat3Weapon) {
     router.push({ name: props.effectName, params: { weapon: weapon.mainInfo.__RowId } });
     selectedWeapon.value = weapon;
-    emit("WeaponChanged", weapon);
+    emit("weapon-changed", weapon);
 }
 
-watch(
-    () => props.effectData,
-    (newData: EffectData | undefined, _) => {
-        if (newData != null) {
-            effect.value = newData.getEffect(ap.value);
-        }
-    },
-);
-
 function onApChanged(newAp: number) {
-    ap.value = newAp;
-    if (props.effectData != null) {
-        effect.value = props.effectData.getEffect(ap.value);
-        emit("ApChanged", newAp, effect.value);
-    }
+    emit("ap-changed", newAp);
 }
 </script>
 
@@ -60,16 +43,10 @@ function onApChanged(newAp: number) {
             </el-col>
             <el-col :md="24" :lg="12" v-if="selectedWeapon != null">
                 <StatsCard title="AP" :value="ap" :bigger-is-better="true"></StatsCard>
-                <div class="ability-selector">
-                    <AbilitySelector
-                        :image="`${baseUrl}splat3/images/skill/${props.abilityImg}`"
-                        @changed="onApChanged"></AbilitySelector>
-                </div>
+                <AbilitySelector
+                    :image="`${baseUrl}splat3/images/skill/${props.abilityImg}`"
+                    @changed="onApChanged"></AbilitySelector>
             </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-            <slot />
         </el-row>
     </section>
 </template>

@@ -30,9 +30,8 @@ const abilities = [
     { name: "Sub Power Up", navigateTo: "subPowerUp", img: `${baseUrl}splat3/images/skill/SubSpec_Up.png`},
     { name: "Ink Resistance Up", navigateTo: "inkResistanceUp", img: `${baseUrl}splat3/images/skill/OpInkEffect_Reduction.png`},
     { name: "Intensify Action", navigateTo: "intensifyAction", img: `${baseUrl}splat3/images/skill/Action_Up.png`},
+    { name: "Sub Resistance Up", navigateTo: "subResistanceUp", img: `${baseUrl}splat3/images/skill/SubEffect_Reduction.png`},
 ]
-
-
 
 function navigate(name: string) {
     router.push({ name: name, params: route.params });

@@ -1,32 +1,37 @@
 <script setup lang="ts">
-import { defineProps, ref } from "vue";
-import { getRunSpeedData, EffectData } from "@/services/calculate";
+import { ref } from "vue";
+import { getAll } from "@/services/abilities/runSpeed";
 import { Splat3Weapon, getWeapon } from "@/services/weapons";
+import type { EffectAndTitleData } from "@/models/baseAbilities";
+import AbilityWithWeaponSelection from "./headers/AbilityWithWeaponSelection.vue";
+import type StatsGrid from "../StatsGrid.vue";
+
+const abilityImg = "HumanMove_Up.png";
 
 const props = defineProps<{
     weapon: string | undefined,
 }>();
 
-const effectData = ref<EffectData>();
-const selectedWeapon = ref<Splat3Weapon | null>(null);
+const ap = ref(0);
+const stats = ref<EffectAndTitleData[]>([]);
 
-if (props.weapon != undefined && props.weapon != "") {
-    getWeapon(props.weapon).then((w) => onWeaponChanged(w));
+function onWeaponChanged(weapon: Splat3Weapon) {
+    getAll(weapon)
+        .then(x => stats.value = x);
 }
 
-async function onWeaponChanged(weapon: Splat3Weapon) {
-    effectData.value = await getRunSpeedData(weapon);
-    selectedWeapon.value = weapon;
+async function onApChanged(newAp:number) {
+    ap.value = newAp;
 }
 
 </script>
 <template>
-    <BaseAbility
+    <AbilityWithWeaponSelection
         :weapon="props.weapon"
-        :effect-data="effectData"
+        :ability-img="abilityImg"
         effect-name="runSpeed"
-        effect-display-name="Move Velocity Rate"
-        ability-img="HumanMove_Up.png"
-        @weapon-changed="onWeaponChanged">
-    </BaseAbility>
+        @weapon-changed="onWeaponChanged"
+        @ap-changed="onApChanged">
+    </AbilityWithWeaponSelection>
+    <StatsGrid :ap="ap" :stats="stats"></StatsGrid>
 </template>

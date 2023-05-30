@@ -1,4 +1,5 @@
-import { type EffectData, PlotData } from "../calculate";
+import type { EffectAndTitleData } from "@/models/baseAbilities";
+import { EffectData, PlotData, getAbilityVals } from "../calculate";
 import { framesToSeconds } from "../util";
 
 const RESPAWN_CHASE_FRAME = 150;
@@ -37,5 +38,20 @@ function calculateQR(
 export class QuickRespawnSecondsData extends PlotData {
     constructor(killData: EffectData, yourData: EffectData, killedByRp = false, hasTacticooler = false, hasRp = false) {
         super((ap) => calculateQR(ap, killData, yourData, killedByRp, hasTacticooler, hasRp));
+    }
+}
+
+export async function getQuickRespawnKillCameraData() {
+    return new EffectData(await getAbilityVals("Dying_ChaseFrm"));
+}
+
+export async function getQuickRespawnYourCameraData() {
+    return new EffectData(await getAbilityVals("Dying_AroundFrm"));
+}
+
+export async function getQuickRespawnSecondsData(killData: EffectData, yourData: EffectData, killedByRp = false, hasTacticooler = false, hasRp = false) : Promise<EffectAndTitleData> {
+    return {
+        title: "respawn time in seconds ",
+        data: new QuickRespawnSecondsData(killData, yourData, killedByRp, hasTacticooler, hasRp),
     }
 }

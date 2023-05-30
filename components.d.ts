@@ -9,12 +9,15 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AbilitySelection: typeof import('./src/components/abilities/headers/AbilitySelection.vue')['default']
     AbilitySelector: typeof import('./src/components/AbilitySelector.vue')['default']
-    AbilityWithWeaponSelection: typeof import('./src/components/abilities/AbilityWithWeaponSelection.vue')['default']
+    AbilityWithWeaponSelection: typeof import('./src/components/abilities/headers/AbilityWithWeaponSelection.vue')['default']
     BaseAbility: typeof import('./src/components/abilities/BaseAbility.vue')['default']
     EffectCard: typeof import('./src/components/EffectCard.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
+    ElButton: typeof import('element-plus/es')['ElButton']
+    ElButtonGroup: typeof import('element-plus/es')['ElButtonGroup']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElDescriptions: typeof import('element-plus/es')['ElDescriptions']
@@ -28,7 +31,9 @@ declare module '@vue/runtime-core' {
     ElOption: typeof import('element-plus/es')['ElOption']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElSelect: typeof import('element-plus/es')['ElSelect']
+    ElSlider: typeof import('element-plus/es')['ElSlider']
     ElStatistic: typeof import('element-plus/es')['ElStatistic']
+    ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     InkRecoveryUp: typeof import('./src/components/abilities/InkRecoveryUp.vue')['default']
     InkResistanceUp: typeof import('./src/components/abilities/InkResistanceUp.vue')['default']
@@ -49,7 +54,9 @@ declare module '@vue/runtime-core' {
     StatsGrid: typeof import('./src/components/StatsGrid.vue')['default']
     StatsWithPlot: typeof import('./src/components/StatsWithPlot.vue')['default']
     SubPowerUp: typeof import('./src/components/abilities/SubPowerUp.vue')['default']
+    SubResistanceUp: typeof import('./src/components/abilities/SubResistanceUp.vue')['default']
     SwimSpeed: typeof import('./src/components/abilities/SwimSpeed.vue')['default']
+    Up: typeof import('./src/components/abilities/SubResistance Up.vue')['default']
     WeaponSelector: typeof import('./src/components/WeaponSelector.vue')['default']
   }
 }
