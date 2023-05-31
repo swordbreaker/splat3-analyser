@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { defineProps, ref } from "vue";
+import { ref } from "vue";
 import { getSpecialChargeUpData, EffectData } from "@/services/calculate";
 import { Splat3Weapon, getWeapon } from "@/services/weapons";
+import { useVersion } from "@/stores/versionStore";
 
 const props = defineProps({
     weapon: String,
 });
 
 const effectData = ref<EffectData>();
-const title = ref<string>();
 const ap = ref(0);
 const selectedWeapon = ref<Splat3Weapon | null>(null);
 

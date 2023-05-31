@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 import Menu from '@/components/Menu.vue'
+import AbilityFooter from './components/AbilityFooter.vue';
 </script>
 
 <template>
@@ -15,6 +16,7 @@ import Menu from '@/components/Menu.vue'
         </el-aside>
         <el-main>
           <RouterView />
+          <AbilityFooter></AbilityFooter>
         </el-main>
       </el-container>
     </el-container>

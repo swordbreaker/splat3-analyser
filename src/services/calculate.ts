@@ -1,6 +1,9 @@
 import type { AbilityParamNames } from "@/models/baseAbilities";
 import { loadJson, baseUrl } from "./util"
 import { Splat3Weapon } from "./weapons"
+import { useVersion } from "../stores/versionStore";
+
+const versionStore = useVersion();
 
 export const useable_ap = [
     0, 3, 6, 9, 10, 12, 13, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34,
@@ -142,6 +145,6 @@ export async function getSpecialSaveData() {
 }
 
 export async function getAbilityVals(name: AbilityParamNames) {
-    const data = await loadJson<{ [key: string]: any }>(`${baseUrl}splat3/data/parameter/310/misc/params.json`);
+    const data = await loadJson<{ [key: string]: any }>(`${baseUrl}splat3/data/parameter/${versionStore.version}/misc/params.json`);
     return data[`${name}`];
 }

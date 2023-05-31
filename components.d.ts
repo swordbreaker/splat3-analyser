@@ -9,6 +9,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AbilityFooter: typeof import('./src/components/AbilityFooter.vue')['default']
     AbilitySelection: typeof import('./src/components/abilities/headers/AbilitySelection.vue')['default']
     AbilitySelector: typeof import('./src/components/AbilitySelector.vue')['default']
     AbilityWithWeaponSelection: typeof import('./src/components/abilities/headers/AbilityWithWeaponSelection.vue')['default']
@@ -55,6 +56,7 @@ declare module '@vue/runtime-core' {
     SubPowerUp: typeof import('./src/components/abilities/SubPowerUp.vue')['default']
     SubResistanceUp: typeof import('./src/components/abilities/SubResistanceUp.vue')['default']
     SwimSpeed: typeof import('./src/components/abilities/SwimSpeed.vue')['default']
+    VersionSelector: typeof import('./src/components/VersionSelector.vue')['default']
     WeaponSelector: typeof import('./src/components/WeaponSelector.vue')['default']
   }
 }

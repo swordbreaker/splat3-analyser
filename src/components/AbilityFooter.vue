@@ -1,0 +1,4 @@
+
+<template>
+    <VersionSelector></VersionSelector>
+</template>

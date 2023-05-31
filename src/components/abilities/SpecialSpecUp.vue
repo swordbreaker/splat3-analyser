@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { defineProps, ref } from "vue";
+import { ref, watch } from "vue";
 import { EffectData } from "@/services/calculate";
 import { Splat3Weapon, getWeapon } from "@/services/weapons";
 import { getSpecialUpData, type StatsData } from "@/services/abilities/specialUp";
 import EffectCard from "../EffectCard.vue";
+import { onVersionChanged } from "@/services/version";
 
 const props = defineProps({
     weapon: String,
@@ -30,16 +31,16 @@ async function onWeaponChanged(weapon: Splat3Weapon) {
 function onApChanged(newAp: number, _newEffectValue: number) {
     ap.value = newAp;
 }
+
+onVersionChanged(v => {
+    if (selectedWeapon.value != null) {
+        onWeaponChanged(selectedWeapon.value);
+    }
+});
 </script>
 <template>
-    <BaseAbility
-        :weapon="props.weapon"
-        :effect-data="effectData"
-        :effect-default="1"
-        effect-name="specialSpecUp"
-        :effect-display-name="title"
-        ability-img="SpecialSpec_Up.png"
-        @weapon-changed="onWeaponChanged"
+    <BaseAbility :weapon="props.weapon" :effect-data="effectData" :effect-default="1" effect-name="specialSpecUp"
+        :effect-display-name="title" ability-img="SpecialSpec_Up.png" @weapon-changed="onWeaponChanged"
         @ap-changed="onApChanged">
         <el-col :md="24" :lg="12" v-for="data in additionalStatsData">
             <EffectCard :title="data.title" :effect-data="data.effectData" :ap="ap"> </EffectCard>

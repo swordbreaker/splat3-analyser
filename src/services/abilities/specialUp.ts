@@ -1,5 +1,7 @@
-import type { SkillParams, Splat3Weapon, WeaponParams } from "../weapons";
+import type { Splat3Weapon } from "../weapons";
+import type { SkillParams, WeaponParams } from "@/models/weapon";
 import { EffectData, type PlotData } from "../calculate";
+import { framesToSeconds } from "../util";
 
 export type StatsData = {
     title: string;
@@ -244,12 +246,20 @@ function getTrizookaData(params: WeaponParams): StatsData[] {
 }
 
 function getUltraStampData(params: WeaponParams): StatsData[] {
-    return toEffectData([
+    const frameStats = toEffectData([
         {
-            title: "Ultra Stamp Duration",
+            title: "Ultra Stamp Duration (Frames)",
             params: params.GameParameters.spl__WeaponSpUltraStampParam!.SpecialTotalFrame,
         },
     ]);
+
+    return [
+        frameStats[0],
+        {
+            title: "Ultra Stamp Duration (Seconds)",
+            effectData: frameStats[0].effectData.mapSimple(x => framesToSeconds(x)),
+        }
+    ]
 }
 
 function getKrakenData(params: WeaponParams): StatsData[] {

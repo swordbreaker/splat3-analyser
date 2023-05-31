@@ -1,6 +1,9 @@
 import type { Localizator } from "./localization";
 import { loadJson, baseUrl } from "./util"
+import { useVersion } from "@/stores/versionStore";
 import type { BlastParam, DistanceDamage, MoveParam, SkillParams, SubName, WeaponInfoSub } from "@/models/weapon"
+
+const versionStore = useVersion();
 
 export class SplatSub {
     info: WeaponInfoSub;
@@ -76,8 +79,8 @@ async function loadSubParams(version: string, subName: string) {
     return loadJson<SubParams>(`${baseUrl}splat3/data/parameter/${version}/weapon/Weapon${subName.replace("_", "")}.game__GameParameterTable.json`);
 }
 
-export async function loadSubWeaponInfo(subName: string, version: string = "310") {
-    const params = await loadSubParams(version, subName);
+export async function loadSubWeaponInfo(subName: string) {
+    const params = await loadSubParams(versionStore.version, subName);
     return new SubInfo(params);
 }
 
