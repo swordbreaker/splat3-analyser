@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { EffectData,  } from "@/services/calculate";
-import { QuickRespawnSecondsData, getQuickRespawnKillCameraData, getQuickRespawnYourCameraData } from "@/services/abilities/quickRespawn";
+import { computed, onMounted, ref } from "vue";
+import { getRawData, getQuickRespawnSecondsData } from "@/services/abilities/quickRespawn";
 import StatsGrid from "../StatsGrid.vue";
 import AbilitySelection from "./headers/AbilitySelection.vue";
+import type { EffectAndTitleData } from "@/models/baseAbilities";
+import { onVersionChanged } from "@/services/version";
 
 const abilityImg = "RespawnTime_Save.png";
 
@@ -12,42 +13,40 @@ const props = defineProps({
 });
 
 const ap = ref(0);
-const effectData = ref<{ title: string; data: EffectData }[]>([]);
+const effects = computed(() => {
+    if (rawEffects.value.length == 2) {
+        const secondData = getQuickRespawnSecondsData(rawEffects.value[0].data, rawEffects.value[1].data, killedByRp.value, hasTacticooler.value, hasRp.value);
+        return rawEffects.value.concat([secondData]);
+    }
+    return [];
+});
+const rawEffects = ref<EffectAndTitleData[]>([]);
+const killedByRp = ref(false);
+const hasTacticooler = ref(false);
+const hasRp = ref(false);
 
 onMounted(() => {
-    const a = getQuickRespawnKillCameraData().then((x) => {
-        effectData.value.push({ title: "watching the splat cam frames", data: x });
-        return x;
-    });
+    loadData();
+});
 
-    const b = getQuickRespawnYourCameraData().then((x) => {
-        effectData.value.push({ title: "respawn animation frames", data: x });
-        return x;
-    });
-
-    Promise.all([a, b]).then((x) => {
-        effectData.value.push({
-            title: "respawn time in seconds",
-            data: new QuickRespawnSecondsData(x[0], x[1]),
-        });
-        effectData.value.push({
-            title: "respawn time splatted by Respawn Punisher",
-            data: new QuickRespawnSecondsData(x[0], x[1], true),
-        });
-    });
+onVersionChanged(v => {
+    loadData();
 });
 
 function onApChanged(newAp: number) {
     ap.value = newAp;
 }
+
+function loadData() {
+    getRawData()
+        .then(x => rawEffects.value = x);
+}
 </script>
 
 <template>
     <section>
-        <AbilitySelection
-            :ability-img="abilityImg"
-            @ap-changed="onApChanged">
+        <AbilitySelection :ability-img="abilityImg" @ap-changed="onApChanged">
         </AbilitySelection>
-        <StatsGrid :stats="effectData" :ap="ap"> </StatsGrid>
+        <StatsGrid :stats="effects" :ap="ap"> </StatsGrid>
     </section>
 </template>

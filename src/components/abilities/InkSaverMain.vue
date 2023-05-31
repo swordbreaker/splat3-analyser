@@ -10,12 +10,17 @@ const props = defineProps<{
     weapon: string | undefined;
 }>();
 
-const effectData = ref<EffectAndTitleData[]>([]);
+const effects = ref<EffectAndTitleData[]>([]);
 const ap = ref(0);
 
-function onWeaponChanged(weapon: Splat3Weapon) {
-    getAll(weapon)
-        .then(x => effectData.value = x);
+function onWeaponChanged(weapon: Splat3Weapon | undefined) {
+    if (weapon != undefined) {
+        getAll(weapon)
+            .then(x => effects.value = x);
+    }
+    else{
+        effects.value = [];
+    }
 }
 
 function onApChanged(newAp: number) {
@@ -24,13 +29,9 @@ function onApChanged(newAp: number) {
 </script>
 
 <template>
-    <AbilityWithWeaponSelection
-        :weapon="props.weapon"
-        ability-img="MainInk_Save.png"
-        effect-name="inkSaverMain"
-        @weapon-changed="onWeaponChanged"
-        @ap-changed="onApChanged">
+    <AbilityWithWeaponSelection :weapon="props.weapon" ability-img="MainInk_Save.png" effect-name="inkSaverMain"
+        @weapon-changed="onWeaponChanged" @ap-changed="onApChanged">
     </AbilityWithWeaponSelection>
 
-    <StatsGrid :ap="ap" :stats="effectData"></StatsGrid>
+    <StatsGrid :ap="ap" :stats="effects"></StatsGrid>
 </template>

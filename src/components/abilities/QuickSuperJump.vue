@@ -4,6 +4,7 @@ import StatsGrid from "../StatsGrid.vue";
 import { getAll } from "@/services/abilities/superJump";
 import type { EffectAndTitleData } from "@/models/baseAbilities";
 import AbilitySelection from "./headers/AbilitySelection.vue";
+import { onVersionChanged } from "@/services/version";
 
 const abilityImg = "JumpTime_Save.png";
 
@@ -15,12 +16,20 @@ const ap = ref(0);
 const effectData = ref<EffectAndTitleData[]>([]);
 
 onMounted(() => {
-    getAll()
-        .then(x => effectData.value = x);
+    loadData();
+});
+
+onVersionChanged(v => {
+    loadData();
 });
 
 function onApChanged(newAp: number) {
     ap.value = newAp;
+}
+
+function loadData() {
+    getAll()
+        .then(x => effectData.value = x);
 }
 </script>
 

@@ -18,6 +18,13 @@ onMounted(() => {
         });
 });
 
+function formatVersion(version: string){
+    if(version.length == 3){
+        return `${version[0]}.${version[1]}.${version[2]}`;
+    }
+    return version;
+}
+
 watch(selectedVersion, (value) => {
     versionStore.$patch({ version: value });
 });
@@ -25,6 +32,6 @@ watch(selectedVersion, (value) => {
 
 <template>
     <el-select v-if="selectedVersion != null" v-model="selectedVersion" placeholder="Select" size="large">
-        <el-option v-for="version in versions" :label="version" :value="version" />
+        <el-option v-for="version in versions" :label="formatVersion(version)" :value="version" />
     </el-select>
 </template>

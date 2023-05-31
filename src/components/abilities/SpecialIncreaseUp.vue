@@ -1,39 +1,41 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { getSpecialChargeUpData, EffectData } from "@/services/calculate";
 import { Splat3Weapon, getWeapon } from "@/services/weapons";
-import { useVersion } from "@/stores/versionStore";
+import AbilityWithWeaponSelection from "./headers/AbilityWithWeaponSelection.vue";
+import StatsGrid from "../StatsGrid.vue";
+import type { EffectAndTitleData } from "@/models/baseAbilities";
+import { getAll } from "@/services/abilities/specialChargeUp";
 
 const props = defineProps({
     weapon: String,
 });
 
-const effectData = ref<EffectData>();
+const stats = ref<EffectAndTitleData[]>([]);
 const ap = ref(0);
 const selectedWeapon = ref<Splat3Weapon | null>(null);
 
-if (props.weapon != null) {
-    getWeapon(props.weapon).then((w) => onWeaponChanged(w));
+async function onWeaponChanged(weapon: Splat3Weapon | undefined) {
+    if(weapon != undefined){
+        const data = await getAll(weapon);
+        stats.value = data;
+        selectedWeapon.value = weapon;
+    }
+    else{
+        stats.value = [];
+    }
 }
 
-async function onWeaponChanged(weapon: Splat3Weapon) {
-    effectData.value = await getSpecialChargeUpData();
-    selectedWeapon.value = weapon;
-}
-
-function onApChanged(newAp: number, _newEffectValue: number) {
+function onApChanged(newAp: number) {
     ap.value = newAp;
 }
 </script>
 <template>
-    <BaseAbility
+    <AbilityWithWeaponSelection
         :weapon="props.weapon"
-        :effect-data="effectData"
-        :effect-default="1"
         effect-name="specialIncreaseUp"
-        effect-display-name="Special Charge Up"
         ability-img="SpecialIncrease_Up.png"
         @weapon-changed="onWeaponChanged"
         @ap-changed="onApChanged">
-    </BaseAbility>
+    </AbilityWithWeaponSelection>
+    <StatsGrid :stats="stats" :ap="ap"></StatsGrid>
 </template>

@@ -1,14 +1,10 @@
 import type { Splat3Weapon } from "../weapons";
 import type { SkillParams, WeaponParams } from "@/models/weapon";
-import { EffectData, type PlotData } from "../calculate";
+import { EffectData } from "../calculate";
 import { framesToSeconds } from "../util";
+import type { EffectAndTitleData } from "@/models/baseAbilities";
 
-export type StatsData = {
-    title: string;
-    effectData: PlotData;
-};
-
-export async function getSpecialUpData(weapon: Splat3Weapon): Promise<StatsData[]> {
+export async function getSpecialUpData(weapon: Splat3Weapon): Promise<EffectAndTitleData[]> {
     const specialInfo = await weapon.getSpecialWeaponInfo();
     console.log(weapon.SpecialWeaponId);
     switch (weapon.SpecialWeaponId) {
@@ -51,7 +47,7 @@ export async function getSpecialUpData(weapon: Splat3Weapon): Promise<StatsData[
     }
 }
 
-function getInkVacData(params: WeaponParams): StatsData[] {
+function getInkVacData(params: WeaponParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Ink Vac Maximum Radius",
@@ -64,7 +60,7 @@ function getInkVacData(params: WeaponParams): StatsData[] {
     ]);
 }
 
-function getCrabTankData(params: WeaponParams): StatsData[] {
+function getCrabTankData(params: WeaponParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Crab Tank Total Duration",
@@ -73,7 +69,7 @@ function getCrabTankData(params: WeaponParams): StatsData[] {
     ]);
 }
 
-function getTacticoolerData(params: WeaponParams): StatsData[] {
+function getTacticoolerData(params: WeaponParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Tacticooler Power Up Duration",
@@ -82,7 +78,7 @@ function getTacticoolerData(params: WeaponParams): StatsData[] {
     ]);
 }
 
-function getBigBubblerData(params: WeaponParams): StatsData[] {
+function getBigBubblerData(params: WeaponParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Big Bubbler Max Field HP",
@@ -95,7 +91,7 @@ function getBigBubblerData(params: WeaponParams): StatsData[] {
     ]);
 }
 
-function getInkStormData(params: WeaponParams): StatsData[] {
+function getInkStormData(params: WeaponParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Ink Storm Rain Duration",
@@ -108,7 +104,7 @@ function getInkStormData(params: WeaponParams): StatsData[] {
     ]);
 }
 
-function getInkJetData(params: WeaponParams): StatsData[] {
+function getInkJetData(params: WeaponParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Inkjet Total Duration",
@@ -137,7 +133,7 @@ function getInkJetData(params: WeaponParams): StatsData[] {
     ]);
 }
 
-function getKillerWailData(params: WeaponParams): StatsData[] {
+function getKillerWailData(params: WeaponParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Killer Wail 5.1 Laser Duration",
@@ -146,7 +142,7 @@ function getKillerWailData(params: WeaponParams): StatsData[] {
     ]);
 }
 
-function getTentaMisslesData(params: WeaponParams): StatsData[] {
+function getTentaMisslesData(params: WeaponParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Tenta Missiles Target In Circle Radius",
@@ -159,7 +155,7 @@ function getTentaMisslesData(params: WeaponParams): StatsData[] {
     ]);
 }
 
-function getBooyaBombData(params: WeaponParams): StatsData[] {
+function getBooyaBombData(params: WeaponParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Booyah Bomb Auto Charge Rate Per Frame",
@@ -168,7 +164,7 @@ function getBooyaBombData(params: WeaponParams): StatsData[] {
     ]);
 }
 
-function getWaveBreakerData(params: WeaponParams): StatsData[] {
+function getWaveBreakerData(params: WeaponParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Wave Breaker Maximum Duration",
@@ -181,7 +177,7 @@ function getWaveBreakerData(params: WeaponParams): StatsData[] {
     ]);
 }
 
-function getReefSliderData(params: WeaponParams): StatsData[] {
+function getReefSliderData(params: WeaponParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Reefslider Distance Damage Distance Rate",
@@ -206,7 +202,7 @@ function getReefSliderData(params: WeaponParams): StatsData[] {
     ]);
 }
 
-function getZipCasterData(params: WeaponParams): StatsData[] {
+function getZipCasterData(params: WeaponParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Zipcaster Ink Consumption Per Hook",
@@ -219,7 +215,7 @@ function getZipCasterData(params: WeaponParams): StatsData[] {
     ]);
 }
 
-function getTripleInkstrikeData(params: WeaponParams): StatsData[] {
+function getTripleInkstrikeData(params: WeaponParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Triple Inkstrike Throw Speed",
@@ -228,7 +224,7 @@ function getTripleInkstrikeData(params: WeaponParams): StatsData[] {
     ]);
 }
 
-function getTrizookaData(params: WeaponParams): StatsData[] {
+function getTrizookaData(params: WeaponParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Trizooka Duration",
@@ -245,7 +241,7 @@ function getTrizookaData(params: WeaponParams): StatsData[] {
     ]);
 }
 
-function getUltraStampData(params: WeaponParams): StatsData[] {
+function getUltraStampData(params: WeaponParams): EffectAndTitleData[] {
     const frameStats = toEffectData([
         {
             title: "Ultra Stamp Duration (Frames)",
@@ -257,12 +253,12 @@ function getUltraStampData(params: WeaponParams): StatsData[] {
         frameStats[0],
         {
             title: "Ultra Stamp Duration (Seconds)",
-            effectData: frameStats[0].effectData.mapSimple(x => framesToSeconds(x)),
+            data: frameStats[0].data.mapSimple(x => framesToSeconds(x)),
         }
     ]
 }
 
-function getKrakenData(params: WeaponParams): StatsData[] {
+function getKrakenData(params: WeaponParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Kraken Duration",
@@ -271,7 +267,7 @@ function getKrakenData(params: WeaponParams): StatsData[] {
     ]);
 }
 
-function getMansData(params: WeaponParams): StatsData[] {
+function getMansData(params: WeaponParams): EffectAndTitleData[] {
     return toEffectData([
         {
             title: "Super Chump Blast Radius",
@@ -280,8 +276,8 @@ function getMansData(params: WeaponParams): StatsData[] {
     ]);
 }
 
-function toEffectData(items: { title: string; params: SkillParams }[]): StatsData[] {
-    return items.map((x) => ({ title: x.title, effectData: new EffectData(toAbilityVals(x.params)) }));
+function toEffectData(items: { title: string; params: SkillParams }[]): EffectAndTitleData[] {
+    return items.map((x) => ({ title: x.title, data: new EffectData(toAbilityVals(x.params)) }));
 }
 
 function toAbilityVals(skillParams: SkillParams) {

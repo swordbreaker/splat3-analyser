@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { SubInfo } from "@/services/subs";
+import { onVersionChanged } from "@/services/version";
 import { Splat3Weapon, loadWeapons } from "@/services/weapons";
 import { onMounted, ref, watch } from "vue";
 
 const emit = defineEmits<{
-    (e: "change", weapon: Splat3Weapon): void;
+    (e: "change", weapon: Splat3Weapon | undefined): void;
 }>();
 
 const props = defineProps<{
@@ -12,13 +13,6 @@ const props = defineProps<{
 }>();
 
 const subInfo = ref<SubInfo>();
-
-// onMounted(() => {
-//     console.log(props.selectedWeapon);
-//     if(props.selectedWeapon != undefined){
-//         handleSelect(props.selectedWeapon);
-//     }
-// })
 
 watch(
     () => props.selectedWeapon,
@@ -32,7 +26,7 @@ watch(
 );
 const weapons = ref([] as Splat3Weapon[]);
 const selectedWeaponName = ref("");
-const selectedWeapon = ref(null as Splat3Weapon | null);
+const selectedWeapon = ref<Splat3Weapon>();
 
 const querySearch = (queryString: string, cb: any) => {
     const results = queryString
@@ -41,8 +35,8 @@ const querySearch = (queryString: string, cb: any) => {
     cb(results);
 };
 
-function handleSelect(item: Splat3Weapon) {
-    selectedWeaponName.value = item.mainWeaponName;
+function handleSelect(item: Splat3Weapon | undefined) {
+    selectedWeaponName.value = item?.mainWeaponName ?? "";
     selectedWeapon.value = item;
     emit("change", item);
 }
@@ -50,6 +44,14 @@ function handleSelect(item: Splat3Weapon) {
 onMounted(() => {
     loadWeapons().then((ws) => {
         weapons.value = ws.filter((x) => x.mainInfo.Type == "Versus");
+    });
+});
+
+onVersionChanged(v => {
+    loadWeapons().then((ws) => {
+        weapons.value = ws.filter((x) => x.mainInfo.Type == "Versus");
+        const foundWeapon = weapons.value.find(x => x.mainInfo.__RowId == selectedWeapon.value?.mainInfo.__RowId);
+        handleSelect(foundWeapon);
     });
 });
 </script>

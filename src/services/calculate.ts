@@ -136,10 +136,6 @@ export async function getInkRecoveryUpSwimming() {
     return new EffectData(await getAbilityVals("InkRecoverFrm_Stealth"));
 }
 
-export async function getSpecialChargeUpData() {
-    return new EffectData(await getAbilityVals("IncreaseRt_Special"));
-}
-
 export async function getSpecialSaveData() {
     return new EffectData(await getAbilityVals("SpecialGaugeRt_Restart"));
 }
