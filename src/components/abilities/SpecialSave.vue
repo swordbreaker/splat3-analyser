@@ -1,33 +1,34 @@
 <script setup lang="ts">
-import { defineProps, ref } from "vue";
-import { getSpecialSaveData, EffectData } from "@/services/calculate";
+import { ref } from "vue";
 import { Splat3Weapon, getWeapon } from "@/services/weapons";
+import AbilityWithWeaponSelection from "./headers/AbilityWithWeaponSelection.vue";
+import StatsGrid from "../StatsGrid.vue";
+import type { EffectAndTitleData } from "@/models/baseAbilities";
+import { getAll } from "@/services/abilities/specialSave";
 
-const props = defineProps({
-    weapon: String,
-});
+const props = defineProps<{
+    weapon: string,
+}>();
 
-const effectData = ref<EffectData>();
-const selectedWeapon = ref<Splat3Weapon | null>(null);
+const stats = ref<EffectAndTitleData[]>([]);
+const ap = ref(0);
 
-if (props.weapon != null) {
-    getWeapon(props.weapon).then((w) => onWeaponChanged(w));
+async function onWeaponChanged(weapon: Splat3Weapon | undefined) {
+    if (weapon != undefined) {
+        stats.value = await getAll();
+    }
+    else {
+        stats.value = [];
+    }
 }
 
-async function onWeaponChanged(weapon: Splat3Weapon) {
-    effectData.value = await getSpecialSaveData();
-    selectedWeapon.value = weapon;
+function onApChanged(newAp: number) {
+    ap.value = newAp;
 }
-
 </script>
 <template>
-    <BaseAbility
-        :weapon="props.weapon"
-        :effect-data="effectData"
-        :effect-default="1"
-        effect-name="specialSave"
-        effect-display-name="Special Gauge Rate After Respawn"
-        ability-img="RespawnSpecialGauge_Save.png"
-        @weapon-changed="onWeaponChanged">
-    </BaseAbility>
+    <AbilityWithWeaponSelection :weapon="props.weapon" effect-name="specialSave" ability-img="RespawnSpecialGauge_Save.png"
+        @weapon-changed="onWeaponChanged" @ap-changed="onApChanged">
+    </AbilityWithWeaponSelection>
+    <StatsGrid :ap="ap" :stats="stats"></StatsGrid>
 </template>

@@ -9,10 +9,10 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AbilityFooter: typeof import('./src/components/AbilityFooter.vue')['default']
     AbilitySelection: typeof import('./src/components/abilities/headers/AbilitySelection.vue')['default']
     AbilitySelector: typeof import('./src/components/AbilitySelector.vue')['default']
     AbilityWithWeaponSelection: typeof import('./src/components/abilities/headers/AbilityWithWeaponSelection.vue')['default']
-    BaseAbility: typeof import('./src/components/abilities/BaseAbility.vue')['default']
     EffectCard: typeof import('./src/components/EffectCard.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAutocomplete: typeof import('element-plus/es')['ElAutocomplete']
@@ -56,6 +56,7 @@ declare module '@vue/runtime-core' {
     SubResistanceUp: typeof import('./src/components/abilities/SubResistanceUp.vue')['default']
     SwimSpeed: typeof import('./src/components/abilities/SwimSpeed.vue')['default']
     Toggle: typeof import('./src/components/Toggle.vue')['default']
+    VersionSelector: typeof import('./src/components/VersionSelector.vue')['default']
     WeaponSelector: typeof import('./src/components/WeaponSelector.vue')['default']
   }
 }

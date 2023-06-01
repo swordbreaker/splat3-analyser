@@ -11,7 +11,7 @@ const currentIndex = computed(() => {
     return abilities.findIndex(x => x.navigateTo == route.name);
 });
 
-watch(() => route.params, (newVal, _) => {
+watch(() => route.params, (newVal: any, _) => {
     params.value = route.params;
 });
 
@@ -60,7 +60,7 @@ function navigate(name: string) {
         <el-radio-button :label="false">expand</el-radio-button>
         <el-radio-button :label="true">collapse</el-radio-button>
     </el-radio-group> -->
-    <el-menu :default-active="currentIndex" :collapse="isCollapse">
+    <el-menu :default-active="currentIndex.toString()" :collapse="isCollapse">
         <el-menu-item v-for="(ability, i) in abilities" :index="i.toString()" @click="navigate(ability.navigateTo)">
             <el-icon><img :src="ability.img" :alt="ability.name" /></el-icon>
             <template #title>{{ ability.name }}</template>

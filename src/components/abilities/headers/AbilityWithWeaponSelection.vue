@@ -13,7 +13,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-    (e: "weapon-changed", weapon: Splat3Weapon): void;
+    (e: "weapon-changed", weapon: Splat3Weapon | undefined): void;
     (e: "ap-changed", ap: number): void;
 }>();
 
@@ -24,8 +24,10 @@ if (props.weapon != undefined && props.weapon != "") {
     getWeapon(props.weapon).then((w) => onWeaponChanged(w));
 }
 
-async function onWeaponChanged(weapon: Splat3Weapon) {
-    router.push({ name: props.effectName, params: { weapon: weapon.mainInfo.__RowId } });
+async function onWeaponChanged(weapon: Splat3Weapon | undefined) {
+    if(weapon != undefined){
+        router.push({ name: props.effectName, params: { weapon: weapon.mainInfo.__RowId } });
+    }
     selectedWeapon.value = weapon;
     emit("weapon-changed", weapon);
 }

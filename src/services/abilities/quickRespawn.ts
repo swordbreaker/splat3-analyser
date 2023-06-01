@@ -1,5 +1,5 @@
 import type { EffectAndTitleData } from "@/models/baseAbilities";
-import { EffectData, PlotData, getAbilityVals } from "../calculate";
+import { EffectData, PlotData, getAbilityVals, type IPlotData } from "../calculate";
 import { framesToSeconds } from "../util";
 
 const RESPAWN_CHASE_FRAME = 150;
@@ -7,14 +7,24 @@ const OWN_RESPAWN_PUNISHER_EXTRA_RESPAWN_FRAMES = 68;
 const ENEMY_RESPAWN_PUNISHER_EXTRA_RESPAWN_FRAMES = 45;
 const SPLATOON_3_FASTER_RESPAWN = 60;
 
+export async function getRawData(): Promise<EffectAndTitleData[]> {
+    const killData = await getQuickRespawnKillCameraData();
+    const yourData = await getQuickRespawnYourCameraData();
+
+    return [
+        killData,
+        yourData,
+    ];
+}
+
 function CalcQrApAfterRespawnPunish(ap: number, hasTacticooler: boolean) {
     return hasTacticooler ? ap : Math.ceil(ap * 0.15);
 }
 
 function calculateQR(
     ap: number,
-    killData: EffectData,
-    yourData: EffectData,
+    killData: IPlotData,
+    yourData: IPlotData,
     killedByRp = false,
     hasTacticooler = false,
     hasRp = false,
@@ -36,22 +46,28 @@ function calculateQR(
 }
 
 export class QuickRespawnSecondsData extends PlotData {
-    constructor(killData: EffectData, yourData: EffectData, killedByRp = false, hasTacticooler = false, hasRp = false) {
+    constructor(killData: IPlotData, yourData: IPlotData, killedByRp = false, hasTacticooler = false, hasRp = false) {
         super((ap) => calculateQR(ap, killData, yourData, killedByRp, hasTacticooler, hasRp));
     }
 }
 
-export async function getQuickRespawnKillCameraData() {
-    return new EffectData(await getAbilityVals("Dying_ChaseFrm"));
-}
-
-export async function getQuickRespawnYourCameraData() {
-    return new EffectData(await getAbilityVals("Dying_AroundFrm"));
-}
-
-export async function getQuickRespawnSecondsData(killData: EffectData, yourData: EffectData, killedByRp = false, hasTacticooler = false, hasRp = false) : Promise<EffectAndTitleData> {
+async function getQuickRespawnKillCameraData(): Promise<EffectAndTitleData> {
     return {
-        title: "respawn time in seconds ",
+        title: "watching the splat cam frames",
+        data: new EffectData(await getAbilityVals("Dying_ChaseFrm"))
+    }
+}
+
+async function getQuickRespawnYourCameraData(): Promise<EffectAndTitleData> {
+    return {
+        title: "respawn animation frames",
+        data: new EffectData(await getAbilityVals("Dying_AroundFrm")),
+    }
+}
+
+export function getQuickRespawnSecondsData(killData: IPlotData, yourData: IPlotData, killedByRp = false, hasTacticooler = false, hasRp = false): EffectAndTitleData {
+    return {
+        title: "respawn time in seconds",
         data: new QuickRespawnSecondsData(killData, yourData, killedByRp, hasTacticooler, hasRp),
     }
 }

@@ -1,7 +1,10 @@
 import { loadJson, baseUrl } from "./util";
 import { loadLocalization, type Localizator } from "./localization";
 import { loadSubWeaponInfo } from "./subs";
+import { useVersion } from "@/stores/versionStore";
 import type { WeaponInfoMain, WeaponInfoSub, WeaponParams } from "@/models/weapon";
+
+const versionStore = useVersion();
 
 export class Splat3Weapon {
     mainInfo: WeaponInfoMain;
@@ -27,12 +30,12 @@ export class Splat3Weapon {
         this.imgPath = `${baseUrl}splat3/images/weapon_flat/Path_Wst_${this.mainInfo.__RowId}.png`;
         this.subImgPath = `${baseUrl}splat3/images/subspe/Wsb_${this.SubWeaponId}00.png`;
         this.specialImgPath = `${baseUrl}splat3/images/subspe/Wsp_${this.SpecialWeaponId}00.png`;
-        try{
+        try {
             this.mainWeaponName = localization.localize("CommonMsg/Weapon/WeaponName_Main", this.mainInfo.__RowId);
             this.subWeaponName = localization.localize("CommonMsg/Weapon/WeaponName_Sub", this.SubWeaponId);
             this.specialWeaponName = localization.localize("CommonMsg/Weapon/WeaponName_Special", this.SpecialWeaponId);
         }
-        catch(e: any){
+        catch (e: any) {
             console.error(e);
             this.mainWeaponName = this.mainInfo.__RowId;
             this.subWeaponName = this.SubWeaponId;
@@ -59,8 +62,8 @@ function getWeaponMainInfos(version: string) {
     return loadJson<WeaponInfoMain[]>(`${baseUrl}splat3/data/mush/${version}/WeaponInfoMain.json`);
 }
 
-export function getWeaponSubInfos(version: string = "310") {
-    return loadJson<WeaponInfoSub[]>(`${baseUrl}splat3/data/mush/${version}/WeaponInfoSub.json`);
+export function getWeaponSubInfos() {
+    return loadJson<WeaponInfoSub[]>(`${baseUrl}splat3/data/mush/${versionStore.version}/WeaponInfoSub.json`);
 }
 
 async function getWeaponParams(info: WeaponInfoMain, version: string) {
@@ -68,25 +71,32 @@ async function getWeaponParams(info: WeaponInfoMain, version: string) {
     return await loadWeaponParams(paramId, version);
 }
 
-export async function loadWeapons(version: string = "310") {
-    const infos = await getWeaponMainInfos(version);
+export async function loadWeapons() {
+    const infos = await getWeaponMainInfos(versionStore.version);
     const localization = await loadLocalization();
     const weapons = infos
-        .filter((x) => x.Type == "Versus")
+        .filter((x) => x.Type == "Versus" && x.__RowId != "Shelter_Wide_01")
         .map(async (info) => {
-            const params = await getWeaponParams(info, version);
+            const params = await getWeaponParams(info, versionStore.version);
             return new Splat3Weapon(info, params, localization);
         });
 
     return Promise.all(weapons);
 }
 
-export async function getWeapon(rowId: string, version: string = "310") {
-    const infos = await getWeaponMainInfos(version);
+export async function getWeapon(rowId: string,) {
+    const version = versionStore.version;
     const localization = await loadLocalization();
-    const info = infos.find((x) => x.__RowId == rowId);
-    if (info == undefined) {
-        throw new Error("Weapon not found");
+    let info = undefined as WeaponInfoMain | undefined;
+    try {
+        const infos = await getWeaponMainInfos(version);
+        info = infos.find((x) => x.__RowId == rowId);
+    }
+    catch (error: any) {
+        console.error(error);
+    }
+    if (info == null) {
+        throw new Error(`Weapon ${rowId} not found`);
     }
     const params = await getWeaponParams(info, version);
     return new Splat3Weapon(info, params, localization);
@@ -96,6 +106,6 @@ async function loadSpecialParams(version: string, subName: string) {
     return loadJson<WeaponParams>(`${baseUrl}splat3/data/parameter/${version}/weapon/Weapon${subName.replace("_", "")}.game__GameParameterTable.json`);
 }
 
-export function loadSpecialWeaponInfo(specialName: string, version: string = "310") {
-    return loadSpecialParams(version, specialName);
+export function loadSpecialWeaponInfo(specialName: string) {
+    return loadSpecialParams(versionStore.version, specialName);
 }
