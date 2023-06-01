@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import InkSaverMain from '@/components/abilities/InkSaverMain.vue';
+import InkSaverSub from '@/components/abilities/InkSaverSub.vue';
 
 const props = defineProps({
     weapon: String,
@@ -8,6 +8,6 @@ const props = defineProps({
 
 <template>
   <main>
-    <InkSaverMain :weapon="props.weapon"></InkSaverMain>
+    <InkSaverSub :weapon="props.weapon"></InkSaverSub>
   </main>
 </template>

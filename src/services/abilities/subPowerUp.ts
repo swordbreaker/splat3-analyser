@@ -4,6 +4,7 @@ import { EffectData, PlotData } from "../calculate";
 import { loadPlayerData } from "../player";
 import type { EffectAndTitleData } from "@/models/baseAbilities";
 import type { Splat3Weapon } from "../weapons";
+import { getTotalSuperjumpTime } from "./superJump";
 
 function calculateAdditonalBeaconAp(skillParams: SkillParams, ap: number){
     const v7 =
@@ -52,6 +53,7 @@ export async function getSubPowerUpData(weapon: Splat3Weapon): Promise<EffectAnd
 async function getBeaconData(params: SubParams): Promise<EffectAndTitleData[]> {
     const playerData = await loadPlayerData();
     const subSpecParam = playerData.GameParameters.spl__PlayerBeaconSubSpecUpParam!.SubSpecUpParam;
+    const totlaJumpTime = await getTotalSuperjumpTime();
     const vals = {
         High: subSpecParam.High,
         Mid: subSpecParam.Mid,
@@ -62,6 +64,10 @@ async function getBeaconData(params: SubParams): Promise<EffectAndTitleData[]> {
     return [{
         title: "Additional Quick Superjump AP",
         data: additionalApData
+    },
+    {
+        title: "Jump time with no Quick Super Jump",
+        data: additionalApData.mapSimple((addtionalAp) => totlaJumpTime.data.getEffect(addtionalAp))
     }];
 }
 

@@ -1,4 +1,4 @@
-import type { EffectAndTitleData } from "@/models/baseAbilities";
+import type { AbilityParamNames, EffectAndTitleData } from "@/models/baseAbilities";
 import { EffectData, getAbilityVals, type IPlotData } from "../calculate";
 import type { Splat3Weapon } from "../weapons";
 
@@ -14,7 +14,7 @@ async function getInksaverSubData(weapon: Splat3Weapon): Promise<EffectAndTitleD
     const subInfo = await weapon.getSubWeaponInfo();
     return {
         title: "Consumption Rate Sub",
-        data: new EffectData(await getAbilityVals(`ConsumeRt_Sub_Lv${subInfo.subInkSaveLv}`)),
+        data: new EffectData(await getAbilityVals(`ConsumeRt_Sub_Lv${subInfo.subInkSaveLv}` as AbilityParamNames)),
     };
 }
 
@@ -24,7 +24,7 @@ async function getMaxSubsWithFullTankData(
 ): Promise<EffectAndTitleData> {
     const subInfo = await weapon.getSubWeaponInfo();
     return {
-        title: "Consumption Rate Sub",
+        title: "Max subs with full tank",
         data: inkSaviourData.mapSimple((effect) => 1 / (subInfo.inkConsume * effect)),
     };
 }
