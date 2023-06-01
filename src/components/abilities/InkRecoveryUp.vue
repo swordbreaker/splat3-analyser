@@ -20,6 +20,7 @@ function onApChanged(newAp: number) {
 </script>
 
 <template>
+    <h1>Ink Recovery Up</h1>
     <section>
         <AbilitySelection :ability-img="abilityImg" @ap-changed="onApChanged"></AbilitySelection>
         <StatsGrid :stats="effectData" :ap="ap"></StatsGrid>

@@ -27,12 +27,11 @@ function onApChanged(newAp: number) {
     ap.value = newAp;
 }
 
-function onSubChecked(event: any, sub: SplatSub){
+function onSubChecked(event: any, sub: SplatSub) {
     const checked = event.target.checked as boolean;
-    if(checked){
+    if (checked) {
         activeSubs.value.add(sub);
-    }
-    else{
+    } else {
         activeSubs.value.delete(sub);
     }
 
@@ -41,20 +40,26 @@ function onSubChecked(event: any, sub: SplatSub){
 </script>
 
 <template>
+    <h1>Sub Resistance Up</h1>
     <section>
         <AbilitySelection :ability-img="abilityImg" @ap-changed="onApChanged"> </AbilitySelection>
         <div class="sub-container">
-            <label class="sub"  v-for="sub in subs">
-                <input type="checkbox" @change="$e => onSubChecked($e, sub)"/>
+            <label class="sub" v-for="sub in subs">
+                <input type="checkbox" @change="($e) => onSubChecked($e, sub)" />
                 <img :src="sub.imageSrc" />
             </label>
+            <el-tooltip placement="bottom" content="Sprinkler is also effected from Sub Resistance Up but I found no damage data for the Sprinkler.">
+                <el-icon style="margin-left: 4px" :size="12">
+                    <InfoFilled></InfoFilled>
+                </el-icon>
+            </el-tooltip>
         </div>
-        <StatsGrid :stats="stats" :ap="ap"> </StatsGrid>
+        <StatsGrid :stats="stats" :ap="ap"></StatsGrid>
     </section>
 </template>
 
 <style scoped lang="scss">
-.sub-container{
+.sub-container {
     display: flex;
     justify-content: center;
     gap: 10px;
@@ -84,7 +89,7 @@ function onSubChecked(event: any, sub: SplatSub){
         margin: auto;
     }
 
-    [type="checkbox"]{
+    [type="checkbox"] {
         width: 40px;
     }
 

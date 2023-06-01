@@ -55,6 +55,7 @@ declare module '@vue/runtime-core' {
     SubPowerUp: typeof import('./src/components/abilities/SubPowerUp.vue')['default']
     SubResistanceUp: typeof import('./src/components/abilities/SubResistanceUp.vue')['default']
     SwimSpeed: typeof import('./src/components/abilities/SwimSpeed.vue')['default']
+    Toggle: typeof import('./src/components/Toggle.vue')['default']
     WeaponSelector: typeof import('./src/components/WeaponSelector.vue')['default']
   }
 }

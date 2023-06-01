@@ -7,4 +7,8 @@ export function framesToSeconds(frames: number) {
     return frames / 60;
 }
 
+export function getAbilityImage(name: string) {
+    return `${baseUrl}splat3/images/skill/${name}`;
+}
+
 export const baseUrl = process.env.NODE_ENV == 'production' ? '/splat3-analyser/' : '/';

@@ -131,14 +131,22 @@ async function getSubEffect(sub: SplatSub): Promise<EffectAndTitleData[]> {
             );
             return maxCharge.concat(minCharge);
         case "BombFizzy":
-            return [];
-        // const dmgEffect = new EffectData(await getAbilityVals(abillityKeys[0].key));
-        // const dmgDistances = param.params.GameParameters.MoveParam!.BlastParamArray!.map((x) => x.DistanceDamage);
-        // return getDistanceDamageStats(
-        //     param.params.GameParameters.DistanceDamage,
-        //     abillityKeys[0].key,
-        //     sub.name,
-        // );
+            const blastParam1 = await getDistanceDamageStats(
+                param.params.GameParameters.MoveParam!.BlastParamArray![0].DistanceDamage,
+                abillityKeys[0].key,
+                " unshaked",
+            );
+            const blastParam2 = await getDistanceDamageStats(
+                param.params.GameParameters.MoveParam!.BlastParamArray![1].DistanceDamage,
+                abillityKeys[0].key,
+                " once shaked",
+            );
+            const blastParam3 = await getDistanceDamageStats(
+                param.params.GameParameters.MoveParam!.BlastParamArray![2].DistanceDamage,
+                abillityKeys[0].key,
+                " twice shaked",
+            );
+            return blastParam1.concat(blastParam2).concat(blastParam3);
         case "BombTorpedo":
             const chaseDirectDmg = await getDistanceDamageStats(
                 param.params.GameParameters.BlastParamChase.DistanceDamage!,
@@ -213,6 +221,7 @@ async function getSubEffect(sub: SplatSub): Promise<EffectAndTitleData[]> {
                 title: `${sub.name} Marking time`,
                 data: new EffectData(await getAbilityVals(abillityKeys[1].key)),
             });
+            return dmgStats;
         default:
             return [];
     }
@@ -262,6 +271,6 @@ export async function getSubInfos() {
     const subs = await getWeaponSubInfos();
     const localization = await loadLocalization();
     return subs
-      .filter((x) => x.Type == "Versus")
-      .map(x => new SplatSub(x, localization));
+      .filter((x) => x.Type == "Versus" && x.__RowId != "Beacon" && x.__RowId != "Sprinkler")
+      .map((x) => new SplatSub(x, localization));
 }
