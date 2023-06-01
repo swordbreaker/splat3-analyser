@@ -1,4 +1,4 @@
 
 <template>
-    <VersionSelector></VersionSelector>
+    Version: <VersionSelector></VersionSelector>
 </template>

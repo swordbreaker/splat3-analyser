@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { Splat3Weapon } from "@/services/weapons";
 import { getSpecialUpData } from "@/services/abilities/specialUp";
-import { onVersionChanged } from "@/services/version";
 import AbilityWithWeaponSelection from "./headers/AbilityWithWeaponSelection.vue";
 import type { EffectAndTitleData } from "@/models/baseAbilities";
 import StatsGrid from "../StatsGrid.vue";
@@ -29,12 +28,6 @@ async function onWeaponChanged(weapon: Splat3Weapon | undefined) {
 function onApChanged(newAp: number) {
     ap.value = newAp;
 }
-
-onVersionChanged(v => {
-    if (selectedWeapon.value != null) {
-        onWeaponChanged(selectedWeapon.value);
-    }
-});
 </script>
 <template>
     <AbilityWithWeaponSelection :weapon="props.weapon" ability-img="SpecialSpec_Up.png" effect-name="specialSpecUp"
