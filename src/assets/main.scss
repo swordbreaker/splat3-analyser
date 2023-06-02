@@ -19,3 +19,8 @@ html.dark{
     // --lt-color-gray-300: scale(#373441, $lightness: 30%);
     // --lt-color-gray-400: scale(#373441, $lightness: 40%);
 }
+
+.toggle-container {
+    display: flex;
+    justify-content: center;
+}

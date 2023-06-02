@@ -9,17 +9,38 @@ const props = defineProps<{
     ap: number,
 }>();
 
+const plotHeight = 450;
+const cssPlotHeight = `${plotHeight}px`;
 const effect = ref(0);
 const useLog = ref(false);
+const isLoading = ref(true);
 
 const plotData = [] as Plotly.Data[];
 const guid = crypto.randomUUID();
 const plotName = computed(() => "gd" + guid);
 const defaultLayout: Partial<Plotly.Layout> = {
-        xaxis: { title: "AP" },
-        yaxis: { title: props.effectName },
-        showlegend: false,
-    };
+    xaxis: { title: "AP" },
+    yaxis: { title: props.effectName },
+    showlegend: false,
+    autosize: true,
+    height: plotHeight,
+    modebar: {
+        add: [
+            // @ts-ignore
+            'drawline',
+            // @ts-ignore
+            'drawopenpath',
+            // @ts-ignore
+            'drawclosedpath',
+            // @ts-ignore
+            'drawcircle',
+            // @ts-ignore
+            'drawrect',
+            // @ts-ignore
+            'eraseshape'
+        ],
+    }
+};
 
 watch(useLog,
     (newVal, _) => {
@@ -59,7 +80,11 @@ onMounted(() => {
             },
         },
     });
-    Plotly.newPlot(plotName.value, plotData, defaultLayout, { responsive: true, });
+
+    setTimeout(() => {
+        isLoading.value = false;
+        Plotly.newPlot(plotName.value, plotData, defaultLayout, { responsive: true, });
+    }, 500);
 });
 
 function updatePlot() {
@@ -93,6 +118,18 @@ watch(() => props.effectData, (newData, _) => {
 </script>
 
 <template>
-    <div :id="plotName"></div>
+    <div v-if="isLoading" class="loading" v-loading="true">
+    </div>
+    <div :id="plotName" class="plot"></div>
     <el-switch v-model="useLog" active-text="Log" inactive-text="Linear"></el-switch>
 </template>
+
+<style scope lang="scss">
+.plot {
+    width: 100%;
+}
+
+.loading {
+    height: v-bind(cssPlotHeight);
+}
+</style>

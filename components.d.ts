@@ -59,4 +59,7 @@ declare module '@vue/runtime-core' {
     VersionSelector: typeof import('./src/components/VersionSelector.vue')['default']
     WeaponSelector: typeof import('./src/components/WeaponSelector.vue')['default']
   }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
+  }
 }

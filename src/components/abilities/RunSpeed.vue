@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { getAll } from "@/services/abilities/runSpeed";
 import { Splat3Weapon, getWeapon } from "@/services/weapons";
 import type { EffectAndTitleData } from "@/models/baseAbilities";
@@ -7,6 +7,8 @@ import AbilityWithWeaponSelection from "./headers/AbilityWithWeaponSelection.vue
 import type StatsGrid from "../StatsGrid.vue";
 import Toggle from "../Toggle.vue";
 import { getAbilityImage } from "@/services/util";
+import { SkillName } from "@/models/skillImages";
+import { maxAp } from "@/services/calculate";
 
 const abilityImg = "HumanMove_Up.png";
 
@@ -15,32 +17,42 @@ const props = defineProps<{
 }>();
 
 const ap = ref(0);
+const apTotal = computed(() => {
+    let total = ap.value;
+    total += Number(hasOpenGambit.value) * 30;
+    total += Number(hasComeback.value) * 10;
+    total += Number(hasDropRoller.value) * 30;
+    return Math.min(total, maxAp);
+});
 const stats = ref<EffectAndTitleData[]>([]);
-const hasOpenGambit = ref(false);
 
-function onWeaponChanged(weapon: Splat3Weapon) {
-    getAll(weapon)
-        .then(x => stats.value = x);
+const hasOpenGambit = ref(false);
+const hasComeback = ref(false);
+const hasDropRoller = ref(false);
+
+function onWeaponChanged(weapon: Splat3Weapon | undefined) {
+    if (weapon != undefined) {
+        getAll(weapon)
+            .then(x => stats.value = x);
+    }
+    else {
+        stats.value = [];
+    }
 }
 
 function onApChanged(newAp: number) {
     ap.value = newAp;
 }
-
-function onOpenGambitChanged(value: boolean) {
-    ap.value = ap.value + (value ? 30 : -30);
-}
-
 </script>
 <template>
-    <AbilityWithWeaponSelection
-        :weapon="props.weapon"
-        :ability-img="abilityImg"
-        effect-name="runSpeed"
-        @weapon-changed="onWeaponChanged"
-        @ap-changed="onApChanged">
+    <AbilityWithWeaponSelection :weapon="props.weapon" :ability-img="abilityImg" effect-name="runSpeed"
+        @weapon-changed="onWeaponChanged" @ap-changed="onApChanged">
     </AbilityWithWeaponSelection>
-    <Toggle name="Opening Gambit" :img="getAbilityImage('StartAllUp.png')" @change="onOpenGambitChanged"></Toggle>
-
-    <StatsGrid :ap="ap" :stats="stats"></StatsGrid>
+    <div class="toggle-container">
+        <Toggle name="Opening Gambit" :img="getAbilityImage(SkillName.OpeningGambit)" @change="v => hasOpenGambit = v">
+        </Toggle>
+        <Toggle :img="getAbilityImage(SkillName.Comeback)" name="Opening Gambit" @change="v => hasComeback = v"></Toggle>
+        <Toggle :img="getAbilityImage(SkillName.DropRoller)" name="Drop Roller" @change="v => hasDropRoller = v"></Toggle>
+    </div>
+    <StatsGrid :ap="apTotal" :stats="stats"></StatsGrid>
 </template>

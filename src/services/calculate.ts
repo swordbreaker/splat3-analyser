@@ -10,6 +10,7 @@ export const useable_ap = [
     35, 36, 37, 38, 39, 41, 42, 44, 45, 47, 48, 51, 54, 57
 ]
 
+export const maxAp = useable_ap.slice(-1)[0];
 export const ap_to_index: number[] = [];
 useable_ap.forEach((v, i) => ap_to_index[v] = i);
 
