@@ -4,6 +4,8 @@ import { ref, watch } from "vue";
 const props = defineProps<{
     name: string;
     img: string;
+    value?: boolean;
+    note?: string;
 }>();
 
 const emit = defineEmits<{
@@ -19,6 +21,15 @@ watch(value, (newVal: boolean, _) => {
 function onClick() {
     value.value = !value.value;
 }
+
+watch(
+    () => props.value,
+    (newVal: boolean | undefined, _) => {
+        if (newVal != undefined) {
+            value.value = newVal;
+        }
+    },
+);
 </script>
 
 <template>
@@ -27,6 +38,11 @@ function onClick() {
             <el-image @click="onClick" :src="img" fit="contain"></el-image>
             <el-switch v-model="value" />
         </div>
+    </el-tooltip>
+    <el-tooltip placement="bottom" v-if="note != null" :content="note">
+        <el-icon style="margin-left: 4px" :size="12">
+            <InfoFilled></InfoFilled>
+        </el-icon>
     </el-tooltip>
 </template>
 

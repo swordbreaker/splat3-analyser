@@ -1,4 +1,4 @@
-import type { SkillName } from "@/models/skillImages";
+import type { SkillName } from "@/models/skillI";
 
 export async function loadJson<T>(path: string) {
     return await fetch(path)

@@ -4,12 +4,13 @@ import WeaponList from "@/components/WeaponSelector.vue";
 import router from "@/router";
 import { Splat3Weapon, getWeapon } from "@/services/weapons";
 import StatsCard from "@/components/StatsCard.vue";
-import { baseUrl } from "@/services/util";
+import { baseUrl, getAbilityImage } from "@/services/util";
+import type { SkillImage } from "@/models/skillI";
 
 const props = defineProps<{
     effectName: string;
     weapon: string | undefined;
-    abilityImg: string;
+    abilityImg: SkillImage;
 }>();
 
 const emit = defineEmits<{
@@ -46,7 +47,7 @@ function onApChanged(newAp: number) {
             <el-col :md="24" :lg="12" v-if="selectedWeapon != null">
                 <StatsCard title="AP" :value="ap" :bigger-is-better="true"></StatsCard>
                 <AbilitySelector
-                    :image="`${baseUrl}splat3/images/skill/${props.abilityImg}`"
+                    :image="getAbilityImage(props.abilityImg)"
                     @changed="onApChanged"></AbilitySelector>
             </el-col>
         </el-row>

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { getAll } from "@/services/abilities/runSpeed";
-import { Splat3Weapon, getWeapon } from "@/services/weapons";
+import { Splat3Weapon } from "@/services/weapons";
 import type { EffectAndTitleData } from "@/models/baseAbilities";
 import AbilityWithWeaponSelection from "./headers/AbilityWithWeaponSelection.vue";
 import type StatsGrid from "../StatsGrid.vue";
 import Toggle from "../Toggle.vue";
 import { getAbilityImage } from "@/services/util";
-import { SkillName } from "@/models/skillImages";
+import { SkillImage } from "@/models/skillI
 import { maxAp } from "@/services/calculate";
 
 const abilityImg = "HumanMove_Up.png";
@@ -49,10 +49,10 @@ function onApChanged(newAp: number) {
         @weapon-changed="onWeaponChanged" @ap-changed="onApChanged">
     </AbilityWithWeaponSelection>
     <div class="toggle-container">
-        <Toggle name="Opening Gambit" :img="getAbilityImage(SkillName.OpeningGambit)" @change="v => hasOpenGambit = v">
+        <Toggle name="Opening Gambit" :img="getAbilityImage(SkillImage.OpeningGambit)" @change="v => hasOpenGambit = v">
         </Toggle>
-        <Toggle :img="getAbilityImage(SkillName.Comeback)" name="Opening Gambit" @change="v => hasComeback = v"></Toggle>
-        <Toggle :img="getAbilityImage(SkillName.DropRoller)" name="Drop Roller" @change="v => hasDropRoller = v"></Toggle>
+        <Toggle :img="getAbilityImage(SkillImage.Comeback)" name="Opening Gambit" @change="v => hasComeback = v"></Toggle>
+        <Toggle :img="getAbilityImage(SkillImage.DropRoller)" name="Drop Roller" @change="v => hasDropRoller = v"></Toggle>
     </div>
     <StatsGrid :ap="apTotal" :stats="stats"></StatsGrid>
 </template>

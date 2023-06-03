@@ -7,9 +7,7 @@ import AbilityWithWeaponSelection from "@/components/abilities/headers/AbilityWi
 import Toggle from "../Toggle.vue";
 import { getAbilityImage } from "@/services/util";
 import { maxAp } from "@/services/calculate";
-import { SkillName } from "@/models/skillImages";
-
-const abilityImg = "SquidMove_Up.png";
+import { SkillDescription, SkillImage } from "@/models/skill"
 
 const props = defineProps({
     weapon: String,
@@ -46,29 +44,64 @@ function onNinjaSquidChanged(val: boolean) {
     loadData();
 }
 
+function onCombackChanged(val: boolean) {
+    if (val) {
+        hasOpenGambit.value = false;
+    }
+    hasComeback.value = val;
+}
+
+function onOpenGambitChanged(val: boolean) {
+    if (val) {
+        hasComeback.value = false;
+    }
+    hasOpenGambit.value = val;
+}
+
 async function loadData() {
     if (selectedWeapon != undefined) {
         const data = await getAll(selectedWeapon, hasNinjaSquid.value);
         effectData.value = data;
-    }
-    else {
+    } else {
         effectData.value = [];
     }
 }
 </script>
 <template>
     <section>
-        <AbilityWithWeaponSelection :ability-img="abilityImg" :weapon="props.weapon" effect-name="swimSpeed"
-            @weapon-changed="onWeaponChanged" @ap-changed="onApChanged">
+        <AbilityWithWeaponSelection
+            :ability-img="SkillImage.SwimSpeed"
+            :weapon="props.weapon"
+            effect-name="swimSpeed"
+            @weapon-changed="onWeaponChanged"
+            @ap-changed="onApChanged">
         </AbilityWithWeaponSelection>
         <div class="toggle-container">
-            <Toggle :img="getAbilityImage(SkillName.NinjaSquid)" name="Ninja Squid" @change="onNinjaSquidChanged">
+            <Toggle
+                :img="getAbilityImage(SkillImage.NinjaSquid)"
+                name="Ninja Squid"
+                @change="onNinjaSquidChanged"
+                :note="SkillDescription.NinjaSquid">
             </Toggle>
-            <Toggle :img="getAbilityImage(SkillName.OpeningGambit)" name="Opening Gambit" @change="v => hasOpenGambit = v">
+            <Toggle
+                :img="getAbilityImage(SkillImage.OpeningGambit)"
+                name="Opening Gambit"
+                :value="hasOpenGambit"
+                @change="onOpenGambitChanged"
+                :note="SkillDescription.OpeningGambit">
             </Toggle>
-            <Toggle :img="getAbilityImage(SkillName.Comeback)" name="Opening Gambit" @change="v => hasComeback = v">
+            <Toggle
+                :img="getAbilityImage(SkillImage.Comeback)"
+                name="Comeback"
+                :value="hasComeback"
+                @change="onCombackChanged"
+                :note="SkillDescription.Comeback">
             </Toggle>
-            <Toggle :img="getAbilityImage(SkillName.DropRoller)" name="Drop Roller" @change="v => hasDropRoller = v">
+            <Toggle
+                :img="getAbilityImage(SkillImage.DropRoller)"
+                name="Drop Roller"
+                @change="(v) => (hasDropRoller = v)"
+                :note="SkillDescription.DropRoller">
             </Toggle>
         </div>
         <StatsGrid :stats="effectData" :ap="apTotal"> </StatsGrid>
