@@ -5,7 +5,7 @@ import router from "@/router";
 import { Splat3Weapon, getWeapon } from "@/services/weapons";
 import StatsCard from "@/components/StatsCard.vue";
 import { baseUrl, getAbilityImage } from "@/services/util";
-import type { SkillImage } from "@/models/skillI";
+import type { SkillImage } from "@/models/skill";
 
 const props = defineProps<{
     effectName: string;

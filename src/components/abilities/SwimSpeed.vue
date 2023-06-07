@@ -7,7 +7,7 @@ import AbilityWithWeaponSelection from "@/components/abilities/headers/AbilityWi
 import Toggle from "../Toggle.vue";
 import { getAbilityImage } from "@/services/util";
 import { maxAp } from "@/services/calculate";
-import { SkillDescription, SkillImage } from "@/models/skill"
+import { SkillDescription, SkillImage } from "@/models/skill";
 
 const props = defineProps({
     weapon: String,

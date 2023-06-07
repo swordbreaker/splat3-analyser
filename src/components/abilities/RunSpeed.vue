@@ -7,10 +7,8 @@ import AbilityWithWeaponSelection from "./headers/AbilityWithWeaponSelection.vue
 import type StatsGrid from "../StatsGrid.vue";
 import Toggle from "../Toggle.vue";
 import { getAbilityImage } from "@/services/util";
-import { SkillImage } from "@/models/skillI
+import { SkillImage } from "@/models/skill";
 import { maxAp } from "@/services/calculate";
-
-const abilityImg = "HumanMove_Up.png";
 
 const props = defineProps<{
     weapon: string | undefined,
@@ -45,7 +43,7 @@ function onApChanged(newAp: number) {
 }
 </script>
 <template>
-    <AbilityWithWeaponSelection :weapon="props.weapon" :ability-img="abilityImg" effect-name="runSpeed"
+    <AbilityWithWeaponSelection :weapon="props.weapon" :ability-img="SkillImage.RunSpeed" effect-name="runSpeed"
         @weapon-changed="onWeaponChanged" @ap-changed="onApChanged">
     </AbilityWithWeaponSelection>
     <div class="toggle-container">

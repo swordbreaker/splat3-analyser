@@ -3,7 +3,6 @@ import { ref } from "vue";
 import { useable_ap, ap_to_index } from "@/services/calculate";
 import { RefreshLeft } from '@element-plus/icons-vue'
 
-
 const props = defineProps({
     image: String,
 });

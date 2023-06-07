@@ -6,6 +6,7 @@ export enum SkillImage {
     DropRoller = "SomersaultLanding.png",
     InkRecoveryUp = "InkRecovery_Up.png",
     InkResistanceUp = "OpInkEffect_Reduction.png",
+    RunSpeed = "HumanMove_Up.png",
 }
 
 export enum SkillDescription {
